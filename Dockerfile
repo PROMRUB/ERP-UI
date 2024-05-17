@@ -3,7 +3,6 @@ FROM node:lts-alpine AS build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --ignore-scripts
-RUN npm install -g yarn
 RUN yarn add vue-select@beta
 
 COPY . .
