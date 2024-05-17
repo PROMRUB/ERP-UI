@@ -38,6 +38,9 @@ export default {
             else {
                 this.profileStore.isSignIn = true
             }
+        },
+        selectMenu(key) {
+            console.log(key);
         }
     }
 }

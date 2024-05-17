@@ -6,5 +6,12 @@ export const useProfileStore = defineStore('profileStore', () => {
   let role = 'Admin'
   let isSignIn = true
 
-  return { token, name, role, isSignIn }
+  let address = {
+    building: 'Test',
+    floorLv: 'Test',
+    no: '00',
+    alley: '00'
+  }
+
+  return { token, name, role, isSignIn, address }
 })
