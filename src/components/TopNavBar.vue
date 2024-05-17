@@ -1,23 +1,30 @@
 <script setup>
+const profileStore = useProfileStore()
 </script>
 
 <template>
   <main>
+    <div class="topnav">
+      <a href="#" style="font-size: 38px; margin-top: 10px">PROMPT ERP</a>
+      <a href="#" class="split">
+        <span style="font-size: 24px; text-align: right">{{ profileStore.name }}</span>
+        <br />
+        <span style="text-align: right">{{ profileStore.role }}</span>
+      </a>
+    </div>
   </main>
 </template>
 
 <script>
-
 import { useProfileStore } from '@/stores/ProfileStore'
 
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       isSignIn: false,
       profileStore: useProfileStore()
-    };
+    }
   },
   mounted() {
     this.updateComponent()
@@ -27,16 +34,19 @@ export default {
   },
   methods: {
     updateComponent() {
-      if (this.profileStore.token == '' || this.profileStore.token == undefined || this.profileStore.token == null) {
-        this.isSignIn = false;
+      if (
+        this.profileStore.token == '' ||
+        this.profileStore.token == undefined ||
+        this.profileStore.token == null
+      ) {
+        this.isSignIn = false
         this.$router.push('/SignIn')
-      }
-      else {
-        this.isSignIn = true;
+      } else {
+        this.isSignIn = true
       }
     }
   }
-};
+}
 </script>
 
 <style>
@@ -49,7 +59,7 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  background-color: #00275E;
+  background-color: #00275e;
   overflow: hidden;
 }
 
@@ -63,7 +73,7 @@ export default {
 }
 
 .topnav a:hover {
-  background-color: #00275E;
+  background-color: #00275e;
 }
 
 .topnav a.split {

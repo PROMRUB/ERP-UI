@@ -1,4 +1,11 @@
+<script setup>
+import TopNavBar from '@/components/TopNavBar.vue'
+</script>
+
 <template>
+  <main>
+    <TopNavBar />
+  </main>
   <div class="about card">
     <div class="container">
       <div class="radio-group">
