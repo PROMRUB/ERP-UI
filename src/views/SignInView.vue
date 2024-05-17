@@ -15,9 +15,9 @@
       </div>
       <hr style="margin:5% 60px 0px 60px;opacity: 50%" />
       <div class="row">
-        <div class="save-btn" @click="signIn">
+        <a class="save-btn" @click="signIn">
           <span class="">เข้าสู่ระบบ</span>
-        </div>
+        </a>
       </div>
     </div>
   </div>
@@ -45,17 +45,17 @@ export default {
   methods: {
     updateComponent() {
       if (this.profileStore.token == '' || this.profileStore.token == undefined || this.profileStore.token == null) {
-        this.profileStore.isSignIn = false;
+        this.profileStore.isSignIn = false
         this.$router.push('/signin')
       }
       else {
-        this.profileStore.isSignIn = true;
+        this.profileStore.isSignIn = true
       }
     },
     signIn() {
       this.profileStore.token = 'AAA'
       this.profileStore.isSignIn = true
-      this.$emit('reactive');
+      this.$emit('reactive')
       this.$router.push('/home')
     }
   }
@@ -165,5 +165,11 @@ export default {
   border-radius: 4px;
   color: white;
   padding: 12px 0px 10px 220px;
+}
+
+.save-btn:hover {
+  background: #00275E;
+  color: white;
+  cursor: pointer;
 }
 </style>

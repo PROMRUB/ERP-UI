@@ -28,7 +28,7 @@ export default {
   methods: {
     updateComponent() {
       if (this.profileStore.token == '' || this.profileStore.token == undefined || this.profileStore.token == null) {
-        this.isSignIn = false;
+        this.isSignIn = false
         this.$router.push('/signin')
       }
       else {

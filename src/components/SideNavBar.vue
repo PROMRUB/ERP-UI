@@ -77,6 +77,7 @@ export default {
 .sidenav a:hover {
     color: #fff;
     background-color: #00275e;
+    cursor: pointer;
 }
 
 .main {
