@@ -27,12 +27,13 @@ export default {
   },
   methods: {
     updateComponent() {
-      if (this.profileStore.token == '' || this.profileStore.token == undefined || this.profileStore.token == null) {
-        this.isSignIn = false
+      let token = sessionStorage.getItem('token');
+      if (token == '' || token == undefined || token == null) {
+        this.profileStore.isSignIn = false
         this.$router.push('/signin')
       }
       else {
-        this.isSignIn = true;
+        this.profileStore.isSignIn = true
       }
     }
   }

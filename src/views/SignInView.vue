@@ -44,7 +44,8 @@ export default {
   },
   methods: {
     updateComponent() {
-      if (this.profileStore.token == '' || this.profileStore.token == undefined || this.profileStore.token == null) {
+      let token = sessionStorage.getItem('token');
+      if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
         this.$router.push('/signin')
       }
@@ -53,7 +54,7 @@ export default {
       }
     },
     signIn() {
-      this.profileStore.token = 'AAA'
+      sessionStorage.setItem('token', 'AAA')
       this.profileStore.isSignIn = true
       this.$emit('reactive')
       this.$router.push('/home')
