@@ -39,10 +39,8 @@ export default {
         this.profileStore.token == undefined ||
         this.profileStore.token == null
       ) {
-        this.isSignIn = false
-        this.$router.push('/SignIn')
+        this.$router.push('/signin')
       } else {
-        this.isSignIn = true
       }
     }
   }
