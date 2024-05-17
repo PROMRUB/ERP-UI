@@ -1,19 +1,43 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import pkg from '../package.json'
+import TopNavBar from '@/components/TopNavBar.vue'
+const profileStore = useProfileStore();
+
+console.log(pkg.version)
 </script>
 
 <template>
-  <!-- <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header> -->
-
-  <RouterView />
+  <header>
+    <TopNavBar v-if="profileStore.isSignIn" />
+  </header>
+  <RouterView @reactive="onReactive" />
 </template>
+
+<script>
+
+import { useProfileStore } from '@/stores/ProfileStore'
+
+export default {
+  components: {
+  },
+  data() {
+    return {
+      profileStore: useProfileStore()
+    };
+  },
+  mounted() {
+    this.updateComponent()
+  },
+  updated() {
+    this.updateComponent()
+  },
+  methods: {
+    updateComponent() {
+    }
+  }
+};
+</script>
 
 <style scoped>
 header {
