@@ -4,12 +4,18 @@
 <template>
   <main>
     <div class="topnav">
-      <a href="#">
+      <a>
         <img class="logo-image" src="../assets/logo.png" alt="logo" />
       </a>
-      <a href=" #" class="split" style="margin-top: 3px;">
-        <img class="avatar-image" src="../assets/avatar.png" alt="avatar" />
-      </a>
+      <div id="profile-avatar" class="dropdown split">
+        <a>
+          <img class="avatar-image" src="../assets/avatar.png" alt="avatar" />
+        </a>
+        <div class="dropdown-content">
+          <a href="#profile">Profile</a>
+          <a @click="signout">Logout</a>
+        </div>
+      </div>
       <v-select class="increasedzindexclass" :options="options">Test</v-select>
     </div>
   </main>
@@ -42,6 +48,12 @@ export default {
         this.$router.push('/signin')
       } else {
       }
+    },
+    signout() {
+      this.profileStore.token = ''
+      this.profileStore.isSignIn = false
+      this.$emit('reactive')
+      this.$router.push('/signin')
     }
   }
 }
@@ -78,13 +90,16 @@ export default {
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
+  cursor: pointer;
 }
 
-.topnav a:hover {
-  background-color: #00275e;
+.topnav #profile-avatar:hover {
+  background-color: #fff;
+  height: 68px;
 }
 
-.topnav a.split {
+.topnav div.split {
+  margin-right: 100px;
   float: right;
   color: white;
 }
@@ -101,5 +116,38 @@ export default {
 .topnav .vs__dropdown-toggle {
   font-size: 17px;
   background-color: white;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  margin-top: 68px;
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  width: 160px;
+  color: #384577;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #384577;
+  height: 50px;
+  color: #fff;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 </style>
