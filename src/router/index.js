@@ -5,23 +5,23 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/Home',
-      name: 'Home',
+      path: '/home',
+      name: 'home',
       component: () => import('../views/HomeView.vue')
     },
     {
-      path: '/SignIn',
-      name: 'SignIn',
+      path: '/signin',
+      name: 'signin',
       component: () => import('../views/SignInView.vue')
     },
     {
-      path: '/CustomerInfomation',
-      name: 'CustomerInfomation',
+      path: '/customerInfomation',
+      name: 'customerInfomation',
       component: () => import('../views/CustomerInformationView.vue')
     },
     {
-      path: '/CustomerAddress',
-      name: 'CustomerAddress',
+      path: '/customerAddress',
+      name: 'customerAddress',
       component: () => import('../views/CustomerAddressView.vue')
     }
   ]

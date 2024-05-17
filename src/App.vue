@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router'
 import pkg from '../package.json'
 import TopNavBar from '@/components/TopNavBar.vue'
+import SideNavBar from '@/components/SideNavBar.vue'
 const profileStore = useProfileStore();
 
 console.log(pkg.version)
@@ -10,6 +11,7 @@ console.log(pkg.version)
 <template>
   <header>
     <TopNavBar v-if="profileStore.isSignIn" />
+    <SideNavBar v-if="profileStore.isSignIn" />
   </header>
   <RouterView @reactive="onReactive" />
 </template>

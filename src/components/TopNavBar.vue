@@ -1,16 +1,16 @@
 <script setup>
-const profileStore = useProfileStore()
 </script>
 
 <template>
   <main>
     <div class="topnav">
-      <a href="#" style="font-size: 38px; margin-top: 10px">PROMPT ERP</a>
-      <a href="#" class="split">
-        <span style="font-size: 24px; text-align: right">{{ profileStore.name }}</span>
-        <br />
-        <span style="text-align: right">{{ profileStore.role }}</span>
+      <a href="#">
+        <img class="logo-image" src="../assets/logo.png" alt="logo" />
       </a>
+      <a href=" #" class="split" style="margin-top: 3px;">
+        <img class="avatar-image" src="../assets/avatar.png" alt="avatar" />
+      </a>
+      <v-select class="increasedzindexclass" :options="options">Test</v-select>
     </div>
   </main>
 </template>
@@ -51,16 +51,26 @@ export default {
 
 <style>
 .topnav {
-  background-color: #000;
   width: 100%;
-  height: 100px;
+  height: 68px;
   position: absolute;
-  z-index: 0;
+  z-index: 999;
   top: 0;
   left: 0;
   right: 0;
   background-color: #00275e;
-  overflow: hidden;
+}
+
+.topnav .logo-image {
+  margin-top: 4px;
+  width: 156px;
+  height: 30px;
+}
+
+.topnav .avatar-image {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
 }
 
 .topnav a {
@@ -81,41 +91,17 @@ export default {
   color: white;
 }
 
-.dropdown {
-  float: left;
-  overflow: hidden;
-}
-
-.dropdown .dropbtn {
-  font-size: 16px;
+.topnav .v-select {
+  float: right;
+  padding: 6px;
   border: none;
-  outline: none;
-  color: white;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: inherit;
-  margin: 0;
+  margin-top: 10px;
+  margin-right: 16px;
+  width: 300px;
 }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  float: none;
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
+.topnav .vs__dropdown-toggle {
+  font-size: 17px;
+  background-color: white;
 }
 </style>

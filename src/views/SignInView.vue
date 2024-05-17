@@ -46,7 +46,7 @@ export default {
     updateComponent() {
       if (this.profileStore.token == '' || this.profileStore.token == undefined || this.profileStore.token == null) {
         this.profileStore.isSignIn = false;
-        this.$router.push('/SignIn')
+        this.$router.push('/signin')
       }
       else {
         this.profileStore.isSignIn = true;
@@ -56,7 +56,7 @@ export default {
       this.profileStore.token = 'AAA'
       this.profileStore.isSignIn = true
       this.$emit('reactive');
-      this.$router.push('/Home')
+      this.$router.push('/home')
     }
   }
 };
