@@ -12,7 +12,7 @@
           <img class="avatar-image" src="../assets/avatar.png" alt="avatar" />
         </a>
         <div class="dropdown-content">
-          <a href="#profile">Profile</a>
+          <a>Profile</a>
           <a @click="signout">Logout</a>
         </div>
       </div>
@@ -40,17 +40,17 @@ export default {
   },
   methods: {
     updateComponent() {
-      if (
-        this.profileStore.token == '' ||
-        this.profileStore.token == undefined ||
-        this.profileStore.token == null
-      ) {
+      let token = sessionStorage.getItem('token');
+      if (token == '' || token == undefined || token == null) {
+        this.profileStore.isSignIn = false
         this.$router.push('/signin')
-      } else {
+      }
+      else {
+        this.profileStore.isSignIn = true
       }
     },
     signout() {
-      this.profileStore.token = ''
+      sessionStorage.removeItem('token')
       this.profileStore.isSignIn = false
       this.$emit('reactive')
       this.$router.push('/signin')
