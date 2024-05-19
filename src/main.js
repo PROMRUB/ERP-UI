@@ -1,4 +1,6 @@
-import './assets/main.css'
+import './assets/css/main.css'
+import './assets/css/no-data.css'
+
 import 'vue-select/dist/vue-select.css'
 
 import vSelect from 'vue-select'

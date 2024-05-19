@@ -5,11 +5,11 @@
   <main>
     <div class="topnav">
       <a>
-        <img class="logo-image" src="../assets/logo.png" alt="logo" />
+        <img class="logo-image" src="@/assets/logo.png" alt="logo" />
       </a>
       <div id="profile-avatar" class="dropdown split">
         <a>
-          <img class="avatar-image" src="../assets/avatar.png" alt="avatar" />
+          <img class="avatar-image" src="@/assets/avatar.png" alt="avatar" />
         </a>
         <div class="dropdown-content">
           <a>Profile</a>
@@ -52,6 +52,7 @@ export default {
     signout() {
       sessionStorage.removeItem('token')
       this.profileStore.isSignIn = false
+      this.$emit('loading')
       this.$emit('reactive')
       this.$router.push('/signin')
     }
