@@ -56,6 +56,7 @@ export default {
     signIn() {
       sessionStorage.setItem('token', 'AAA')
       this.profileStore.isSignIn = true
+      this.$emit('loading')
       this.$emit('reactive')
       this.$router.push('/home')
     }

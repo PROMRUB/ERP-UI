@@ -74,7 +74,6 @@
     text-align: right;
     margin-right: 10px;
     height: 21px;
-    font-family: 'Kanit';
     font-style: normal;
     font-weight: 700;
     font-size: 14px;
@@ -136,10 +135,9 @@
     right: 81.74%;
     top: 0%;
     bottom: 19.23%;
-    font-family: 'Kanit';
     font-style: normal;
     font-weight: 700;
-    font-size: 18x;
+    font-size: 18px;
     line-height: 21px;
     text-align: right;
     color: #231F20;

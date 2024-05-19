@@ -1,14 +1,14 @@
 <template>
     <div class="sidenav">
-        <a @click="selectMenu('Home')"><i class="fa fa-home fa-lg"></i> หน้าแรก</a>
-        <a @click="selectMenu('Quotation')"><i class="fa fa-file-text fa-lg"></i> ใบเสนอราคา</a>
-        <a @click="selectMenu('Customer')"><i class="fa fa-users fa-lg"></i>ลูกค้า</a>
-        <a @click="selectMenu('Product')"><i class="fa fa-archive fa-lg"></i>สินค้า</a>
-        <a @click="selectMenu('Payment')"><i class="fa fa-check-square fa-lg"></i> เงื่อนไขการชำระเงิน</a>
-        <a @click="selectMenu('Account')"><i class="fa fa-credit-card-alt"></i>บัญชีรับชำระเงิน</a>
-        <a @click="selectMenu('Business')"><i class="fa fa-tags fa-lg"></i>ธุรกิจของฉัน</a>
-        <a @click="selectMenu('Overview')"><i class="fa fa-picture-o fa-lg"></i>ภาพรวม</a>
-        <a @click="selectMenu('Manual')"><i class="fa fa-file fa-lg"></i> คู่มือ</a>
+        <a @click="selectMenu('home')"><i class="fa fa-home fa-lg"></i> หน้าแรก</a>
+        <a @click="selectMenu('quotation')"><i class="fa fa-file-text fa-lg"></i> ใบเสนอราคา</a>
+        <a @click="selectMenu('customer')"><i class="fa fa-users fa-lg"></i>ลูกค้า</a>
+        <a @click="selectMenu('product')"><i class="fa fa-archive fa-lg"></i>สินค้า</a>
+        <a @click="selectMenu('payment')"><i class="fa fa-check-square fa-lg"></i> เงื่อนไขการชำระเงิน</a>
+        <a @click="selectMenu('account')"><i class="fa fa-credit-card-alt"></i>บัญชีรับชำระเงิน</a>
+        <a @click="selectMenu('business')"><i class="fa fa-tags fa-lg"></i>ธุรกิจของฉัน</a>
+        <a @click="selectMenu('overview')"><i class="fa fa-picture-o fa-lg"></i>ภาพรวม</a>
+        <a @click="selectMenu('manual')"><i class="fa fa-file fa-lg"></i> คู่มือ</a>
     </div>
 </template>
 
@@ -32,6 +32,7 @@ export default {
         updateComponent() {
             let token = sessionStorage.getItem('token');
             if (token == '' || token == undefined || token == null) {
+                this.$emit('loading')
                 this.profileStore.isSignIn = false
                 this.$router.push('/signin')
             }
@@ -40,7 +41,8 @@ export default {
             }
         },
         selectMenu(key) {
-            console.log(key);
+            this.$emit('loading')
+            this.$router.push('/' + key)
         }
     }
 }

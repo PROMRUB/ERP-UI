@@ -1,8 +1,10 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import pkg from '../package.json'
-import TopNavBar from '@/components/TopNavBar.vue'
-import SideNavBar from '@/components/SideNavBar.vue'
+
+import TopNavBar from '@/components/Common/TopNavBar.vue'
+import SideNavBar from '@/components/Common/SideNavBar.vue'
+
 const profileStore = useProfileStore();
 
 console.log(pkg.version)
@@ -10,21 +12,27 @@ console.log(pkg.version)
 
 <template>
   <header>
-    <TopNavBar v-if="profileStore.isSignIn" />
-    <SideNavBar v-if="profileStore.isSignIn" />
+    <TopNavBar v-if="profileStore.isSignIn" @loading="loadingModal" />
+    <SideNavBar v-if="profileStore.isSignIn" @loading="loadingModal" />
   </header>
-  <RouterView @reactive="onReactive" />
+  <loading v-model:active="isLoading" :can-cancel="true" :on-cancel="onCancel" :is-full-page="fullPage" />
+  <RouterView @reactive="onReactive" @loading="loadingModal" />
 </template>
 
 <script>
 
+import Loading from 'vue-loading-overlay';
 import { useProfileStore } from '@/stores/ProfileStore'
+import 'vue-loading-overlay/dist/css/index.css';
 
 export default {
   components: {
+    Loading
   },
   data() {
     return {
+      isLoading: false,
+      fullPage: true,
       profileStore: useProfileStore()
     };
   },
@@ -36,6 +44,15 @@ export default {
   },
   methods: {
     updateComponent() {
+    },
+    loadingModal() {
+      this.isLoading = true;
+      setTimeout(() => {
+        this.isLoading = false
+      }, 3000)
+    },
+    onCancel() {
+      console.log('User cancelled the loader.')
     }
   }
 };
