@@ -12,11 +12,11 @@ console.log(pkg.version)
 
 <template>
   <header>
-    <TopNavBar v-if="profileStore.isSignIn" @loading="loadingModal" />
-    <SideNavBar v-if="profileStore.isSignIn" @loading="loadingModal" />
+    <TopNavBar v-if="profileStore.isSignIn" @loading="loadingModal" @loaded="loadCancel" />
+    <SideNavBar v-if="profileStore.isSignIn" @loading="loadingModal" @loaded="loadCancel" />
   </header>
-  <loading v-model:active="isLoading" :can-cancel="true" :on-cancel="onCancel" :is-full-page="fullPage" />
-  <RouterView @reactive="onReactive" @loading="loadingModal" />
+  <loading v-model:active="isLoading" :can-cancel="true" :on-cancel="loadCancel" :is-full-page="fullPage" />
+  <RouterView @reactive="onReactive" @loading="loadingModal" @loaded="loadCancel" />
 </template>
 
 <script>
@@ -47,12 +47,9 @@ export default {
     },
     loadingModal() {
       this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false
-      }, 3000)
     },
-    onCancel() {
-      console.log('User cancelled the loader.')
+    loadCancel() {
+      this.isLoading = false
     }
   }
 };
