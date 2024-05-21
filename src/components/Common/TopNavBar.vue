@@ -1,4 +1,5 @@
 <script setup>
+const profileStore = useProfileStore()
 </script>
 
 <template>
@@ -16,20 +17,35 @@
           <a @click="signout">Logout</a>
         </div>
       </div>
-      <v-select class="increasedzindexclass" :options="options">Test</v-select>
+      <v-select
+        item-value="orgCustomId"
+        item-text="orgName"
+        label="orgName"
+        :options="profileStore.businessList"
+        v-model="profileStore.business"
+        :value="profileStore.business"
+        >businessList</v-select
+      >
     </div>
   </main>
 </template>
 
 <script>
 import { useProfileStore } from '@/stores/ProfileStore'
+import { useBusinessStore } from '@/stores/BusinessStore'
 
 export default {
   components: {},
   data() {
     return {
       isSignIn: false,
-      profileStore: useProfileStore()
+      profileStore: useProfileStore(),
+      businessStore: useBusinessStore()
+    }
+  },
+  watch: {
+    'profileStore.business'(newValue, oldValue) {
+      this.onBusinessChange(newValue)
     }
   },
   mounted() {
@@ -40,14 +56,19 @@ export default {
   },
   methods: {
     updateComponent() {
-      let token = sessionStorage.getItem('token');
+      let token = sessionStorage.getItem('token')
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
         this.$router.push('/signin')
-      }
-      else {
+      } else {
         this.profileStore.isSignIn = true
       }
+    },
+    async onBusinessChange(selectedBusiness) {
+      this.profileStore.businessId = selectedBusiness.orgCustomId
+      this.$emit('loading')
+      let business = await this.businessStore.fetchBusiness(this.profileStore.businessId)
+      this.$emit('loaded')
     },
     signout() {
       sessionStorage.removeItem('token')
@@ -55,6 +76,7 @@ export default {
       this.$emit('loading')
       this.$emit('reactive')
       this.$router.push('/signin')
+      this.$emit('loaded')
     }
   }
 }
@@ -111,7 +133,7 @@ export default {
   border: none;
   margin-top: 10px;
   margin-right: 16px;
-  width: 300px;
+  width: 500px;
 }
 
 .topnav .vs__dropdown-toggle {

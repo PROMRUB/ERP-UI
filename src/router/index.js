@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import('@/views/QuotationView.vue')
     },
     {
+      path: '/createquotation',
+      name: 'createquotation',
+      component: () => import('@/views/CreateQuotation.vue')
+    },
+    {
       path: '/customer',
       name: 'customer',
       component: () => import('@/views/CustomerView.vue')
