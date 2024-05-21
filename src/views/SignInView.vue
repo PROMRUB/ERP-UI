@@ -58,15 +58,13 @@ export default {
     this.updateComponent()
   },
   methods: {
-    updateComponent() {
+    async updateComponent() {
       let token = sessionStorage.getItem('token')
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
         this.$router.push('/signin')
-        this.$emit('loaded')
       } else {
         this.profileStore.isSignIn = true
-        let profileData = this.profileStore.fetchProfile()
       }
     },
     async signIn() {
@@ -92,6 +90,9 @@ export default {
           this.profileStore.isSignIn = true
           this.$emit('reactive')
           this.$router.push('/home')
+          setInterval(() => {
+            this.$emit('loaded')
+          }, 3000)
         }
       }
     }
