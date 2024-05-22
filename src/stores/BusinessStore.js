@@ -4,7 +4,8 @@ import axios from 'axios'
 export const useBusinessStore = defineStore('businessStore', () => {
   let business = ''
 
-  let baseUrl = 'https://localhost:44345'
+  // let baseUrl = 'https://localhost:44345'
+  let baseUrl = 'https://sales-api-dev.prom.co.th'
 
   let axiosExport = axios.create({
     baseUrl
@@ -17,7 +18,6 @@ export const useBusinessStore = defineStore('businessStore', () => {
     }
     return config
   })
-
   axiosExport.interceptors.response.use(
     (response) => {
       return response
@@ -28,9 +28,9 @@ export const useBusinessStore = defineStore('businessStore', () => {
     }
   )
 
-  async function fetchBusiness(id) {
+  async function fetchBusiness(org, id) {
     return axiosExport
-      .get(`${baseUrl}/v1/api/Organization/org/PBID25670518.00001.TH/action/GetBusiness/${id}`)
+      .get(`${baseUrl}/v1/api/Organization/org/${org}/action/GetBusiness/${id}`)
       .then((response) => {
         if (response.data.status.code == 1000) {
           this.business = response.data.data
