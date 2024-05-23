@@ -65,7 +65,9 @@ export default {
       }
     },
     async onBusinessChange(selectedBusiness) {
-      this.profileStore.businessId = selectedBusiness.orgCustomId
+      if (selectedBusiness.orgCustomId != undefined) {
+        this.profileStore.businessId = selectedBusiness.orgCustomId
+      }
       this.$emit('loading')
       let business = await this.businessStore.fetchBusiness(
         this.profileStore.profile.orgCustomId,
