@@ -43,7 +43,10 @@ export default {
         this.$router.push('/signin')
       } else {
         this.profileStore.isSignIn = true
-        let business = await this.businessStore.fetchBusiness(this.profileStore.businessId)
+        let business = await this.businessStore.fetchBusiness(
+          this.profileStore.profile.orgCustomId,
+          this.profileStore.businessId
+        )
         if (
           this.businessStore.business == null ||
           this.businessStore.business == undefined ||
