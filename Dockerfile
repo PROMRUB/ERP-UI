@@ -7,9 +7,6 @@ RUN yarn add vue-select@beta
 
 COPY . .
 
-#COPY cypress public src /app/
-#COPY *.json *.js *.html *.cjs /app/
-
 RUN npm run build
 
 # production stage
@@ -19,6 +16,9 @@ RUN addgroup -S nonroot \
     && adduser -S nonroot -G nonroot
 
 COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+COPY nginx.conf /etc/nginx/nginx.conf
+
 EXPOSE 80
 
 RUN mkdir -p /var/cache/nginx /var/run
