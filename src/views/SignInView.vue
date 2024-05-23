@@ -65,6 +65,7 @@ export default {
         this.$router.push('/signin')
       } else {
         this.profileStore.isSignIn = true
+        this.$router.push('/home')
       }
     },
     async signIn() {
