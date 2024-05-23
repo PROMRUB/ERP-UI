@@ -74,7 +74,7 @@ export default {
   padding: 14px 8px 14px 16px;
   text-decoration: none;
   font-size: 16px;
-  color: #000;
+  color: #00275e;
   display: block;
   align-items: center;
 }

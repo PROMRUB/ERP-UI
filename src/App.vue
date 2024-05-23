@@ -5,7 +5,7 @@ import pkg from '../package.json'
 import TopNavBar from '@/components/Common/TopNavBar.vue'
 import SideNavBar from '@/components/Common/SideNavBar.vue'
 
-const profileStore = useProfileStore();
+const profileStore = useProfileStore()
 
 console.log(pkg.version)
 </script>
@@ -15,15 +15,19 @@ console.log(pkg.version)
     <TopNavBar v-if="profileStore.isSignIn" @loading="loadingModal" @loaded="loadCancel" />
     <SideNavBar v-if="profileStore.isSignIn" @loading="loadingModal" @loaded="loadCancel" />
   </header>
-  <loading v-model:active="isLoading" :can-cancel="true" :on-cancel="loadCancel" :is-full-page="fullPage" />
+  <loading
+    v-model:active="isLoading"
+    :can-cancel="true"
+    :on-cancel="loadCancel"
+    :is-full-page="fullPage"
+  />
   <RouterView @reactive="onReactive" @loading="loadingModal" @loaded="loadCancel" />
 </template>
 
 <script>
-
-import Loading from 'vue-loading-overlay';
+import Loading from 'vue-loading-overlay'
 import { useProfileStore } from '@/stores/ProfileStore'
-import 'vue-loading-overlay/dist/css/index.css';
+import 'vue-loading-overlay/dist/css/index.css'
 
 export default {
   components: {
@@ -34,7 +38,7 @@ export default {
       isLoading: false,
       fullPage: true,
       profileStore: useProfileStore()
-    };
+    }
   },
   mounted() {
     this.updateComponent()
@@ -43,16 +47,15 @@ export default {
     this.updateComponent()
   },
   methods: {
-    updateComponent() {
-    },
+    updateComponent() {},
     loadingModal() {
-      this.isLoading = true;
+      this.isLoading = true
     },
     loadCancel() {
       this.isLoading = false
     }
   }
-};
+}
 </script>
 
 <style scoped>

@@ -3,33 +3,41 @@ const businessStore = useBusinessStore()
 </script>
 
 <template>
-  <div class="card-content-header">
+  <div class="business-card-content-header">
     <span> ธุรกิจของฉัน </span>
   </div>
-  <div class="card-content">
+  <div class="business-card-content">
     <div class="container">
       <div class="row">
         <div class="content-column">
           <div class="form-group">
-            <div class="form-line">
-              <label class="content-input-box-label form-text" for="taxId"
+            <div class="business-form-line">
+              <label class="business-content-input-box-label business-content-form-text" for="taxId"
                 >เลขประจำตัวผู้เสียภาษี:</label
               >
-              <span class="content-text">{{ businessStore.business.taxId }}</span>
+              <span class="business-content-text">{{ businessStore.business.taxId }}</span>
             </div>
-            <div class="form-line">
-              <label class="content-input-box-label form-text" for="brnId">สาขาที่:</label>
-              <span class="content-text">{{ businessStore.business.brnId }}</span>
+            <div class="business-form-line">
+              <label class="business-content-input-box-label business-content-form-text" for="brnId"
+                >สาขาที่:</label
+              >
+              <span class="business-content-text">{{ businessStore.business.brnId }}</span>
             </div>
-            <div class="form-line">
-              <label class="content-input-box-label form-text" for="orgName"
+            <div class="business-form-line">
+              <label
+                class="business-content-input-box-label business-content-form-text"
+                for="orgName"
                 >ชื่อผู้ประกอบการ:</label
               >
-              <span class="content-text">{{ businessStore.business.orgName }}</span>
+              <span class="business-content-text">{{ businessStore.business.orgName }}</span>
             </div>
-            <div class="form-line">
-              <label class="content-input-box-label form-text" for="address">ที่อยู่:</label>
-              <span class="content-text">{{ businessStore.business.orgAddress }}</span>
+            <div class="business-form-line">
+              <label
+                class="business-content-input-box-label business-content-form-text"
+                for="address"
+                >ที่อยู่:</label
+              >
+              <span class="business-content-text">{{ businessStore.business.orgAddress }}</span>
             </div>
           </div>
         </div>
@@ -72,12 +80,12 @@ export default {
 </script>
 
 <style>
-.card-content-header {
-  position: absolute !important;
-  width: 1400px !important;
-  height: 80px !important;
-  left: 325px !important;
-  top: 100px !important;
+.business-card-content-header {
+  position: absolute;
+  width: 1400px;
+  height: 80px;
+  left: 325px;
+  top: 100px;
   background: #00275e;
   color: #fff;
   font-size: 24px;
@@ -86,28 +94,28 @@ export default {
   padding: 1em;
   text-align: center;
   z-index: 4;
-  border-top-left-radius: 50px !important;
-  border-top-right-radius: 50px !important;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
 }
 
-.card-content {
-  position: absolute !important;
-  width: 1400px !important;
-  height: 648px !important;
-  left: 325px !important;
-  top: 175px !important;
+.business-card-content {
+  position: absolute;
+  width: 1400px;
+  height: 648px;
+  left: 325px;
+  top: 175px;
   background: #ffffff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
   border-radius: 0px;
   padding: 2em;
-  border-bottom-left-radius: 50px !important;
-  border-bottom-right-radius: 50px !important;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
 }
 
-.content-input-box-label {
+.business-content-input-box-label {
   display: inline-block;
   width: 250px;
-  text-align: right !important;
+  text-align: right;
   margin-right: 10px;
   height: 21px;
   font-style: normal;
@@ -120,9 +128,9 @@ export default {
   z-index: 0;
 }
 
-.content-text {
+.business-content-text {
   display: inline-block;
-  text-align: right !important;
+  text-align: right;
   margin-right: 10px;
   height: 21px;
   font-style: normal;
@@ -177,11 +185,11 @@ export default {
   margin: 20px;
 }
 
-.form-line {
+.business-form-line {
   margin-top: 26px;
 }
 
-.content-form-text {
+.business-content-form-text {
   left: 0%;
   right: 81.74%;
   top: 0%;
@@ -191,7 +199,6 @@ export default {
   font-size: 18px;
   line-height: 21px;
   text-align: right;
-  color: #231f20;
 }
 
 .form-input {
