@@ -58,7 +58,7 @@ const data = [
     productCode: 'PL701',
     productName: 'L430, LONG LATCH',
     productType: 'InVue - Access Control',
-    recordStatus: 'Active'
+    recordStatus: 'ปกติ'
   }
 ]
 </script>
