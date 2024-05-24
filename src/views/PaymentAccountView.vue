@@ -5,11 +5,11 @@
     <div v-if="!hvData">
       <img class="no-data" src="@/assets/no-data.png" alt="No Data" /><br />
       <div class="no-data-label">
-        <span
-          >ขณะนี้ยังไม่มีข้อมูลใดๆของคุณอยู่ในระบบ
-          <a @click="CreateQuotation">คลิกที่นี่</a> เพื่อเริ่มต้นสร้างข้อมูล</span
-        >
+        <span>ขณะนี้ยังไม่มีข้อมูลใดๆของคุณอยู่ในระบบ</span>
       </div>
+    </div>
+    <div v-else>
+      <PaymentAccountTable />
     </div>
   </main>
 </template>
@@ -17,11 +17,15 @@
 <script>
 import { useProfileStore } from '@/stores/ProfileStore'
 
+import PaymentAccountTable from '@/components/PaymentAccount/PaymentAccountTable.vue'
+
 export default {
-  components: {},
+  components: {
+    PaymentAccountTable
+  },
   data() {
     return {
-      hvData: false,
+      hvData: true,
       profileStore: useProfileStore()
     }
   },
@@ -44,11 +48,6 @@ export default {
         const businessData = await this.profileStore.fetchBusiness()
         this.$emit('loaded')
       }
-    },
-    CreateQuotation() {
-      this.$emit('loading')
-      this.$router.push('/createquotation')
-      this.$emit('loaded')
     }
   }
 }

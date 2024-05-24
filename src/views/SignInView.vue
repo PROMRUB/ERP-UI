@@ -171,7 +171,7 @@ export default {
   font-family: 'Kanit';
   font-style: normal;
   font-weight: 700;
-  font-size: 18x;
+  font-size: 18px;
   line-height: 21px;
   text-align: left;
   color: #231f20;

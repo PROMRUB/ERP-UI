@@ -1,14 +1,4 @@
-<script setup>
-import DataTable from 'datatables.net-vue3'
-import DataTablesCore from 'datatables.net'
-
-DataTable.use(DataTablesCore)
-
-const data = [
-  [1, 2],
-  [3, 4]
-]
-</script>
+<script setup></script>
 
 <template>
   <main>
@@ -19,17 +9,7 @@ const data = [
       </div>
     </div>
     <div v-else>
-      <button>Add new row</button><br />
-      <button>Update selected rows</button><br />
-      <button>Delete selected rows</button>
-      <DataTable
-        :data="data"
-        class="display"
-        :columns="columns"
-        :options="{ select: true }"
-        ref="table"
-      >
-      </DataTable>
+      <PaymentTable />
     </div>
   </main>
 </template>
@@ -37,8 +17,12 @@ const data = [
 <script>
 import { useProfileStore } from '@/stores/ProfileStore'
 
+import PaymentTable from '@/components/Payment/PaymentTable.vue'
+
 export default {
-  components: {},
+  components: {
+    PaymentTable
+  },
   data() {
     return {
       hvData: true,
@@ -53,6 +37,7 @@ export default {
   },
   methods: {
     async updateComponent() {
+      this.$emit('loading')
       let token = sessionStorage.getItem('token')
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false

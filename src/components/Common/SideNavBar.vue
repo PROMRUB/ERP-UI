@@ -7,7 +7,9 @@
     <a @click="selectMenu('payment')"
       ><i class="fa fa-check-square fa-lg"></i> เงื่อนไขการชำระเงิน</a
     >
-    <a @click="selectMenu('account')"><i class="fa fa-credit-card-alt"></i>บัญชีรับชำระเงิน</a>
+    <a @click="selectMenu('paymentaccount')"
+      ><i class="fa fa-credit-card-alt"></i>บัญชีรับชำระเงิน</a
+    >
     <a @click="selectMenu('business')"><i class="fa fa-tags fa-lg"></i>ธุรกิจของฉัน</a>
     <a @click="selectMenu('overview')"><i class="fa fa-picture-o fa-lg"></i>ภาพรวม</a>
     <a @click="download('manual')"><i class="fa fa-file fa-lg"></i> คู่มือ</a>

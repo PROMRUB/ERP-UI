@@ -39,9 +39,9 @@ const router = createRouter({
       component: () => import('@/views/PaymentView.vue')
     },
     {
-      path: '/account',
-      name: 'account',
-      component: () => import('@/views/AccountView.vue')
+      path: '/paymentaccount',
+      name: 'paymentaccount',
+      component: () => import('@/views/PaymentAccountView.vue')
     },
     {
       path: '/business',
