@@ -6,17 +6,17 @@ const businessStore = useBusinessStore()
   <div class="card-content">
     <div class="container">
       <div class="row">
-        <div class="content-column">
+        <div class="quotation-content-column">
           <div class="form-group">
             <div class="form-line">
               <label class="content-input-box-label form-text customer-content" for="taxId"
                 >ข้อมูลลูกค้า:</label
               >
-              <p class="content-text">{{ businessStore.business.taxId }}</p>
+              <p class="content-text"></p>
               <br />
-              <p class="content-text">{{ businessStore.business.taxId }}</p>
+              <p class="content-text"></p>
               <br />
-              <p class="content-text">{{ businessStore.business.taxId }}</p>
+              <p class="content-text"></p>
               <br />
               <br />
               <br />
@@ -24,8 +24,8 @@ const businessStore = useBusinessStore()
               <br />
               <br />
               <div class="form-line">
-                <label class="content-input-box-label form-text" for="address">ที่อยู่:</label>
-                <span class="content-text">{{ businessStore.business.orgAddress }}</span>
+                <label class="content-input-box-label form-text" for="address">ผู้ติดต่อ:</label>
+                <span class="content-text"></span>
               </div>
             </div>
           </div>
@@ -36,37 +36,37 @@ const businessStore = useBusinessStore()
               <label class="content-input-box-label form-text customer-content" for="taxId"
                 >เลขที่ใบ:</label
               >
-              <p class="content-text" style="margin-top: 1em">{{ businessStore.business.taxId }}</p>
+              <p class="content-text" style="margin-top: 1em"></p>
             </div>
             <div class="form-line">
               <label class="content-input-box-label form-text customer-content" for="taxId"
                 >วันที่:</label
               >
-              <p class="content-text" style="margin-top: 1em">{{ businessStore.business.taxId }}</p>
+              <p class="content-text" style="margin-top: 1em"></p>
             </div>
             <div class="form-line">
               <label class="content-input-box-label form-text customer-content" for="taxId"
                 >แก้ครั้งที่:</label
               >
-              <p class="content-text" style="margin-top: 1em">{{ businessStore.business.taxId }}</p>
+              <p class="content-text" style="margin-top: 1em"></p>
             </div>
             <div class="form-line">
               <label class="content-input-box-label form-text customer-content" for="taxId"
                 >พนักงานขาย:</label
               >
-              <p class="content-text" style="margin-top: 1em">{{ businessStore.business.taxId }}</p>
+              <p class="content-text" style="margin-top: 1em"></p>
             </div>
             <div class="form-line">
               <label class="content-input-box-label form-text customer-content" for="taxId"
                 >จัดทำโดย:</label
               >
-              <p class="content-text" style="margin-top: 1em">{{ businessStore.business.taxId }}</p>
+              <p class="content-text" style="margin-top: 1em"></p>
             </div>
             <div class="form-line">
               <label class="content-input-box-label form-text customer-content" for="taxId"
                 >สถานะ:</label
               >
-              <p class="content-text" style="margin-top: 1em">{{ businessStore.business.taxId }}</p>
+              <p class="content-text" style="margin-top: 1em"></p>
             </div>
           </div>
         </div>
@@ -79,7 +79,35 @@ const businessStore = useBusinessStore()
         <div class="content-column">
           <div class="form-group">
             <div class="form-line">
-              <p class="content-text">{{ businessStore.business.taxId }}</p>
+              <p class="content-text-header">ชื่อโครงการ</p>
+            </div>
+          </div>
+        </div>
+        <div class="content-column">
+          <div class="form-group">
+            <div class="form-line">
+              <p class="content-text-header">สั่งสินค้านาน (วัน)</p>
+            </div>
+          </div>
+        </div>
+        <div class="content-column">
+          <div class="form-group">
+            <div class="form-line">
+              <p class="content-text-header">การรับประกัน (เดือน)</p>
+            </div>
+          </div>
+        </div>
+        <div class="content-column">
+          <div class="form-group">
+            <div class="form-line">
+              <p class="content-text-header">เงื่อนไขการชำระเงิน</p>
+            </div>
+          </div>
+        </div>
+        <div class="content-column">
+          <div class="form-group">
+            <div class="form-line">
+              <p class="content-text-header">เลขที่ใบสั่งสินค้า</p>
             </div>
           </div>
         </div>
@@ -92,7 +120,35 @@ const businessStore = useBusinessStore()
         <div class="content-column">
           <div class="form-group">
             <div class="form-line">
-              <p class="content-text">{{ businessStore.business.taxId }}</p>
+              <p class="content-text"></p>
+            </div>
+          </div>
+        </div>
+        <div class="content-column">
+          <div class="form-group">
+            <div class="form-line">
+              <p class="content-text"></p>
+            </div>
+          </div>
+        </div>
+        <div class="content-column">
+          <div class="form-group">
+            <div class="form-line">
+              <p class="content-text"></p>
+            </div>
+          </div>
+        </div>
+        <div class="content-column">
+          <div class="form-group">
+            <div class="form-line">
+              <p class="content-text"></p>
+            </div>
+          </div>
+        </div>
+        <div class="content-column">
+          <div class="form-group">
+            <div class="form-line">
+              <p class="content-text"></p>
             </div>
           </div>
         </div>
@@ -121,13 +177,17 @@ export default {
     this.updateComponent()
   },
   methods: {
-    updateComponent() {
+    async updateComponent() {
+      this.$emit('loading')
       let token = sessionStorage.getItem('token')
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
         this.$router.push('/signin')
       } else {
         this.profileStore.isSignIn = true
+        const profileData = await this.profileStore.fetchProfile()
+        const businessData = await this.profileStore.fetchBusiness()
+        this.$emit('loaded')
       }
     }
   }
@@ -201,6 +261,18 @@ export default {
   z-index: 0;
 }
 
+.content-text-header {
+  display: inline-block;
+  text-align: right !important;
+  margin-right: 10px;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 21px;
+  color: #fff;
+  order: 0;
+  flex-grow: 0;
+  z-index: 0;
+}
 .input-box {
   display: inline-block;
   gap: 0px 58px;
@@ -272,6 +344,12 @@ export default {
 }
 
 .content-column {
+  display: inline-block;
+  float: left;
+  width: 20%;
+}
+
+.quotation-content-column {
   display: inline-block;
   float: left;
   width: 75%;

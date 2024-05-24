@@ -9,7 +9,7 @@
       </div>
     </div>
     <div v-else>
-      <PaymentTable />
+      <PaymentAccountTable />
     </div>
   </main>
 </template>
@@ -17,11 +17,11 @@
 <script>
 import { useProfileStore } from '@/stores/ProfileStore'
 
-import PaymentTable from '@/components/Payment/PaymentTable.vue'
+import PaymentAccountTable from '@/components/PaymentAccount/PaymentAccountTable.vue'
 
 export default {
   components: {
-    PaymentTable
+    PaymentAccountTable
   },
   data() {
     return {
@@ -52,7 +52,3 @@ export default {
   }
 }
 </script>
-
-<style>
-@import 'datatables.net-dt';
-</style>
