@@ -253,7 +253,7 @@ export default {
   text-align: right !important;
   margin-right: 10px;
   font-style: normal;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 21px;
   color: #00275e;
   order: 0;
@@ -266,7 +266,7 @@ export default {
   text-align: right !important;
   margin-right: 10px;
   font-style: normal;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 21px;
   color: #fff;
   order: 0;

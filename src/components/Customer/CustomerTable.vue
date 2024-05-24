@@ -48,7 +48,7 @@ const data = [
     index: '1',
     customerCode: 'CBT-00001',
     customerName: 'บริษัท ไซเบอร์แทรกซ์ จำกัด',
-    recordStatus: 'Active'
+    recordStatus: 'ปกติ'
   }
 ]
 </script>

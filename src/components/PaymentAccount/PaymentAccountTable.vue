@@ -75,8 +75,8 @@ const data = [
     index: '1',
     accountName: 'บริษัท ซีเคียว โซลูชั่น เอเซีย จำกัด',
     accountType: 'กระแสรายวัน',
-    bank: 'ธนาคารกสิกรไทย',
-    branch: 'สาขาพัฒนาการ 20',
+    bank: 'KBANK',
+    branch: 'พัฒนาการ 20',
     accountNo: '727-1-02814-2',
     recordStatus: 'Active'
   }
