@@ -32,13 +32,17 @@ export default {
     this.updateComponent()
   },
   methods: {
-    updateComponent() {
+    async updateComponent() {
+      this.$emit('loading')
       let token = sessionStorage.getItem('token')
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
         this.$router.push('/signin')
       } else {
         this.profileStore.isSignIn = true
+        const profileData = await this.profileStore.fetchProfile()
+        const businessData = await this.profileStore.fetchBusiness()
+        this.$emit('loaded')
       }
     },
     CreateQuotation() {
