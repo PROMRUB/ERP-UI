@@ -25,8 +25,8 @@ export const useProfileStore = defineStore('profileStore', () => {
     alley: '00'
   }
 
-  let baseUrl = 'https://localhost:44345'
-  // let baseUrl = 'https://sales-api-dev.prom.co.th'
+  // let baseUrl = 'https://localhost:44345'
+  let baseUrl = 'https://sales-api-dev.prom.co.th'
 
   let axiosExport = axios.create({
     baseUrl
