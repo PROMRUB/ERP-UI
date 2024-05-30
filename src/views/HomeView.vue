@@ -13,13 +13,15 @@
 
 <script>
 import { useProfileStore } from '@/stores/ProfileStore'
+import { useSystemConfigStore } from '@/stores/SystemConfigStore'
 
 export default {
   components: {},
   data() {
     return {
       hvData: false,
-      profileStore: useProfileStore()
+      profileStore: useProfileStore(),
+      systemConfigStore: useSystemConfigStore()
     }
   },
   mounted() {
@@ -39,6 +41,9 @@ export default {
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
         const businessData = await this.profileStore.fetchBusiness()
+        const provinceData = await this.systemConfigStore.fetchProvince(this.profileStore.profile.orgCustomId)
+        const districtData = await this.systemConfigStore.fetchDistrict(this.profileStore.profile.orgCustomId)
+        const subDistrctData = await this.systemConfigStore.fetchSubDistrict(this.profileStore.profile.orgCustomId)
         this.$emit('loaded')
       }
     }

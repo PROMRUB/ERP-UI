@@ -54,6 +54,15 @@ export default {
           this.businessStore.business == undefined ||
           this.businessStore.business == ''
         ) {
+          const provinceData = await this.systemConfigStore.fetchProvince(
+            this.profileStore.profile.orgCustomId
+          )
+          const districtData = await this.systemConfigStore.fetchDistrict(
+            this.profileStore.profile.orgCustomId
+          )
+          const subDistrctData = await this.systemConfigStore.fetchSubDistrict(
+            this.profileStore.profile.orgCustomId
+          )
           this.hvData = false
           this.$emit('loaded')
         } else {
