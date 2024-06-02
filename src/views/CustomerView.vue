@@ -9,22 +9,30 @@
       </div>
     </div>
     <div v-else>
-      <div v-if="isList">
-        <CustomerTable />
+      <div v-if="customerListActive">
+        <CustomerTable @pageControl="pageControl" />
       </div>
-      <div v-if="isAdd">
+      <div v-if="customerInformationActive">
         <div class="row">
-          <button class="general-btn" :class="{ active: generalIsActive }" @click="general">
+          <button
+            class="general-btn"
+            :class="{ active: generalActive }"
+            @click="pageControl(`general`)"
+          >
             <span><i class="fa fa-file-text-o fa-lg"></i>ข้อมูลทั่วไป</span>
           </button>
-          <button class="address-btn" :class="{ active: addressIsActive }" @click="address">
+          <button
+            class="address-btn"
+            :class="{ active: addressActive }"
+            @click="pageControl(`address`)"
+          >
             <span><i class="fa fa-map-o fa-lg"></i>ที่อยู่</span>
           </button>
         </div>
-        <div class="row" v-if="generalIsActive">
+        <div class="row" v-if="generalActive">
           <GeneralInformation />
         </div>
-        <div class="row" v-if="addressIsActive">
+        <div class="row" v-if="addressActive">
           <AddressInformation />
         </div>
       </div>
@@ -36,7 +44,9 @@
 import CustomerTable from '@/components/Customer/CustomerTable.vue'
 import GeneralInformation from '@/components/Customer/GeneralInformation.vue'
 import AddressInformation from '@/components/Customer/AddressInformation.vue'
+
 import { useProfileStore } from '@/stores/ProfileStore'
+import { useSystemConfigStore } from '@/stores/SystemConfigStore'
 
 export default {
   components: {
@@ -47,12 +57,13 @@ export default {
   data() {
     return {
       hvData: true,
-      isList: true,
-      isAdd: false,
 
-      generalIsActive: true,
-      addressIsActive: false,
-      profileStore: useProfileStore()
+      customerListActive: true,
+      customerEntryActive: false,
+      generalActive: false,
+      addressActive: false,
+      profileStore: useProfileStore(),
+      systemConfigStore: useSystemConfigStore()
     }
   },
   mounted() {
@@ -63,25 +74,50 @@ export default {
   },
   methods: {
     async updateComponent() {
-      this.$emit('loading')
       let token = sessionStorage.getItem('token')
+      sessionStorage.removeItem(`selectedItems`)
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
         this.$router.push('/signin')
+        this.$emit('loaded')
       } else {
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
         const businessData = await this.profileStore.fetchBusiness()
+        const provinceData = await this.systemConfigStore.fetchProvince(
+          this.profileStore.profile.orgCustomId
+        )
+        const districtData = await this.systemConfigStore.fetchDistrict(
+          this.profileStore.profile.orgCustomId
+        )
+        const subDistrctData = await this.systemConfigStore.fetchSubDistrict(
+          this.profileStore.profile.orgCustomId
+        )
         this.$emit('loaded')
       }
     },
-    general() {
-      this.generalIsActive = true
-      this.addressIsActive = false
-    },
-    address() {
-      this.generalIsActive = false
-      this.addressIsActive = true
+    pageControl(pageName) {
+      alert(pageName)
+      this.$emit('loading')
+      setTimeout(() => {
+        if (pageName == `customerEntry`) {
+          this.customerListActive = false
+          this.customerInformationActive = true
+          this.generalActive = true
+          this.addressActive = false
+        } else if (pageName == `general`) {
+          this.customerListActive = false
+          this.customerInformationActive = true
+          this.generalActive = true
+          this.addressActive = false
+        } else if (pageName == `address`) {
+          this.customerListActive = false
+          this.customerInformationActive = true
+          this.generalActive = false
+          this.addressActive = true
+        }
+        this.$emit('loaded')
+      }, 1000)
     }
   }
 }
