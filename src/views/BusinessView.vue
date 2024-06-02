@@ -64,11 +64,10 @@ export default {
             this.profileStore.profile.orgCustomId
           )
           this.hvData = false
-          this.$emit('loaded')
         } else {
           this.hvData = true
-          this.$emit('loaded')
         }
+          this.$emit('loaded')
       }
     }
   }
