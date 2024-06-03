@@ -129,7 +129,7 @@ export default {
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
-        let selectedCustomer = sessionStorage.getItem('selectedCustomer')
+        let selectedCustomer = this.customerStore.selectedCustomer
         this.customerStore.selectedCustomer = this.customerStore.customerList.find(
           (item) => item.cusCustomId === selectedCustomer
         )?.cusId

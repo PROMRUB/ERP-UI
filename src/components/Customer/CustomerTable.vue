@@ -53,15 +53,7 @@ const columns = [
     data: 'cusCustomId',
     orderable: false,
     render: function (data, type, row) {
-      return (
-        `<a onClick="{
-          sessionStorage.setItem('selectedCustomer', JSON.stringify(\`` +
-        data +
-        `\`))
-        sessionStorage.setItem('count', '2')}">` +
-        data +
-        `</a>`
-      )
+      return `<a onClick="handleCustomerClick(\`` + data + `\`)">` + data + `</a>`
     },
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
@@ -125,23 +117,17 @@ export default {
   },
   emits: ['pageControl'],
   mounted() {
+    window.handleCustomerClick = (data) => {
+      this.customerStore.selectedCustomer = data
+      this.$emit(`pageControl`, `customerInquiry`)
+    }
     this.updateComponent()
   },
   updated() {
     this.updateComponent()
   },
   methods: {
-    async updateComponent() {
-      if (sessionStorage.getItem('count') == '2') {
-        sessionStorage.setItem('count', '1')
-      } else if (sessionStorage.getItem('count') == '1') {
-        sessionStorage.setItem('count', '0')
-        this.$emit('pageControl', 'customerInquiry')
-      } else {
-        sessionStorage.removeItem('selectedCustomer')
-        sessionStorage.removeItem('count')
-      }
-    },
+    async updateComponent() {},
     add() {
       this.$emit(`pageControl`, `customerEntry`)
     },

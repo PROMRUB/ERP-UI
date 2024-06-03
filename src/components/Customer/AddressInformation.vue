@@ -252,9 +252,6 @@ export default {
       selectedDistrict: '',
       selectedSubDistrct: '',
 
-      provinceSelected: false,
-      districtSelected: true,
-
       districtFiltered: [],
       subDistrictFiltered: [],
 
@@ -291,7 +288,7 @@ export default {
   },
   methods: {
     async updateComponent() {
-      if (this.customerStore.mode == 'Entry') {
+      if (sessionStorage.getItem('mode') == 'Entry') {
         this.disableBuilding = false
         this.disableAlley = false
         this.disableFloor = false
@@ -299,14 +296,23 @@ export default {
         this.disableRoomNo = false
         this.disableProvince = false
         this.disableVillage = false
-        this.disableDistrict = false
+        this.disableDistrict = true
         this.disableNo = false
-        this.disableSubDistrict = false
+        this.disableSubDistrict = true
         this.disableMoo = false
         this.disablePostCode = false
         this.disableSave = false
+        this.customerStore.customerProfile.building = ''
+        this.customerStore.customerProfile.alley = ''
+        this.customerStore.customerProfile.floor = ''
+        this.customerStore.customerProfile.road = ''
+        this.customerStore.customerProfile.roomNo = ''
+        this.customerStore.customerProfile.village = ''
+        this.customerStore.customerProfile.no = ''
+        this.customerStore.customerProfile.moo = ''
+        this.customerStore.customerProfile.postCode = ''
       }
-      if (this.customerStore.mode == 'Inquiry') {
+      if (sessionStorage.getItem('mode') == 'Inquiry') {
         if (
           this.selectedProvince == null ||
           this.selectedProvince == '' ||
@@ -339,7 +345,7 @@ export default {
         this.disablePostCode = true
         this.disableSave = true
       }
-      if (this.customerStore.mode == 'Update') {
+      if (sessionStorage.getItem('mode') == 'Update') {
         this.disableBuilding = false
         this.disableAlley = false
         this.disableFloor = false
@@ -362,13 +368,13 @@ export default {
       this.$emit(`saveCustomer`, `save`)
     },
     onSelectProvince(value) {
-      this.provinceSelected = true
+      this.disableDistrict = false
       this.districtFiltered = JSON.parse(
         JSON.stringify(this.systemConfigStore.distrcitList)
       ).filter((district) => district.provinceCode == value.provinceCode)
     },
     onSelectDistrict(value) {
-      this.districtSelected = true
+      this.disableSubDistrict = false
       this.subDistrictFiltered = JSON.parse(
         JSON.stringify(this.systemConfigStore.subDistrictList)
       ).filter((subDistrict) => subDistrict.districtCode == value.districtCode)

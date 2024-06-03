@@ -175,6 +175,14 @@ export default {
         this.disableDisplayName = false
         this.disableWebsite = false
         this.disableSave = false
+        this.customerStore.customerProfile.cusType = 'Corporate'
+        this.customerStore.customerProfile.cusNameEng = ''
+        this.customerStore.customerProfile.cusCustomId = ''
+        this.customerStore.customerProfile.taxId = ''
+        this.customerStore.customerProfile.brnId = ''
+        this.customerStore.customerProfile.cusName = ''
+        this.customerStore.customerProfile.displayName = ''
+        this.customerStore.customerProfile.website = ''
       }
       if (sessionStorage.getItem('mode') == 'Inquiry') {
         this.disableCusType = true
