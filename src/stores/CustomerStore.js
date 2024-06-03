@@ -2,47 +2,33 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 
 export const useCustomerStore = defineStore('customerStore', () => {
-  let customerList = [
-    {
-      index: '1',
-      customerCode: 'CBT-00001',
-      customerName: 'บริษัท ไซเบอร์แทรกซ์ จำกัด',
-      recordStatus: 'ปกติ'
-    },
-    {
-      index: '2',
-      customerCode: 'CBT-00002',
-      customerName: 'บริษัท ไซเบอร์แทรกซ์ จำกัด',
-      recordStatus: 'ปกติ'
-    }
-  ]
-
+  let customerList = []
   let customerProfile = {
     businessId: ``,
-    cusNameEng: ``,
-    cusType: '',
-    customerNo: ``,
-    taxId: ``,
-    brnId: ``,
-    cusName: ``,
-    displayName: ``,
-    website: ``,
-    building: ``,
-    alley: ``,
-    roomNo: ``,
-    road: ``,
-    floor: ``,
-    village: ``,
-    no: ``,
-    moo: ``,
-    province: ``,
-    district: ``,
-    subDistrict: ``,
-    postCode: ``,
+    cusNameEng: 'Cybertracx Co.,Ltd.',
+    cusType: 'Corporate',
+    customerNo: 'C.C-00001.D',
+    taxId: `0105561098798`,
+    brnId: `00000`,
+    cusName: `บริษัท ไซเบอร์แทรคซ์ จำกัด`,
+    displayName: `บริษัท ไซเบอร์แทรคซ์ จำกัด`,
+    website: `https://www.cybertracx.com`,
+    building: 'เอ็มไพร์ ทาวเวอร์',
+    alley: '',
+    roomNo: '2762',
+    road: 'ถนนสาธรใต้',
+    floor: '27',
+    village: '',
+    no: '1',
+    moo: '',
+    province: '10',
+    district: '1028',
+    subDistrict: '102802',
+    postCode: '10120'
   }
 
-  let baseUrl = 'https://localhost:44345'
-  // let baseUrl = 'https://sales-api-dev.prom.co.th'
+  // let baseUrl = 'https://localhost:44345'
+  let baseUrl = 'https://sales-api-dev.prom.co.th'
 
   let axiosExport = axios.create({
     baseUrl
@@ -64,5 +50,84 @@ export const useCustomerStore = defineStore('customerStore', () => {
       return Promise.reject(error)
     }
   )
-  return { customerList }
+
+  async function fetchCustomer(orgId, businessId) {
+    return axiosExport
+      .get(`${baseUrl}/v1/api/Customer/org/${orgId}/action/GetCustomerList/${businessId}`)
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          this.customerList = response.data.data
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
+
+  async function createCustomer(orgId, payload) {
+    return axiosExport
+      .post(`${baseUrl}/v1/api/Customer/org/${orgId}/action/CreateCustomer`, payload)
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          this.customerList = response.data.data
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
+
+  async function updateCustomer(orgId, businessId, customerId, payload) {
+    return axiosExport
+      .post(
+        `${baseUrl}/v1/api/Customer/org/${orgId}/action/UpdateCustomer/${businessId}/${customerId}`,
+        payload
+      )
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          this.customerList = response.data.data
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
+
+  async function deleteCustomer(orgId, payload) {
+    return axiosExport
+      .post(`${baseUrl}/v1/api/Customer/org/${orgId}/action/DeleteCustomer`, payload)
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          this.customerList = response.data.data
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
+
+  return {
+    customerList,
+    customerProfile,
+    fetchCustomer,
+    createCustomer,
+    updateCustomer,
+    deleteCustomer
+  }
 })

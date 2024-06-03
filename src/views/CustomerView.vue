@@ -5,7 +5,10 @@
     <div v-if="!hvData">
       <img class="no-data" src="@/assets/no-data.png" alt="No Data" /><br />
       <div class="no-data-label">
-        <span>ขณะนี้ยังไม่มีข้อมูลใดๆของคุณอยู่ในระบบ</span>
+        <span
+          >ขณะนี้ยังไม่มีข้อมูลใดๆของคุณอยู่ในระบบ
+          <a @click="pageControl(`customerEntry`)">คลิกที่นี่</a> เพื่อเริ่มต้นสร้างข้อมูล</span
+        >
       </div>
     </div>
     <div v-else>
@@ -30,10 +33,10 @@
           </button>
         </div>
         <div class="row" v-if="generalActive">
-          <GeneralInformation />
+          <GeneralInformation @pageControl="pageControl" @saveCustomer="saveCustomer" />
         </div>
         <div class="row" v-if="addressActive">
-          <AddressInformation />
+          <AddressInformation @pageControl="pageControl" @saveCustomer="saveCustomer" />
         </div>
       </div>
     </div>
@@ -47,6 +50,7 @@ import AddressInformation from '@/components/Customer/AddressInformation.vue'
 
 import { useProfileStore } from '@/stores/ProfileStore'
 import { useSystemConfigStore } from '@/stores/SystemConfigStore'
+import { useCustomerStore } from '@/stores/CustomerStore'
 
 export default {
   components: {
@@ -56,14 +60,16 @@ export default {
   },
   data() {
     return {
-      hvData: true,
+      hvData: false,
 
       customerListActive: true,
-      customerEntryActive: false,
+      customerInformationActive: false,
       generalActive: false,
       addressActive: false,
+
       profileStore: useProfileStore(),
-      systemConfigStore: useSystemConfigStore()
+      systemConfigStore: useSystemConfigStore(),
+      customerStore: useCustomerStore()
     }
   },
   mounted() {
@@ -93,31 +99,60 @@ export default {
         const subDistrctData = await this.systemConfigStore.fetchSubDistrict(
           this.profileStore.profile.orgCustomId
         )
+        const customers = await this.customerStore.fetchCustomer(
+          this.profileStore.profile.orgCustomId,
+          this.profileStore.businesskey
+        )
+        if (customers.length == 0 && this.customerInformationActive == false) {
+          this.hvData = false
+        } else {
+          this.hvData = true
+        }
         this.$emit('loaded')
       }
     },
     pageControl(pageName) {
-      alert(pageName)
+      this.hvData = true
       this.$emit('loading')
-      setTimeout(() => {
-        if (pageName == `customerEntry`) {
-          this.customerListActive = false
-          this.customerInformationActive = true
-          this.generalActive = true
-          this.addressActive = false
-        } else if (pageName == `general`) {
-          this.customerListActive = false
-          this.customerInformationActive = true
-          this.generalActive = true
-          this.addressActive = false
-        } else if (pageName == `address`) {
-          this.customerListActive = false
-          this.customerInformationActive = true
-          this.generalActive = false
-          this.addressActive = true
-        }
-        this.$emit('loaded')
-      }, 1000)
+      if (pageName == `customerList`) {
+        this.customerListActive = true
+        this.customerInformationActive = false
+        this.generalActive = false
+        this.addressActive = false
+        setTimeout(() => location.reload(), 1000)
+      } else if (pageName == `customerEntry`) {
+        this.customerListActive = false
+        this.customerInformationActive = true
+        this.generalActive = true
+        this.addressActive = false
+      } else if (pageName == `general`) {
+        this.customerListActive = false
+        this.customerInformationActive = true
+        this.generalActive = true
+        this.addressActive = false
+      } else if (pageName == `address`) {
+        this.customerListActive = false
+        this.customerInformationActive = true
+        this.generalActive = false
+        this.addressActive = true
+      }
+      this.$emit('loaded')
+    },
+    saveCustomer() {
+      if (
+        this.customerStore.customerProfile.cusNameEng == null ||
+        this.customerStore.customerProfile.cusNameEng == '' ||
+        this.customerStore.customerProfile.cusNameEng == undefined
+      ) {
+        alert('กรุณากรอกชื่อบริษัทภาษาอังกฤษ')
+      } else {
+        this.customerStore.customerProfile.businessId = this.profileStore.businesskey
+        this.customerStore.createCustomer(
+          this.profileStore.profile.orgCustomId,
+          this.customerStore.customerProfile
+        )
+        this.pageControl('customerList')
+      }
     }
   }
 }

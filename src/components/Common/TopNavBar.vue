@@ -66,6 +66,7 @@ export default {
     },
     async onBusinessChange(selectedBusiness) {
       if (selectedBusiness.orgCustomId != undefined) {
+        this.profileStore.businessKey = selectedBusiness.orgId
         this.profileStore.businessId = selectedBusiness.orgCustomId
       }
       this.$emit('loading')
