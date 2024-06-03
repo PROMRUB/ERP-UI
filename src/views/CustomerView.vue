@@ -78,10 +78,15 @@ export default {
   updated() {
     this.updateComponent()
   },
+  watch: {
+    'customerStore.selectedCustomer'(newValue, oldValue) {
+    }
+  },
   methods: {
     async updateComponent() {
       let token = sessionStorage.getItem('token')
       sessionStorage.removeItem(`selectedItems`)
+
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
         this.$router.push('/signin')
@@ -125,6 +130,21 @@ export default {
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
+        this.customerStore.mode = 'Entry'
+      } else if (pageName == `customerInquiry`) {
+        this.customerListActive = false
+        this.customerInformationActive = true
+        this.generalActive = true
+        this.addressActive = false
+        this.customerStore.selectedCustomer = this.customerStore.customerList.find(
+          (item) => (item.cusCustomId = sessionStorage.getItem('selectedCustomer'))
+        ).cusId
+        this.customerStore.fetchCustomerbyId(
+          this.profileStore.profile.orgCustomId,
+          this.profileStore.businesskey,
+          this.customerStore.selectedCustomer
+        )
+        this.customerStore.mode = 'Inquiry'
       } else if (pageName == `general`) {
         this.customerListActive = false
         this.customerInformationActive = true

@@ -52,6 +52,18 @@ const columns = [
     className: 'header-center',
     data: 'cusCustomId',
     orderable: false,
+    render: function (data, type, row) {
+      return (
+        `<a onClick="{
+          sessionStorage.setItem('selectedCustomer', JSON.stringify(\`` +
+        data +
+        `\`))
+        sessionStorage.setItem('count', '2')
+        location.reload()}">` +
+        data +
+        `</a>`
+      )
+    },
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
@@ -119,7 +131,17 @@ export default {
     this.updateComponent()
   },
   methods: {
-    async updateComponent() {},
+    async updateComponent() {
+      if (sessionStorage.getItem('count') == '2') {
+        sessionStorage.setItem('count', '1')
+      } else if (sessionStorage.getItem('count') == '1') {
+        sessionStorage.setItem('count', '0')
+        this.$emit('pageControl', 'customerInquiry')
+      } else {
+        sessionStorage.removeItem('selectedCustomer')
+        sessionStorage.removeItem('count')
+      }
+    },
     add() {
       this.$emit(`pageControl`, `customerEntry`)
     },
