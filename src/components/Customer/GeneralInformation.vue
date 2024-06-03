@@ -7,6 +7,7 @@
           id="Corporate"
           value="Corporate"
           v-model="customerStore.customerProfile.cusType"
+          :disabled="disableCusType"
         />
         <label class="form-text" for="Corporate">นิติบุคคล</label>
 
@@ -15,6 +16,7 @@
           id="Personal"
           value="Individual"
           v-model="customerStore.customerProfile.cusType"
+          :disabled="disableCusType"
         />
         <label class="form-text" for="Individual">บุคคลธรรมดา</label>
 
@@ -26,8 +28,9 @@
         <input
           class="customer-general-input-box customer-general-eng-input-box"
           type="text"
-          id="inputBox"
+          id="cusNameEng"
           v-model="customerStore.customerProfile.cusNameEng"
+          :disabled="disableCusNameEng"
         />
       </div>
       <hr />
@@ -43,7 +46,7 @@
                 type="text"
                 id="customerNo"
                 name="customerId"
-                v-model="customerStore.customerProfile.customerNo"
+                v-model="customerStore.customerProfile.cusCustomId"
                 disabled
               />
             </div>
@@ -57,6 +60,7 @@
                 id="taxId"
                 name="taxId"
                 v-model="customerStore.customerProfile.taxId"
+                :disabled="disableTaxId"
               />
             </div>
             <div class="form-line">
@@ -67,6 +71,7 @@
                 id="brnId"
                 name="brnId"
                 v-model="customerStore.customerProfile.brnId"
+                :disabled="disableBrnId"
               />
             </div>
             <div class="form-line">
@@ -79,6 +84,7 @@
                 id="cusName"
                 name="cusName"
                 v-model="customerStore.customerProfile.cusName"
+                :disabled="disableCusName"
               />
             </div>
             <div class="form-line">
@@ -91,6 +97,7 @@
                 id="displayName"
                 name="displayName"
                 v-model="customerStore.customerProfile.displayName"
+                :disabled="disableDisplayName"
               />
             </div>
           </div>
@@ -110,13 +117,14 @@
                 id="website"
                 name="website"
                 v-model="customerStore.customerProfile.website"
+                :disabled="disableWebsite"
               />
             </div>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="customer-general-column">
+        <div v-if="!disableSave" class="customer-general-column">
           <button class="customer-general-button customer-general-save-button" @click="save">
             <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
           </button>
@@ -138,6 +146,14 @@ export default {
   components: {},
   data() {
     return {
+      disableCusType: false,
+      disableCusNameEng: false,
+      disableTaxId: false,
+      disableBrnId: false,
+      disableCusName: false,
+      disableDisplayName: false,
+      disableWebsite: false,
+      disableSave: false,
       customerStore: useCustomerStore()
     }
   },
@@ -148,11 +164,36 @@ export default {
     this.updateComponent()
   },
   methods: {
-    async updateComponent() {},
+    async updateComponent() {
+      if (this.customerStore.mode == 'Entry') {
+        this.disableCusType = false
+        this.disableCusNameEng = false
+        this.disableTaxId = false
+        this.disableBrnId = false
+        this.disableCusName = false
+        this.disableDisplayName = false
+        this.disableWebsite = false
+        this.disableSave = false
+      }
+      if (this.customerStore.mode == 'Inquiry') {
+        this.disableCusType = true
+        this.disableCusNameEng = true
+        this.disableTaxId = true
+        this.disableBrnId = true
+        this.disableCusName = true
+        this.disableDisplayName = true
+        this.disableWebsite = true
+        this.disableSave = true
+      }
+      if (this.customerStore.mode == 'Update') {
+        this.disableCusType = false
+        this.disableCusNameEng = false
+      }
+    },
     back() {
       this.$emit(`pageControl`, `customerList`)
     },
-    save(){
+    save() {
       this.$emit(`saveCustomer`, `save`)
     }
   }
@@ -214,7 +255,8 @@ export default {
 }
 
 .customer-general-input-box:disabled {
-  background-color: lightgray;
+  background-color: #ffffff;
+  border-bottom: none;
 }
 
 .customer-general-eng-input-box {

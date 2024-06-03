@@ -14,6 +14,7 @@
                 id="building"
                 name="building"
                 v-model="customerStore.customerProfile.building"
+                :disabled="disableBuilding"
               />
             </div>
             <div class="form-line">
@@ -23,7 +24,8 @@
                 type="text"
                 id="floor"
                 name="floor"
-                v-model="customerStore.customerProfile.building"
+                v-model="customerStore.customerProfile.floor"
+                :disabled="disableFloor"
               />
             </div>
             <div class="form-line">
@@ -36,6 +38,7 @@
                 id="roomNo"
                 name="roomNo"
                 v-model="customerStore.customerProfile.roomNo"
+                :disabled="disableRoomNo"
               />
             </div>
             <div class="form-line">
@@ -48,6 +51,7 @@
                 id="village"
                 name="village"
                 v-model="customerStore.customerProfile.village"
+                :disabled="disableVillage"
               />
             </div>
             <div class="form-line">
@@ -58,6 +62,7 @@
                 id="no"
                 name="no"
                 v-model="customerStore.customerProfile.no"
+                :disabled="disableNo"
               />
             </div>
             <div class="form-line">
@@ -68,6 +73,7 @@
                 id="moo"
                 name="moo"
                 v-model="customerStore.customerProfile.moo"
+                :disabled="disableMoo"
               />
             </div>
           </div>
@@ -84,6 +90,7 @@
                 id="alley"
                 name="alley"
                 v-model="customerStore.customerProfile.alley"
+                :disabled="disableAlley"
               />
             </div>
             <div class="form-line">
@@ -94,6 +101,7 @@
                 id="road"
                 name="road"
                 v-model="customerStore.customerProfile.road"
+                :disabled="disableRoad"
               />
             </div>
             <div class="form-line">
@@ -120,6 +128,7 @@
                 "
                 v-model="selectedProvince"
                 :value="selectedProvince"
+                :disabled="disableProvince"
               ></v-select>
             </div>
             <div class="form-line">
@@ -146,7 +155,7 @@
                 "
                 v-model="selectedDistrict"
                 :value="selectedDistrict"
-                :disabled="!provinceSelected"
+                :disabled="disableProvince"
               ></v-select>
             </div>
             <div class="form-line">
@@ -173,7 +182,7 @@
                 "
                 v-model="selectedSubDistrct"
                 :value="selectedSubDistrct"
-                :disabled="!districtSelected"
+                :disabled="disableSubDistrict"
               ></v-select>
             </div>
             <div class="form-line">
@@ -184,22 +193,26 @@
                 >รหัสไปรษณี:</label
               >
               <input
-                class="input-box form-input"
+                class="customer-address-input-box form-input"
                 type="text"
                 id="postCode"
                 name="postCode"
                 style="padding-top: 12px"
                 v-model="customerStore.customerProfile.postCode"
+                :disabled="disablePostCode"
               />
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="row">
       <div class="customer-general-column">
-        <button class="customer-address-button customer-address-save-button" @click="save">
+        <button
+          v-if="!disableSave"
+          class="customer-address-button customer-address-save-button"
+          @click="save"
+        >
           <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
         </button>
       </div>
@@ -221,6 +234,19 @@ export default {
   components: {},
   data() {
     return {
+      disableBuilding: false,
+      disableAlley: false,
+      disableFloor: false,
+      disableRoad: false,
+      disableRoomNo: false,
+      disableProvince: false,
+      disableVillage: false,
+      disableDistrict: false,
+      disableNo: false,
+      disableSubDistrict: false,
+      disableMoo: false,
+      disablePostCode: false,
+
       selectedProvince: '',
       selectedDistrict: '',
       selectedSubDistrct: '',
@@ -257,7 +283,71 @@ export default {
     this.updateComponent()
   },
   methods: {
-    async updateComponent() {},
+    async updateComponent() {
+      if (this.customerStore.mode == 'Entry') {
+        this.disableBuilding = false
+        this.disableAlley = false
+        this.disableFloor = false
+        this.disableRoad = false
+        this.disableRoomNo = false
+        this.disableProvince = false
+        this.disableVillage = false
+        this.disableDistrict = false
+        this.disableNo = false
+        this.disableSubDistrict = false
+        this.disableMoo = false
+        this.disablePostCode = false
+        this.disableSave = false
+      }
+      if (this.customerStore.mode == 'Inquiry') {
+        if (
+          this.selectedProvince == null ||
+          this.selectedProvince == '' ||
+          this.selectedProvince == undefined
+        ) {
+          this.selectedProvince = JSON.parse(
+            JSON.stringify(this.systemConfigStore.provinceList)
+          ).find((province) => province.provinceCode == this.customerStore.customerProfile.province)
+          this.selectedDistrict = JSON.parse(
+            JSON.stringify(this.systemConfigStore.distrcitList)
+          ).find((district) => district.districtCode == this.customerStore.customerProfile.district)
+          this.selectedSubDistrct = JSON.parse(
+            JSON.stringify(this.systemConfigStore.subDistrictList)
+          ).find(
+            (subDistrict) =>
+              subDistrict.subDistrictCode == this.customerStore.customerProfile.subDistrict
+          )
+        }
+        this.disableBuilding = true
+        this.disableAlley = true
+        this.disableFloor = true
+        this.disableRoad = true
+        this.disableRoomNo = true
+        this.disableProvince = true
+        this.disableVillage = true
+        this.disableDistrict = true
+        this.disableNo = true
+        this.disableSubDistrict = true
+        this.disableMoo = true
+        this.disablePostCode = true
+        this.disableSave = true
+      }
+      if (this.customerStore.mode == 'Update') {
+        this.disableBuilding = false
+        this.disableAlley = false
+        this.disableFloor = false
+        this.disableRoad = false
+        this.disableRoomNo = false
+        this.disableProvince = false
+        this.disableVillage = false
+        this.disableDistrict = false
+        this.disableNo = false
+        this.disableSubDistrict = false
+        this.disableMoo = false
+        this.disablePostCode = false
+        this.disableSave = false
+      }
+    },
     back() {
       this.$emit(`pageControl`, `customerList`)
     },
@@ -327,8 +417,9 @@ export default {
   outline: none;
 }
 
-.input-box:disabled {
-  background-color: #fff;
+.customer-address-input-box:disabled {
+  background-color: #ffffff;
+  border-bottom: none;
 }
 
 .vs__dropdown-toggle,

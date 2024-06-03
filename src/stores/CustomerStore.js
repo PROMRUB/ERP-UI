@@ -2,30 +2,33 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 
 export const useCustomerStore = defineStore('customerStore', () => {
+  let mode = ''
   let customerList = []
   let customerProfile = {
-    businessId: ``,
-    cusNameEng: 'Cybertracx Co.,Ltd.',
-    cusType: 'Corporate',
-    customerNo: 'C.C-00001.D',
-    taxId: `0105561098798`,
-    brnId: `00000`,
-    cusName: `บริษัท ไซเบอร์แทรคซ์ จำกัด`,
-    displayName: `บริษัท ไซเบอร์แทรคซ์ จำกัด`,
-    website: `https://www.cybertracx.com`,
-    building: 'เอ็มไพร์ ทาวเวอร์',
+    businessId: '',
+    cusNameEng: '',
+    cusType: '',
+    customerNo: '',
+    taxId: '',
+    brnId: '',
+    cusName: '',
+    displayName: '',
+    website: '',
+    building: '',
     alley: '',
-    roomNo: '2762',
-    road: 'ถนนสาธรใต้',
-    floor: '27',
+    roomNo: '',
+    road: '',
+    floor: '',
     village: '',
-    no: '1',
+    no: '',
     moo: '',
-    province: '10',
-    district: '1028',
-    subDistrict: '102802',
-    postCode: '10120'
+    province: '',
+    district: '',
+    subDistrict: '',
+    postCode: ''
   }
+
+  let selectedCustomer = {}
 
   // let baseUrl = 'https://localhost:44345'
   let baseUrl = 'https://sales-api-dev.prom.co.th'
@@ -57,6 +60,25 @@ export const useCustomerStore = defineStore('customerStore', () => {
       .then((response) => {
         if (response.data.status.code == 1000) {
           this.customerList = response.data.data
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
+
+  async function fetchCustomerbyId(orgId, businessId, customerId) {
+    return axiosExport
+      .get(
+        `${baseUrl}/v1/api/Customer/org/${orgId}/action/GetCustomerInformation/${businessId}/${customerId}`
+      )
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          this.customerProfile = response.data.data
           return response.data.data
         } else {
           throw new Error(`${response.data.status.message}`)
@@ -123,9 +145,12 @@ export const useCustomerStore = defineStore('customerStore', () => {
   }
 
   return {
+    mode,
     customerList,
     customerProfile,
+    selectedCustomer,
     fetchCustomer,
+    fetchCustomerbyId,
     createCustomer,
     updateCustomer,
     deleteCustomer
