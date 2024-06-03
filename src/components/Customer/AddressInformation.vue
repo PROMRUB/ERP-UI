@@ -2,7 +2,7 @@
   <div class="about card">
     <div class="container">
       <div class="row">
-        <div class="column">
+        <div class="customer-address-column">
           <div class="form-group">
             <div class="form-line">
               <label class="customer-address-input-box-label form-text" for="building"
@@ -78,7 +78,7 @@
             </div>
           </div>
         </div>
-        <div class="column">
+        <div class="customer-address-column">
           <div class="form-group">
             <div class="form-line">
               <label class="customer-address-input-box-label form-text" for="alley"
@@ -155,7 +155,7 @@
                 "
                 v-model="selectedDistrict"
                 :value="selectedDistrict"
-                :disabled="disableProvince"
+                :disabled="disableDistrict"
               ></v-select>
             </div>
             <div class="form-line">
@@ -207,16 +207,22 @@
       </div>
     </div>
     <div class="row">
-      <div class="customer-general-column">
-        <button
-          v-if="!disableSave"
-          class="customer-address-button customer-address-save-button"
-          @click="save"
-        >
+      <div v-if="!disableSave" class="customer-address-column">
+        <button class="customer-address-button customer-address-save-button" @click="save">
           <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
         </button>
       </div>
-      <div class="customer-general-column">
+      <div v-if="!disableEdit" class="customer-address-column">
+        <button class="customer-address-button customer-address-save-button" @click="edit">
+          <i class="fa fa-pencil fa-lg" aria-hidden="true" />แก้ไข
+        </button>
+      </div>
+      <div v-if="!disableUpdate" class="customer-address-column">
+        <button class="customer-address-button customer-address-save-button" @click="update">
+          <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
+        </button>
+      </div>
+      <div class="customer-address-column">
         <button class="customer-address-button customer-address-cancel-button" @click="back">
           <i class="fa fa-times fa-lg" aria-hidden="true" />ยกเลิก
         </button>
@@ -247,6 +253,8 @@ export default {
       disableMoo: false,
       disablePostCode: false,
       disableSave: false,
+      disableEdit: false,
+      disableUpdate: false,
 
       selectedProvince: '',
       selectedDistrict: '',
@@ -346,6 +354,24 @@ export default {
         this.disableSave = true
       }
       if (sessionStorage.getItem('mode') == 'Update') {
+        if (
+          this.selectedProvince == null ||
+          this.selectedProvince == '' ||
+          this.selectedProvince == undefined
+        ) {
+          this.selectedProvince = JSON.parse(
+            JSON.stringify(this.systemConfigStore.provinceList)
+          ).find((province) => province.provinceCode == this.customerStore.customerProfile.province)
+          this.selectedDistrict = JSON.parse(
+            JSON.stringify(this.systemConfigStore.distrcitList)
+          ).find((district) => district.districtCode == this.customerStore.customerProfile.district)
+          this.selectedSubDistrct = JSON.parse(
+            JSON.stringify(this.systemConfigStore.subDistrictList)
+          ).find(
+            (subDistrict) =>
+              subDistrict.subDistrictCode == this.customerStore.customerProfile.subDistrict
+          )
+        }
         this.disableBuilding = false
         this.disableAlley = false
         this.disableFloor = false
@@ -358,7 +384,7 @@ export default {
         this.disableSubDistrict = false
         this.disableMoo = false
         this.disablePostCode = false
-        this.disableSave = false
+        this.disableSave = true
       }
     },
     back() {
@@ -366,6 +392,13 @@ export default {
     },
     save() {
       this.$emit(`saveCustomer`, `save`)
+    },
+    edit() {
+      sessionStorage.setItem('mode', 'Update')
+      this.updateComponent()
+    },
+    update() {
+      this.$emit(`saveCustomer`, `update`)
     },
     onSelectProvince(value) {
       this.disableDistrict = false
@@ -492,7 +525,7 @@ export default {
   display: flex;
 }
 
-.column {
+.customer-address-column {
   float: left;
   width: 50%;
 }

@@ -154,7 +154,7 @@ export default {
       }
       this.$emit('loaded')
     },
-    saveCustomer() {
+    saveCustomer(value) {
       if (
         this.customerStore.customerProfile.cusNameEng == null ||
         this.customerStore.customerProfile.cusNameEng == '' ||
@@ -163,10 +163,21 @@ export default {
         alert('กรุณากรอกชื่อบริษัทภาษาอังกฤษ')
       } else {
         this.customerStore.customerProfile.businessId = this.profileStore.businesskey
-        this.customerStore.createCustomer(
-          this.profileStore.profile.orgCustomId,
-          this.customerStore.customerProfile
-        )
+        if (value == 'save') {
+          this.customerStore.createCustomer(
+            this.profileStore.profile.orgCustomId,
+            this.customerStore.customerProfile
+          )
+        }
+        if (value == 'update') {
+          console.log(this.customerStore.customerProfile)
+          this.customerStore.updateCustomer(
+            this.profileStore.profile.orgCustomId,
+            this.customerStore.customerProfile.businessId,
+            this.customerStore.customerProfile.cusId,
+            this.customerStore.customerProfile
+          )
+        }
         this.pageControl('customerList')
       }
     }
