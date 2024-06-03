@@ -9,22 +9,22 @@ const columns = [
   {
     title: '',
     className: 'header-center',
-    data: 'index',
+    data: 'cusId',
     orderable: false,
     width: 5,
     render: function (data, type, row) {
       return (
         `<input type="checkbox" class="select-checkbox" onClick="{
           let selectedItems = JSON.parse(sessionStorage.getItem('selectedItems')) || [];
-          let index = selectedItems.indexOf(` +
+          let index = selectedItems.indexOf(\`` +
         data +
-        `);
+        `\`);
           if (index !== -1) {
             selectedItems.splice(index, 1);
           } else {
-            selectedItems.push(` +
+            selectedItems.push(\`` +
         data +
-        `);
+        `\`);
           }
           sessionStorage.setItem('selectedItems', JSON.stringify(selectedItems))
         }"/>`
@@ -35,18 +35,40 @@ const columns = [
     }
   },
   {
+    title: '',
+    className: 'header-center',
+    data: null,
+    orderable: false,
+    width: 5,
+    render: function (data, type, row, meta) {
+      return meta.row + 1
+    },
+    createdCell: function (td, cellData, rowData, row, col) {
+      td.classList.add('content-index')
+    }
+  },
+  {
     title: 'รหัสลูกค้า',
     className: 'header-center',
-    data: 'customerCode',
+    data: 'cusCustomId',
     orderable: false,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
   },
   {
-    title: 'ชื่อลูกค้า',
+    title: 'ชื่อลูกค้า(ภาษาอังกฤษ)',
     className: 'header-center',
-    data: 'customerName',
+    data: 'cusNameEng',
+    orderable: false,
+    createdCell: function (td, cellData, rowData, row, col) {
+      td.classList.add('content-string')
+    }
+  },
+  {
+    title: 'ชื่อลูกค้า(ภาษาไทย)',
+    className: 'header-center',
+    data: 'cusName',
     orderable: false,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
@@ -55,7 +77,7 @@ const columns = [
   {
     title: 'สถานะ',
     className: 'header-center',
-    data: 'recordStatus',
+    data: 'cusStatus',
     orderable: false,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
@@ -79,12 +101,14 @@ const columns = [
 </template>
 
 <script>
+import { useProfileStore } from '@/stores/ProfileStore'
 import { useCustomerStore } from '@/stores/CustomerStore'
 
 export default {
   components: {},
   data() {
     return {
+      profileStore: useProfileStore(),
       customerStore: useCustomerStore()
     }
   },
@@ -95,18 +119,21 @@ export default {
     this.updateComponent()
   },
   methods: {
-    async updateComponent() {
-    },
-    add(){
+    async updateComponent() {},
+    add() {
       this.$emit(`pageControl`, `customerEntry`)
     },
     remove() {
       let request = []
       let selectedItems = JSON.parse(sessionStorage.getItem('selectedItems')) || []
-      selectedItems.forEach((selectedItem) => {
-        let foundItem = this.customerStore.customerList.find((item) => item.index == selectedItem)
-        request.push(JSON.stringify(foundItem))
-      })
+      if (selectedItems.length > 0) {
+        selectedItems.forEach((selectedItem) => {
+          let foundItem = this.customerStore.customerList.find((item) => item.cusId == selectedItem)
+          request.push(foundItem)
+        })
+        this.customerStore.deleteCustomer(this.profileStore.profile.orgCustomId, request)
+        this.$emit(`pageControl`, `customerList`)
+      }
     }
   }
 }

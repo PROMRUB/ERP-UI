@@ -2,56 +2,129 @@
   <div class="customer-general-card">
     <div class="container">
       <div class="radio-group">
-        <input type="radio" id="Corporate" value="C" v-model="customerType" />
-        <label for="Corporate">นิติบุคคล</label>
+        <input
+          type="radio"
+          id="Corporate"
+          value="Corporate"
+          v-model="customerStore.customerProfile.cusType"
+        />
+        <label class="form-text" for="Corporate">นิติบุคคล</label>
 
-        <input type="radio" id="Personal" value="P" v-model="customerType" />
-        <label for="Personal">บุคคลธรรมดา</label>
+        <input
+          type="radio"
+          id="Personal"
+          value="Individual"
+          v-model="customerStore.customerProfile.cusType"
+        />
+        <label class="form-text" for="Individual">บุคคลธรรมดา</label>
 
-        <label class="customer-input-box-label form-text customer-eng-label" for="taxId">ชื่อผู้ประกอบการ (ภาษาอังกฤษ):</label>
-        <input class="customer-input-box customer-eng-input-box" type="text" id="inputBox" v-model="inputValue" />
+        <label
+          class="customer-general-input-box-label form-text customer-general-eng-label"
+          for="taxId"
+          >ชื่อผู้ประกอบการ (ภาษาอังกฤษ)<span class="customer-red">*</span>:</label
+        >
+        <input
+          class="customer-general-input-box customer-general-eng-input-box"
+          type="text"
+          id="inputBox"
+          v-model="customerStore.customerProfile.cusNameEng"
+        />
       </div>
       <hr />
       <div class="row">
-        <div class="column">
+        <div class="customer-general-column">
           <div class="form-group">
             <div class="form-line">
-              <label class="input-box-label form-text" for="taxId">รหัสลูกค้า:</label>
-              <input class="input-box" type="text" id="taxId" name="customerId" />
+              <label class="customer-general-input-box-label form-text" for="customerNo"
+                >รหัสลูกค้า:</label
+              >
+              <input
+                class="customer-general-input-box"
+                type="text"
+                id="customerNo"
+                name="customerId"
+                v-model="customerStore.customerProfile.customerNo"
+                disabled
+              />
             </div>
             <div class="form-line">
-              <label class="input-box-label form-text" for="taxId">เลขประจำตัวผู้เสียภาษี:</label>
-              <input class="input-box" type="text" id="taxId" name="taxId" />
+              <label class="customer-general-input-box-label form-text" for="taxId"
+                >เลขประจำตัวผู้เสียภาษี:</label
+              >
+              <input
+                class="customer-general-input-box"
+                type="text"
+                id="taxId"
+                name="taxId"
+                v-model="customerStore.customerProfile.taxId"
+              />
             </div>
             <div class="form-line">
-              <label class="input-box-label form-text" for="brnName">สาขา:</label>
-              <input class="input-box" type="text" id="taxId" name="taxId" />
+              <label class="customer-general-input-box-label form-text" for="brnId">สาขา:</label>
+              <input
+                class="customer-general-input-box"
+                type="text"
+                id="brnId"
+                name="brnId"
+                v-model="customerStore.customerProfile.brnId"
+              />
             </div>
             <div class="form-line">
-              <label class="input-box-label form-text" for="orgName">ชื่อผู้ประกอบการ:</label>
-              <input class="input-box" type="text" id="taxId" name="taxId" />
+              <label class="customer-general-input-box-label form-text" for="cusName"
+                >ชื่อผู้ประกอบการ:</label
+              >
+              <input
+                class="customer-general-input-box"
+                type="text"
+                id="cusName"
+                name="cusName"
+                v-model="customerStore.customerProfile.cusName"
+              />
             </div>
             <div class="form-line">
-              <label class="input-box-label form-text" for="address">ชื่อสถานประกอบการ:</label>
-              <input class="input-box" type="text" id="taxId" name="taxId" />
+              <label class="customer-general-input-box-label form-text" for="displayName"
+                >ชื่อสถานประกอบการ:</label
+              >
+              <input
+                class="customer-general-input-box"
+                type="text"
+                id="displayName"
+                name="displayName"
+                v-model="customerStore.customerProfile.displayName"
+              />
             </div>
           </div>
         </div>
-        <div class="column">
+        <div class="customer-general-column">
           <div class="form-group">
             <div class="form-line">
-              <label class="input-box-label form-text" for="taxId">โทรศัพท์:</label>
-              <input class="input-box" type="text" id="taxId" name="customerId" />
+              <label class="customer-general-input-box-label form-text right-column"></label>
             </div>
             <div class="form-line">
-              <label class="input-box-label form-text" for="taxId">URL:</label>
-              <input class="input-box" type="text" id="taxId" name="taxId" />
-            </div>
-            <div class="form-line">
-              <label class="input-box-label form-text" for="brnName">E-Mail:</label>
-              <input class="input-box" type="text" id="taxId" name="taxId" />
+              <label class="customer-general-input-box-label form-text right-column" for="website"
+                >URL:</label
+              >
+              <input
+                class="customer-general-input-box right-column"
+                type="text"
+                id="website"
+                name="website"
+                v-model="customerStore.customerProfile.website"
+              />
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="customer-general-column">
+          <button class="customer-general-button customer-general-save-button" @click="save">
+            <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
+          </button>
+        </div>
+        <div class="customer-general-column">
+          <button class="customer-general-button customer-general-cancel-button" @click="back">
+            <i class="fa fa-times fa-lg" aria-hidden="true" />ยกเลิก
+          </button>
         </div>
       </div>
     </div>
@@ -65,7 +138,6 @@ export default {
   components: {},
   data() {
     return {
-      customerType: ``,
       customerStore: useCustomerStore()
     }
   },
@@ -76,7 +148,13 @@ export default {
     this.updateComponent()
   },
   methods: {
-    async updateComponent() {}
+    async updateComponent() {},
+    back() {
+      this.$emit(`pageControl`, `customerList`)
+    },
+    save(){
+      this.$emit(`saveCustomer`, `save`)
+    }
   }
 }
 </script>
@@ -98,7 +176,7 @@ export default {
   margin-top: 0px !important;
 }
 
-.customer-input-box-label {
+.customer-general-input-box-label {
   display: inline-block;
   width: 200px;
   text-align: right;
@@ -114,20 +192,32 @@ export default {
   z-index: 0;
 }
 
-.customer-eng-label {
+.customer-red {
+  color: #ff0000;
+}
+
+.right-column {
+  width: 150px;
+}
+
+.customer-general-eng-label {
   width: 300px;
 }
 
-.customer-input-box {
+.customer-general-input-box {
   gap: 0px 58px;
-  width: 200px;
+  width: 300px;
   height: 30px;
   font-size: 20px;
   border: none;
   border-bottom: solid 1.5px gray;
 }
 
-.customer-eng-input-box {
+.customer-general-input-box:disabled {
+  background-color: lightgray;
+}
+
+.customer-general-eng-input-box {
   width: 500px;
 }
 
@@ -187,7 +277,7 @@ export default {
   display: flex;
 }
 
-.column {
+.customer-general-column {
   float: left;
   width: 50%;
 }
@@ -196,5 +286,37 @@ export default {
   content: '';
   display: table;
   clear: both;
+}
+
+.customer-general-button {
+  position: absolute;
+  width: 125px;
+  height: 35px;
+  top: 90%;
+  border-radius: 3px;
+}
+
+.customer-general-save-button {
+  background-color: #ffffff;
+  color: #00275e;
+  border: 1px solid #00275e;
+  left: 73%;
+}
+
+.customer-general-save-button:hover {
+  color: #ffffff;
+  background-color: #00275e;
+}
+
+.customer-general-cancel-button {
+  background-color: #ffffff;
+  color: #ff0000;
+  border: 1px solid #ff0000;
+  left: 85%;
+}
+
+.customer-general-cancel-button:hover {
+  color: #ffffff;
+  background-color: #ff0000;
 }
 </style>

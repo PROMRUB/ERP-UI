@@ -6,8 +6,6 @@ import TopNavBar from '@/components/Common/TopNavBar.vue'
 import SideNavBar from '@/components/Common/SideNavBar.vue'
 
 const profileStore = useProfileStore()
-
-console.log(pkg.version)
 </script>
 
 <template>
@@ -53,6 +51,9 @@ export default {
     },
     loadCancel() {
       this.isLoading = false
+    },
+    onReactive(){
+
     }
   }
 }
