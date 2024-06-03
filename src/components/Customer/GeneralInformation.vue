@@ -157,6 +157,7 @@ export default {
       customerStore: useCustomerStore()
     }
   },
+  emits: ['pageControl'],
   mounted() {
     this.updateComponent()
   },
@@ -165,7 +166,7 @@ export default {
   },
   methods: {
     async updateComponent() {
-      if (this.customerStore.mode == 'Entry') {
+      if (sessionStorage.getItem('mode') == 'Entry') {
         this.disableCusType = false
         this.disableCusNameEng = false
         this.disableTaxId = false
@@ -174,31 +175,8 @@ export default {
         this.disableDisplayName = false
         this.disableWebsite = false
         this.disableSave = false
-        this.customerStore.customerProfile = {
-          businessId: '',
-          cusNameEng: '',
-          cusType: 'Corporate',
-          customerNo: '',
-          taxId: '',
-          brnId: '',
-          cusName: '',
-          displayName: '',
-          website: '',
-          building: '',
-          alley: '',
-          roomNo: '',
-          road: '',
-          floor: '',
-          village: '',
-          no: '',
-          moo: '',
-          province: '',
-          district: '',
-          subDistrict: '',
-          postCode: ''
-        }
       }
-      if (this.customerStore.mode == 'Inquiry') {
+      if (sessionStorage.getItem('mode') == 'Inquiry') {
         this.disableCusType = true
         this.disableCusNameEng = true
         this.disableTaxId = true
@@ -208,7 +186,7 @@ export default {
         this.disableWebsite = true
         this.disableSave = true
       }
-      if (this.customerStore.mode == 'Update') {
+      if (sessionStorage.getItem('mode') == 'Update') {
         this.disableCusType = false
         this.disableCusNameEng = false
       }

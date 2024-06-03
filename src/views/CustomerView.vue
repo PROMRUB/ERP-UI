@@ -87,7 +87,9 @@ export default {
       } else {
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
-        const businessData = await this.profileStore.fetchBusiness()
+        if (this.profileStore.businessList.length == 0) {
+          const businessData = await this.profileStore.fetchBusiness()
+        }
         const provinceData = await this.systemConfigStore.fetchProvince(
           this.profileStore.profile.orgCustomId
         )
@@ -101,48 +103,50 @@ export default {
           this.profileStore.profile.orgCustomId,
           this.profileStore.businesskey
         )
-        if (customers.length == 0 && this.customerInformationActive == false) {
-          this.customerStore.hvData = false
-        } else {
+        if (customers.length > 0) {
           this.customerStore.hvData = true
+        } else {
+          this.customerStore.hvData = false
         }
         this.$emit('loaded')
       }
     },
-    async pageControl(pageName) {
-      this.customerStore.hvData = true
+    pageControl(pageName) {
       this.$emit('loading')
-      if (pageName == `customerList`) {
+      if (pageName === 'customerList') {
         this.customerListActive = true
         this.customerInformationActive = false
         this.generalActive = false
         this.addressActive = false
-      } else if (pageName == `customerEntry`) {
+      } else if (pageName === 'customerEntry') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
-        this.customerStore.mode = 'Entry'
-      } else if (pageName == `customerInquiry`) {
+        sessionStorage.setItem('mode', 'Entry')
+      } else if (pageName === 'customerInquiry') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
+        let selectedCustomer = sessionStorage.getItem('selectedCustomer')
         this.customerStore.selectedCustomer = this.customerStore.customerList.find(
-          (item) => (item.cusCustomId = sessionStorage.getItem('selectedCustomer'))
-        ).cusId
-        this.customerStore.fetchCustomerbyId(
-          this.profileStore.profile.orgCustomId,
-          this.profileStore.businesskey,
-          this.customerStore.selectedCustomer
-        )
-        this.customerStore.mode = 'Inquiry'
-      } else if (pageName == `general`) {
+          (item) => item.cusCustomId === selectedCustomer
+        )?.cusId
+        if (this.customerStore.selectedCustomer) {
+          this.customerStore.fetchCustomerbyId(
+            this.profileStore.profile.orgCustomId,
+            this.profileStore.businesskey,
+            this.customerStore.selectedCustomer
+          )
+        }
+        sessionStorage.setItem('mode', 'Inquiry')
+      } else if (pageName === 'general') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
-      } else if (pageName == `address`) {
+      } else if (pageName === 'address') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = false

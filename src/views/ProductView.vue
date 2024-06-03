@@ -45,7 +45,9 @@ export default {
       } else {
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
-        const businessData = await this.profileStore.fetchBusiness()
+        if (this.profileStore.businessList.length == 0) {
+          const businessData = await this.profileStore.fetchBusiness()
+        }
         this.$emit('loaded')
       }
     }

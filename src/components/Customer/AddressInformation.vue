@@ -246,6 +246,7 @@ export default {
       disableSubDistrict: false,
       disableMoo: false,
       disablePostCode: false,
+      disableSave: false,
 
       selectedProvince: '',
       selectedDistrict: '',
@@ -264,21 +265,21 @@ export default {
   },
   watch: {
     selectedProvince(newValue, oldValue) {
-      if (this.customerStore.mode != 'Entry') {
+      if (this.customerStore.customerProfile.province !== newValue.provinceCode) {
         this.customerStore.customerProfile.province = newValue.provinceCode
         this.onSelectProvince(newValue)
       }
     },
     selectedDistrict(newValue, oldValue) {
-      if (this.customerStore.mode != 'Entry') {
+      if (this.customerStore.customerProfile.district !== newValue.districtCode) {
         this.customerStore.customerProfile.district = newValue.districtCode
         this.onSelectDistrict(newValue)
       }
     },
-    selectedSubDistrct(newValue, oldValue) {
-      if (this.customerStore.mode != 'Entry') {
+    selectedSubDistrict(newValue, oldValue) {
+      if (this.customerStore.customerProfile.subDistrict !== newValue.subDistrictCode) {
         this.customerStore.customerProfile.subDistrict = newValue.subDistrictCode
-        this.onSelectDistrict(newValue)
+        this.onSelectSubDistrict(newValue)
       }
     }
   },

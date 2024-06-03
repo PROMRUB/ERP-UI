@@ -123,6 +123,7 @@ export default {
       customerStore: useCustomerStore()
     }
   },
+  emits: ['pageControl'],
   mounted() {
     this.updateComponent()
   },
