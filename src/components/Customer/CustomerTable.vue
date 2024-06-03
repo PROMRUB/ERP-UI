@@ -53,16 +53,7 @@ const columns = [
     data: 'cusCustomId',
     orderable: false,
     render: function (data, type, row) {
-      return (
-        `<a onClick="{
-          sessionStorage.setItem('selectedCustomer', JSON.stringify(\`` +
-        data +
-        `\`))
-        sessionStorage.setItem('count', '2')
-        location.reload()}">` +
-        data +
-        `</a>`
-      )
+      return `<a onClick="handleCustomerClick(\`` + data + `\`)">` + data + `</a>`
     },
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
@@ -124,24 +115,19 @@ export default {
       customerStore: useCustomerStore()
     }
   },
+  emits: ['pageControl'],
   mounted() {
+    window.handleCustomerClick = (data) => {
+      this.customerStore.selectedCustomer = data
+      this.$emit(`pageControl`, `customerInquiry`)
+    }
     this.updateComponent()
   },
   updated() {
     this.updateComponent()
   },
   methods: {
-    async updateComponent() {
-      if (sessionStorage.getItem('count') == '2') {
-        sessionStorage.setItem('count', '1')
-      } else if (sessionStorage.getItem('count') == '1') {
-        sessionStorage.setItem('count', '0')
-        this.$emit('pageControl', 'customerInquiry')
-      } else {
-        sessionStorage.removeItem('selectedCustomer')
-        sessionStorage.removeItem('count')
-      }
-    },
+    async updateComponent() {},
     add() {
       this.$emit(`pageControl`, `customerEntry`)
     },
@@ -154,8 +140,16 @@ export default {
           request.push(foundItem)
         })
         this.customerStore.deleteCustomer(this.profileStore.profile.orgCustomId, request)
-        this.$emit(`pageControl`, `customerList`)
       }
+      selectedItems.forEach((selectedItem) => {
+        let index = this.customerStore.customerList.findIndex((item) => item.cusId == selectedItem)
+        if (index !== -1) {
+          let foundItem = this.customerStore.customerList.splice(index, 1)[0] // Remove item and get the removed item
+          request.push(foundItem)
+        } else {
+          console.warn(`Item with cusId ${selectedItem} not found in customerList`)
+        }
+      })
     }
   }
 }

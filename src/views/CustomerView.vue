@@ -2,7 +2,7 @@
 
 <template>
   <main>
-    <div v-if="!hvData">
+    <div v-if="!customerStore.hvData">
       <img class="no-data" src="@/assets/no-data.png" alt="No Data" /><br />
       <div class="no-data-label">
         <span
@@ -60,8 +60,6 @@ export default {
   },
   data() {
     return {
-      hvData: false,
-
       customerListActive: true,
       customerInformationActive: false,
       generalActive: false,
@@ -78,15 +76,10 @@ export default {
   updated() {
     this.updateComponent()
   },
-  watch: {
-    'customerStore.selectedCustomer'(newValue, oldValue) {
-    }
-  },
   methods: {
     async updateComponent() {
       let token = sessionStorage.getItem('token')
       sessionStorage.removeItem(`selectedItems`)
-
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
         this.$router.push('/signin')
@@ -94,7 +87,9 @@ export default {
       } else {
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
-        const businessData = await this.profileStore.fetchBusiness()
+        if (this.profileStore.businessList.length == 0) {
+          const businessData = await this.profileStore.fetchBusiness()
+        }
         const provinceData = await this.systemConfigStore.fetchProvince(
           this.profileStore.profile.orgCustomId
         )
@@ -108,49 +103,50 @@ export default {
           this.profileStore.profile.orgCustomId,
           this.profileStore.businesskey
         )
-        if (customers.length == 0 && this.customerInformationActive == false) {
-          this.hvData = false
+        if (customers.length > 0) {
+          this.customerStore.hvData = true
         } else {
-          this.hvData = true
+          this.customerStore.hvData = false
         }
         this.$emit('loaded')
       }
     },
     pageControl(pageName) {
-      this.hvData = true
       this.$emit('loading')
-      if (pageName == `customerList`) {
+      if (pageName === 'customerList') {
         this.customerListActive = true
         this.customerInformationActive = false
         this.generalActive = false
         this.addressActive = false
-        setTimeout(() => location.reload(), 1000)
-      } else if (pageName == `customerEntry`) {
+      } else if (pageName === 'customerEntry') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
-        this.customerStore.mode = 'Entry'
-      } else if (pageName == `customerInquiry`) {
+        sessionStorage.setItem('mode', 'Entry')
+      } else if (pageName === 'customerInquiry') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
+        let selectedCustomer = this.customerStore.selectedCustomer
         this.customerStore.selectedCustomer = this.customerStore.customerList.find(
-          (item) => (item.cusCustomId = sessionStorage.getItem('selectedCustomer'))
-        ).cusId
-        this.customerStore.fetchCustomerbyId(
-          this.profileStore.profile.orgCustomId,
-          this.profileStore.businesskey,
-          this.customerStore.selectedCustomer
-        )
-        this.customerStore.mode = 'Inquiry'
-      } else if (pageName == `general`) {
+          (item) => item.cusCustomId === selectedCustomer
+        )?.cusId
+        if (this.customerStore.selectedCustomer) {
+          this.customerStore.fetchCustomerbyId(
+            this.profileStore.profile.orgCustomId,
+            this.profileStore.businesskey,
+            this.customerStore.selectedCustomer
+          )
+        }
+        sessionStorage.setItem('mode', 'Inquiry')
+      } else if (pageName === 'general') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
-      } else if (pageName == `address`) {
+      } else if (pageName === 'address') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = false
@@ -158,7 +154,7 @@ export default {
       }
       this.$emit('loaded')
     },
-    saveCustomer() {
+    saveCustomer(value) {
       if (
         this.customerStore.customerProfile.cusNameEng == null ||
         this.customerStore.customerProfile.cusNameEng == '' ||
@@ -167,10 +163,21 @@ export default {
         alert('กรุณากรอกชื่อบริษัทภาษาอังกฤษ')
       } else {
         this.customerStore.customerProfile.businessId = this.profileStore.businesskey
-        this.customerStore.createCustomer(
-          this.profileStore.profile.orgCustomId,
-          this.customerStore.customerProfile
-        )
+        if (value == 'save') {
+          this.customerStore.createCustomer(
+            this.profileStore.profile.orgCustomId,
+            this.customerStore.customerProfile
+          )
+        }
+        if (value == 'update') {
+          console.log(this.customerStore.customerProfile)
+          this.customerStore.updateCustomer(
+            this.profileStore.profile.orgCustomId,
+            this.customerStore.customerProfile.businessId,
+            this.customerStore.customerProfile.cusId,
+            this.customerStore.customerProfile
+          )
+        }
         this.pageControl('customerList')
       }
     }

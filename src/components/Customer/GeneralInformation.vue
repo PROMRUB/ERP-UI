@@ -129,6 +129,16 @@
             <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
           </button>
         </div>
+        <div v-if="!disableEdit" class="customer-general-column">
+          <button class="customer-general-button customer-general-save-button" @click="edit">
+            <i class="fa fa-pencil fa-lg" aria-hidden="true" />แก้ไข
+          </button>
+        </div>
+        <div v-if="!disableUpdate" class="customer-general-column">
+          <button class="customer-general-button customer-general-save-button" @click="update">
+            <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
+          </button>
+        </div>
         <div class="customer-general-column">
           <button class="customer-general-button customer-general-cancel-button" @click="back">
             <i class="fa fa-times fa-lg" aria-hidden="true" />ยกเลิก
@@ -154,9 +164,12 @@ export default {
       disableDisplayName: false,
       disableWebsite: false,
       disableSave: false,
+      disableEdit: false,
+      disableUpdate: false,
       customerStore: useCustomerStore()
     }
   },
+  emits: ['pageControl'],
   mounted() {
     this.updateComponent()
   },
@@ -165,7 +178,7 @@ export default {
   },
   methods: {
     async updateComponent() {
-      if (this.customerStore.mode == 'Entry') {
+      if (sessionStorage.getItem('mode') == 'Entry') {
         this.disableCusType = false
         this.disableCusNameEng = false
         this.disableTaxId = false
@@ -174,8 +187,16 @@ export default {
         this.disableDisplayName = false
         this.disableWebsite = false
         this.disableSave = false
+        this.customerStore.customerProfile.cusType = 'Corporate'
+        this.customerStore.customerProfile.cusNameEng = ''
+        this.customerStore.customerProfile.cusCustomId = ''
+        this.customerStore.customerProfile.taxId = ''
+        this.customerStore.customerProfile.brnId = ''
+        this.customerStore.customerProfile.cusName = ''
+        this.customerStore.customerProfile.displayName = ''
+        this.customerStore.customerProfile.website = ''
       }
-      if (this.customerStore.mode == 'Inquiry') {
+      if (sessionStorage.getItem('mode') == 'Inquiry') {
         this.disableCusType = true
         this.disableCusNameEng = true
         this.disableTaxId = true
@@ -183,11 +204,21 @@ export default {
         this.disableCusName = true
         this.disableDisplayName = true
         this.disableWebsite = true
+        this.disableEdit = false
         this.disableSave = true
+        this.disableUpdate = true
       }
-      if (this.customerStore.mode == 'Update') {
+      if (sessionStorage.getItem('mode') == 'Update') {
         this.disableCusType = false
         this.disableCusNameEng = false
+        this.disableTaxId = false
+        this.disableBrnId = false
+        this.disableCusName = false
+        this.disableDisplayName = false
+        this.disableWebsite = false
+        this.disableSave = true
+        this.disableEdit = true
+        this.disableUpdate = false
       }
     },
     back() {
@@ -195,6 +226,13 @@ export default {
     },
     save() {
       this.$emit(`saveCustomer`, `save`)
+    },
+    edit() {
+      sessionStorage.setItem('mode', 'Update')
+      this.updateComponent()
+    },
+    update() {
+      this.$emit(`saveCustomer`, `update`)
     }
   }
 }

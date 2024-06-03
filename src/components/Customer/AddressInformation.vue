@@ -2,7 +2,7 @@
   <div class="about card">
     <div class="container">
       <div class="row">
-        <div class="column">
+        <div class="customer-address-column">
           <div class="form-group">
             <div class="form-line">
               <label class="customer-address-input-box-label form-text" for="building"
@@ -78,7 +78,7 @@
             </div>
           </div>
         </div>
-        <div class="column">
+        <div class="customer-address-column">
           <div class="form-group">
             <div class="form-line">
               <label class="customer-address-input-box-label form-text" for="alley"
@@ -155,7 +155,7 @@
                 "
                 v-model="selectedDistrict"
                 :value="selectedDistrict"
-                :disabled="disableProvince"
+                :disabled="disableDistrict"
               ></v-select>
             </div>
             <div class="form-line">
@@ -207,16 +207,22 @@
       </div>
     </div>
     <div class="row">
-      <div class="customer-general-column">
-        <button
-          v-if="!disableSave"
-          class="customer-address-button customer-address-save-button"
-          @click="save"
-        >
+      <div v-if="!disableSave" class="customer-address-column">
+        <button class="customer-address-button customer-address-save-button" @click="save">
           <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
         </button>
       </div>
-      <div class="customer-general-column">
+      <div v-if="!disableEdit" class="customer-address-column">
+        <button class="customer-address-button customer-address-save-button" @click="edit">
+          <i class="fa fa-pencil fa-lg" aria-hidden="true" />แก้ไข
+        </button>
+      </div>
+      <div v-if="!disableUpdate" class="customer-address-column">
+        <button class="customer-address-button customer-address-save-button" @click="update">
+          <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
+        </button>
+      </div>
+      <div class="customer-address-column">
         <button class="customer-address-button customer-address-cancel-button" @click="back">
           <i class="fa fa-times fa-lg" aria-hidden="true" />ยกเลิก
         </button>
@@ -246,13 +252,13 @@ export default {
       disableSubDistrict: false,
       disableMoo: false,
       disablePostCode: false,
+      disableSave: false,
+      disableEdit: false,
+      disableUpdate: false,
 
       selectedProvince: '',
       selectedDistrict: '',
       selectedSubDistrct: '',
-
-      provinceSelected: false,
-      districtSelected: true,
 
       districtFiltered: [],
       subDistrictFiltered: [],
@@ -264,16 +270,22 @@ export default {
   },
   watch: {
     selectedProvince(newValue, oldValue) {
-      this.customerStore.customerProfile.province = newValue.provinceCode
-      this.onSelectProvince(newValue)
+      if (this.customerStore.customerProfile.province !== newValue.provinceCode) {
+        this.customerStore.customerProfile.province = newValue.provinceCode
+        this.onSelectProvince(newValue)
+      }
     },
     selectedDistrict(newValue, oldValue) {
-      this.customerStore.customerProfile.district = newValue.districtCode
-      this.onSelectDistrict(newValue)
+      if (this.customerStore.customerProfile.district !== newValue.districtCode) {
+        this.customerStore.customerProfile.district = newValue.districtCode
+        this.onSelectDistrict(newValue)
+      }
     },
-    selectedSubDistrct(newValue, oldValue) {
-      this.customerStore.customerProfile.subDistrict = newValue.subDistrictCode
-      this.onSelectDistrict(newValue)
+    selectedSubDistrict(newValue, oldValue) {
+      if (this.customerStore.customerProfile.subDistrict !== newValue.subDistrictCode) {
+        this.customerStore.customerProfile.subDistrict = newValue.subDistrictCode
+        this.onSelectSubDistrict(newValue)
+      }
     }
   },
   mounted() {
@@ -284,7 +296,7 @@ export default {
   },
   methods: {
     async updateComponent() {
-      if (this.customerStore.mode == 'Entry') {
+      if (sessionStorage.getItem('mode') == 'Entry') {
         this.disableBuilding = false
         this.disableAlley = false
         this.disableFloor = false
@@ -292,14 +304,23 @@ export default {
         this.disableRoomNo = false
         this.disableProvince = false
         this.disableVillage = false
-        this.disableDistrict = false
+        this.disableDistrict = true
         this.disableNo = false
-        this.disableSubDistrict = false
+        this.disableSubDistrict = true
         this.disableMoo = false
         this.disablePostCode = false
         this.disableSave = false
+        this.customerStore.customerProfile.building = ''
+        this.customerStore.customerProfile.alley = ''
+        this.customerStore.customerProfile.floor = ''
+        this.customerStore.customerProfile.road = ''
+        this.customerStore.customerProfile.roomNo = ''
+        this.customerStore.customerProfile.village = ''
+        this.customerStore.customerProfile.no = ''
+        this.customerStore.customerProfile.moo = ''
+        this.customerStore.customerProfile.postCode = ''
       }
-      if (this.customerStore.mode == 'Inquiry') {
+      if (sessionStorage.getItem('mode') == 'Inquiry') {
         if (
           this.selectedProvince == null ||
           this.selectedProvince == '' ||
@@ -332,7 +353,25 @@ export default {
         this.disablePostCode = true
         this.disableSave = true
       }
-      if (this.customerStore.mode == 'Update') {
+      if (sessionStorage.getItem('mode') == 'Update') {
+        if (
+          this.selectedProvince == null ||
+          this.selectedProvince == '' ||
+          this.selectedProvince == undefined
+        ) {
+          this.selectedProvince = JSON.parse(
+            JSON.stringify(this.systemConfigStore.provinceList)
+          ).find((province) => province.provinceCode == this.customerStore.customerProfile.province)
+          this.selectedDistrict = JSON.parse(
+            JSON.stringify(this.systemConfigStore.distrcitList)
+          ).find((district) => district.districtCode == this.customerStore.customerProfile.district)
+          this.selectedSubDistrct = JSON.parse(
+            JSON.stringify(this.systemConfigStore.subDistrictList)
+          ).find(
+            (subDistrict) =>
+              subDistrict.subDistrictCode == this.customerStore.customerProfile.subDistrict
+          )
+        }
         this.disableBuilding = false
         this.disableAlley = false
         this.disableFloor = false
@@ -345,7 +384,7 @@ export default {
         this.disableSubDistrict = false
         this.disableMoo = false
         this.disablePostCode = false
-        this.disableSave = false
+        this.disableSave = true
       }
     },
     back() {
@@ -354,14 +393,21 @@ export default {
     save() {
       this.$emit(`saveCustomer`, `save`)
     },
+    edit() {
+      sessionStorage.setItem('mode', 'Update')
+      this.updateComponent()
+    },
+    update() {
+      this.$emit(`saveCustomer`, `update`)
+    },
     onSelectProvince(value) {
-      this.provinceSelected = true
+      this.disableDistrict = false
       this.districtFiltered = JSON.parse(
         JSON.stringify(this.systemConfigStore.distrcitList)
       ).filter((district) => district.provinceCode == value.provinceCode)
     },
     onSelectDistrict(value) {
-      this.districtSelected = true
+      this.disableSubDistrict = false
       this.subDistrictFiltered = JSON.parse(
         JSON.stringify(this.systemConfigStore.subDistrictList)
       ).filter((subDistrict) => subDistrict.districtCode == value.districtCode)
@@ -479,7 +525,7 @@ export default {
   display: flex;
 }
 
-.column {
+.customer-address-column {
   float: left;
   width: 50%;
 }
