@@ -3,11 +3,12 @@ import axios from 'axios'
 
 export const useCustomerStore = defineStore('customerStore', () => {
   let mode = ''
+  let hvData = null
   let customerList = []
   let customerProfile = {
     businessId: '',
     cusNameEng: '',
-    cusType: '',
+    cusType: 'Corporate',
     customerNo: '',
     taxId: '',
     brnId: '',
@@ -30,8 +31,8 @@ export const useCustomerStore = defineStore('customerStore', () => {
 
   let selectedCustomer = {}
 
-  // let baseUrl = 'https://localhost:44345'
-  let baseUrl = 'https://sales-api-dev.prom.co.th'
+  let baseUrl = 'https://localhost:44345'
+  // let baseUrl = 'https://sales-api-dev.prom.co.th'
 
   let axiosExport = axios.create({
     baseUrl
@@ -132,7 +133,6 @@ export const useCustomerStore = defineStore('customerStore', () => {
       .post(`${baseUrl}/v1/api/Customer/org/${orgId}/action/DeleteCustomer`, payload)
       .then((response) => {
         if (response.data.status.code == 1000) {
-          this.customerList = response.data.data
           return response.data.data
         } else {
           throw new Error(`${response.data.status.message}`)
@@ -146,6 +146,7 @@ export const useCustomerStore = defineStore('customerStore', () => {
 
   return {
     mode,
+    hvData,
     customerList,
     customerProfile,
     selectedCustomer,

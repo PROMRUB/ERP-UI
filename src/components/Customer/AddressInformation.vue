@@ -264,16 +264,22 @@ export default {
   },
   watch: {
     selectedProvince(newValue, oldValue) {
-      this.customerStore.customerProfile.province = newValue.provinceCode
-      this.onSelectProvince(newValue)
+      if (this.customerStore.mode != 'Entry') {
+        this.customerStore.customerProfile.province = newValue.provinceCode
+        this.onSelectProvince(newValue)
+      }
     },
     selectedDistrict(newValue, oldValue) {
-      this.customerStore.customerProfile.district = newValue.districtCode
-      this.onSelectDistrict(newValue)
+      if (this.customerStore.mode != 'Entry') {
+        this.customerStore.customerProfile.district = newValue.districtCode
+        this.onSelectDistrict(newValue)
+      }
     },
     selectedSubDistrct(newValue, oldValue) {
-      this.customerStore.customerProfile.subDistrict = newValue.subDistrictCode
-      this.onSelectDistrict(newValue)
+      if (this.customerStore.mode != 'Entry') {
+        this.customerStore.customerProfile.subDistrict = newValue.subDistrictCode
+        this.onSelectDistrict(newValue)
+      }
     }
   },
   mounted() {

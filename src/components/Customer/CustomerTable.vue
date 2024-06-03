@@ -58,8 +58,7 @@ const columns = [
           sessionStorage.setItem('selectedCustomer', JSON.stringify(\`` +
         data +
         `\`))
-        sessionStorage.setItem('count', '2')
-        location.reload()}">` +
+        sessionStorage.setItem('count', '2')}">` +
         data +
         `</a>`
       )
@@ -154,8 +153,16 @@ export default {
           request.push(foundItem)
         })
         this.customerStore.deleteCustomer(this.profileStore.profile.orgCustomId, request)
-        this.$emit(`pageControl`, `customerList`)
       }
+      selectedItems.forEach((selectedItem) => {
+        let index = this.customerStore.customerList.findIndex((item) => item.cusId == selectedItem)
+        if (index !== -1) {
+          let foundItem = this.customerStore.customerList.splice(index, 1)[0] // Remove item and get the removed item
+          request.push(foundItem)
+        } else {
+          console.warn(`Item with cusId ${selectedItem} not found in customerList`)
+        }
+      })
     }
   }
 }

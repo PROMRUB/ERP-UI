@@ -174,6 +174,29 @@ export default {
         this.disableDisplayName = false
         this.disableWebsite = false
         this.disableSave = false
+        this.customerStore.customerProfile = {
+          businessId: '',
+          cusNameEng: '',
+          cusType: 'Corporate',
+          customerNo: '',
+          taxId: '',
+          brnId: '',
+          cusName: '',
+          displayName: '',
+          website: '',
+          building: '',
+          alley: '',
+          roomNo: '',
+          road: '',
+          floor: '',
+          village: '',
+          no: '',
+          moo: '',
+          province: '',
+          district: '',
+          subDistrict: '',
+          postCode: ''
+        }
       }
       if (this.customerStore.mode == 'Inquiry') {
         this.disableCusType = true

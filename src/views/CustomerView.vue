@@ -2,7 +2,7 @@
 
 <template>
   <main>
-    <div v-if="!hvData">
+    <div v-if="!customerStore.hvData">
       <img class="no-data" src="@/assets/no-data.png" alt="No Data" /><br />
       <div class="no-data-label">
         <span
@@ -60,8 +60,6 @@ export default {
   },
   data() {
     return {
-      hvData: false,
-
       customerListActive: true,
       customerInformationActive: false,
       generalActive: false,
@@ -78,15 +76,10 @@ export default {
   updated() {
     this.updateComponent()
   },
-  watch: {
-    'customerStore.selectedCustomer'(newValue, oldValue) {
-    }
-  },
   methods: {
     async updateComponent() {
       let token = sessionStorage.getItem('token')
       sessionStorage.removeItem(`selectedItems`)
-
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
         this.$router.push('/signin')
@@ -109,22 +102,21 @@ export default {
           this.profileStore.businesskey
         )
         if (customers.length == 0 && this.customerInformationActive == false) {
-          this.hvData = false
+          this.customerStore.hvData = false
         } else {
-          this.hvData = true
+          this.customerStore.hvData = true
         }
         this.$emit('loaded')
       }
     },
-    pageControl(pageName) {
-      this.hvData = true
+    async pageControl(pageName) {
+      this.customerStore.hvData = true
       this.$emit('loading')
       if (pageName == `customerList`) {
         this.customerListActive = true
         this.customerInformationActive = false
         this.generalActive = false
         this.addressActive = false
-        setTimeout(() => location.reload(), 1000)
       } else if (pageName == `customerEntry`) {
         this.customerListActive = false
         this.customerInformationActive = true

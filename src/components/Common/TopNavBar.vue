@@ -33,6 +33,7 @@ const profileStore = useProfileStore()
 <script>
 import { useProfileStore } from '@/stores/ProfileStore'
 import { useBusinessStore } from '@/stores/BusinessStore'
+import { useCustomerStore } from '@/stores/CustomerStore'
 
 export default {
   components: {},
@@ -40,7 +41,8 @@ export default {
     return {
       isSignIn: false,
       profileStore: useProfileStore(),
-      businessStore: useBusinessStore()
+      businessStore: useBusinessStore(),
+      customerStore: useCustomerStore()
     }
   },
   watch: {
@@ -74,6 +76,12 @@ export default {
         this.profileStore.profile.orgCustomId,
         this.profileStore.businessId
       )
+      if (selectedBusiness.orgId != undefined) {
+        const customers = await this.customerStore.fetchCustomer(
+          this.profileStore.profile.orgCustomId,
+          selectedBusiness.orgId
+        )
+      }
       this.$emit('loaded')
     },
     signout() {
