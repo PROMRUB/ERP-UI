@@ -310,6 +310,8 @@ export default {
         this.disableMoo = false
         this.disablePostCode = false
         this.disableSave = false
+        this.disableEdit = true
+        this.disableUpdate = true
         this.customerStore.customerProfile.building = ''
         this.customerStore.customerProfile.alley = ''
         this.customerStore.customerProfile.floor = ''
@@ -352,6 +354,8 @@ export default {
         this.disableMoo = true
         this.disablePostCode = true
         this.disableSave = true
+        this.disableEdit = false
+        this.disableUpdate = true
       }
       if (sessionStorage.getItem('mode') == 'Update') {
         if (
@@ -385,6 +389,8 @@ export default {
         this.disableMoo = false
         this.disablePostCode = false
         this.disableSave = true
+        this.disableEdit = true
+        this.disableUpdate = false
       }
     },
     back() {
