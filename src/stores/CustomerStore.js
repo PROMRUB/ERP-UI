@@ -6,33 +6,12 @@ export const useCustomerStore = defineStore('customerStore', () => {
   let hvData = null
   let customerList = []
   let customerProfile = {
-    businessId: '',
-    cusNameEng: '',
-    cusType: 'Corporate',
-    customerNo: '',
-    taxId: '',
-    brnId: '',
-    cusName: '',
-    displayName: '',
-    website: '',
-    building: '',
-    alley: '',
-    roomNo: '',
-    road: '',
-    floor: '',
-    village: '',
-    no: '',
-    moo: '',
-    province: '',
-    district: '',
-    subDistrict: '',
-    postCode: ''
   }
 
   let selectedCustomer = {}
-
-  // let baseUrl = 'https://localhost:44345'
-  let baseUrl = 'https://sales-api-dev.prom.co.th'
+  
+  let baseUrl = 'https://localhost:44345'
+  // let baseUrl = 'https://sales-api-dev.prom.co.th'
 
   let axiosExport = axios.create({
     baseUrl

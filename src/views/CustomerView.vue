@@ -85,6 +85,7 @@ export default {
         this.$router.push('/signin')
         this.$emit('loaded')
       } else {
+        sessionStorage.setItem('page', 'customerList')
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
         if (this.profileStore.businessList.length == 0) {
@@ -103,28 +104,32 @@ export default {
           this.profileStore.profile.orgCustomId,
           this.profileStore.businesskey
         )
-        if (customers.length > 0) {
-          this.customerStore.hvData = true
-        } else {
-          this.customerStore.hvData = false
+        if (sessionStorage.getItem('page') == 'customerList') {
+          if (customers.length > 0) {
+            this.customerStore.hvData = true
+          } else {
+            this.customerStore.hvData = false
+          }
         }
         this.$emit('loaded')
       }
     },
     pageControl(pageName) {
+      sessionStorage.setItem('page', pageName)
       this.$emit('loading')
-      if (pageName === 'customerList') {
+      if (pageName == 'customerList') {
         this.customerListActive = true
         this.customerInformationActive = false
         this.generalActive = false
         this.addressActive = false
-      } else if (pageName === 'customerEntry') {
+      } else if (pageName == 'customerEntry') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
+        this.customerStore.hvData = true
         sessionStorage.setItem('mode', 'Entry')
-      } else if (pageName === 'customerInquiry') {
+      } else if (pageName == 'customerInquiry') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
@@ -141,12 +146,12 @@ export default {
           )
         }
         sessionStorage.setItem('mode', 'Inquiry')
-      } else if (pageName === 'general') {
+      } else if (pageName == 'general') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
-      } else if (pageName === 'address') {
+      } else if (pageName == 'address') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = false
