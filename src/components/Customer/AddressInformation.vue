@@ -180,8 +180,8 @@
                   top: 44.75%;
                   z-index: 99997;
                 "
-                v-model="selectedSubDistrct"
-                :value="selectedSubDistrct"
+                v-model="selectedSubDistrict"
+                :value="selectedSubDistrict"
                 :disabled="disableSubDistrict"
               ></v-select>
             </div>
@@ -235,11 +235,13 @@
 import { useProfileStore } from '@/stores/ProfileStore'
 import { useCustomerStore } from '@/stores/CustomerStore'
 import { useSystemConfigStore } from '@/stores/SystemConfigStore'
+import { render } from 'vue'
 
 export default {
   components: {},
   data() {
     return {
+      rendered: false,
       disableBuilding: false,
       disableAlley: false,
       disableFloor: false,
@@ -258,7 +260,7 @@ export default {
 
       selectedProvince: '',
       selectedDistrict: '',
-      selectedSubDistrct: '',
+      selectedSubDistrict: '',
 
       districtFiltered: [],
       subDistrictFiltered: [],
@@ -270,21 +272,27 @@ export default {
   },
   watch: {
     selectedProvince(newValue, oldValue) {
-      if (this.customerStore.customerProfile.province !== newValue.provinceCode) {
-        this.customerStore.customerProfile.province = newValue.provinceCode
+      if (!(newValue == '' || newValue == undefined || newValue == null)) {
+        if (this.customerStore.customerProfile.province !== newValue.provinceCode) {
+          this.customerStore.customerProfile.province = newValue.provinceCode
+        }
         this.onSelectProvince(newValue)
       }
     },
     selectedDistrict(newValue, oldValue) {
-      if (this.customerStore.customerProfile.district !== newValue.districtCode) {
-        this.customerStore.customerProfile.district = newValue.districtCode
+      if (!(newValue == '' || newValue == undefined || newValue == null)) {
+        if (this.customerStore.customerProfile.district !== newValue.districtCode) {
+          this.customerStore.customerProfile.district = newValue.districtCode
+        }
         this.onSelectDistrict(newValue)
       }
     },
     selectedSubDistrict(newValue, oldValue) {
-      if (this.customerStore.customerProfile.subDistrict !== newValue.subDistrictCode) {
-        this.customerStore.customerProfile.subDistrict = newValue.subDistrictCode
-        this.onSelectSubDistrict(newValue)
+      console.log('test')
+      if (!(newValue == '' || newValue == undefined || newValue == null)) {
+        if (this.customerStore.customerProfile.subDistrict !== newValue.subDistrictCode) {
+          this.customerStore.customerProfile.subDistrict = newValue.subDistrictCode
+        }
       }
     }
   },
@@ -312,15 +320,18 @@ export default {
         this.disableSave = false
         this.disableEdit = true
         this.disableUpdate = true
-        this.customerStore.customerProfile.building = ''
-        this.customerStore.customerProfile.alley = ''
-        this.customerStore.customerProfile.floor = ''
-        this.customerStore.customerProfile.road = ''
-        this.customerStore.customerProfile.roomNo = ''
-        this.customerStore.customerProfile.village = ''
-        this.customerStore.customerProfile.no = ''
-        this.customerStore.customerProfile.moo = ''
-        this.customerStore.customerProfile.postCode = ''
+        if (!this.rendered) {
+          this.customerStore.customerProfile.building = ''
+          this.customerStore.customerProfile.alley = ''
+          this.customerStore.customerProfile.floor = ''
+          this.customerStore.customerProfile.road = ''
+          this.customerStore.customerProfile.roomNo = ''
+          this.customerStore.customerProfile.village = ''
+          this.customerStore.customerProfile.no = ''
+          this.customerStore.customerProfile.moo = ''
+          this.customerStore.customerProfile.postCode = ''
+        }
+        this.rendered - true
       }
       if (sessionStorage.getItem('mode') == 'Inquiry') {
         if (
@@ -331,10 +342,22 @@ export default {
           this.selectedProvince = JSON.parse(
             JSON.stringify(this.systemConfigStore.provinceList)
           ).find((province) => province.provinceCode == this.customerStore.customerProfile.province)
+        }
+        if (
+          this.selectedDistrict == null ||
+          this.selectedDistrict == '' ||
+          this.selectedDistrict == undefined
+        ) {
           this.selectedDistrict = JSON.parse(
             JSON.stringify(this.systemConfigStore.distrcitList)
           ).find((district) => district.districtCode == this.customerStore.customerProfile.district)
-          this.selectedSubDistrct = JSON.parse(
+        }
+        if (
+          this.selectedSubDistrict == null ||
+          this.selectedSubDistrict == '' ||
+          this.selectedSubDistrict == undefined
+        ) {
+          this.selectedSubDistrict = JSON.parse(
             JSON.stringify(this.systemConfigStore.subDistrictList)
           ).find(
             (subDistrict) =>
@@ -353,8 +376,8 @@ export default {
         this.disableSubDistrict = true
         this.disableMoo = true
         this.disablePostCode = true
-        this.disableSave = true
         this.disableEdit = false
+        this.disableSave = true
         this.disableUpdate = true
       }
       if (sessionStorage.getItem('mode') == 'Update') {
@@ -366,9 +389,26 @@ export default {
           this.selectedProvince = JSON.parse(
             JSON.stringify(this.systemConfigStore.provinceList)
           ).find((province) => province.provinceCode == this.customerStore.customerProfile.province)
+        }
+        if (
+          this.selectedDistrict == null ||
+          this.selectedDistrict == '' ||
+          this.selectedDistrict == undefined
+        ) {
           this.selectedDistrict = JSON.parse(
             JSON.stringify(this.systemConfigStore.distrcitList)
           ).find((district) => district.districtCode == this.customerStore.customerProfile.district)
+          this.subDistrictFiltered = JSON.parse(
+            JSON.stringify(this.systemConfigStore.subDistrictList)
+          ).filter(
+            (subDistrict) => subDistrict.districtCode == this.customerStore.customerProfile.district
+          )
+        }
+        if (
+          this.selectedSubDistrct == null ||
+          this.selectedSubDistrct == '' ||
+          this.selectedSubDistrct == undefined
+        ) {
           this.selectedSubDistrct = JSON.parse(
             JSON.stringify(this.systemConfigStore.subDistrictList)
           ).find(

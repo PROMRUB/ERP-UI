@@ -22,7 +22,7 @@
 
         <label
           class="customer-general-input-box-label form-text customer-general-eng-label"
-          for="taxId"
+          for="cusNameEng"
           >ชื่อผู้ประกอบการ (ภาษาอังกฤษ)<span class="customer-red">*</span>:</label
         >
         <input
@@ -156,6 +156,7 @@ export default {
   components: {},
   data() {
     return {
+      rendered: false,
       disableCusType: false,
       disableCusNameEng: false,
       disableTaxId: false,
@@ -187,14 +188,19 @@ export default {
         this.disableDisplayName = false
         this.disableWebsite = false
         this.disableSave = false
-        this.customerStore.customerProfile.cusType = 'Corporate'
-        this.customerStore.customerProfile.cusNameEng = ''
-        this.customerStore.customerProfile.cusCustomId = ''
-        this.customerStore.customerProfile.taxId = ''
-        this.customerStore.customerProfile.brnId = ''
-        this.customerStore.customerProfile.cusName = ''
-        this.customerStore.customerProfile.displayName = ''
-        this.customerStore.customerProfile.website = ''
+        this.disableEdit = true
+        this.disableUpdate = true
+        if (!this.rendered) {
+          this.customerStore.customerProfile.cusType = 'Corporate'
+          this.customerStore.customerProfile.cusNameEng = ''
+          this.customerStore.customerProfile.cusCustomId = ''
+          this.customerStore.customerProfile.taxId = ''
+          this.customerStore.customerProfile.brnId = ''
+          this.customerStore.customerProfile.cusName = ''
+          this.customerStore.customerProfile.displayName = ''
+          this.customerStore.customerProfile.website = ''
+        }
+        this.rendered = true
       }
       if (sessionStorage.getItem('mode') == 'Inquiry') {
         this.disableCusType = true
