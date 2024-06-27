@@ -288,7 +288,6 @@ export default {
       }
     },
     selectedSubDistrict(newValue, oldValue) {
-      console.log('test')
       if (!(newValue == '' || newValue == undefined || newValue == null)) {
         if (this.customerStore.customerProfile.subDistrict !== newValue.subDistrictCode) {
           this.customerStore.customerProfile.subDistrict = newValue.subDistrictCode
@@ -304,142 +303,158 @@ export default {
   },
   methods: {
     async updateComponent() {
-      if (sessionStorage.getItem('mode') == 'Entry') {
-        this.disableBuilding = false
-        this.disableAlley = false
-        this.disableFloor = false
-        this.disableRoad = false
-        this.disableRoomNo = false
-        this.disableProvince = false
-        this.disableVillage = false
-        this.disableDistrict = true
-        this.disableNo = false
-        this.disableSubDistrict = true
-        this.disableMoo = false
-        this.disablePostCode = false
-        this.disableSave = false
-        this.disableEdit = true
-        this.disableUpdate = true
-        if (!this.rendered) {
-          this.customerStore.customerProfile.building = ''
-          this.customerStore.customerProfile.alley = ''
-          this.customerStore.customerProfile.floor = ''
-          this.customerStore.customerProfile.road = ''
-          this.customerStore.customerProfile.roomNo = ''
-          this.customerStore.customerProfile.village = ''
-          this.customerStore.customerProfile.no = ''
-          this.customerStore.customerProfile.moo = ''
-          this.customerStore.customerProfile.postCode = ''
+      if (!this.rendered) {
+        if (sessionStorage.getItem('mode') == 'Entry') {
+          this.disableBuilding = false
+          this.disableAlley = false
+          this.disableFloor = false
+          this.disableRoad = false
+          this.disableRoomNo = false
+          this.disableProvince = false
+          this.disableVillage = false
+          this.disableDistrict = false
+          this.disableNo = false
+          this.disableSubDistrict = false
+          this.disableMoo = false
+          this.disablePostCode = false
+          this.disableSave = false
+          this.disableEdit = true
+          this.disableUpdate = true
+          if (!this.rendered) {
+            this.customerStore.customerProfile.building = ''
+            this.customerStore.customerProfile.alley = ''
+            this.customerStore.customerProfile.floor = ''
+            this.customerStore.customerProfile.road = ''
+            this.customerStore.customerProfile.roomNo = ''
+            this.customerStore.customerProfile.village = ''
+            this.customerStore.customerProfile.no = ''
+            this.customerStore.customerProfile.moo = ''
+            this.customerStore.customerProfile.postCode = ''
+            this.customerStore.customerProfile.province = ''
+            this.customerStore.customerProfile.district = ''
+            this.customerStore.customerProfile.subDistrict = ''
+          }
         }
-        this.rendered - true
-      }
-      if (sessionStorage.getItem('mode') == 'Inquiry') {
-        if (
-          this.selectedProvince == null ||
-          this.selectedProvince == '' ||
-          this.selectedProvince == undefined
-        ) {
-          this.selectedProvince = JSON.parse(
-            JSON.stringify(this.systemConfigStore.provinceList)
-          ).find((province) => province.provinceCode == this.customerStore.customerProfile.province)
+        if (sessionStorage.getItem('mode') == 'Inquiry') {
+          if (
+            this.selectedProvince == null ||
+            this.selectedProvince == '' ||
+            this.selectedProvince == undefined
+          ) {
+            this.selectedProvince = JSON.parse(
+              JSON.stringify(this.systemConfigStore.provinceList)
+            ).find(
+              (province) => province.provinceCode == this.customerStore.customerProfile.province
+            )
+          }
+          if (
+            this.selectedDistrict == null ||
+            this.selectedDistrict == '' ||
+            this.selectedDistrict == undefined
+          ) {
+            this.selectedDistrict = JSON.parse(
+              JSON.stringify(this.systemConfigStore.distrcitList)
+            ).find(
+              (district) => district.districtCode == this.customerStore.customerProfile.district
+            )
+          }
+          if (
+            this.selectedSubDistrict == null ||
+            this.selectedSubDistrict == '' ||
+            this.selectedSubDistrict == undefined
+          ) {
+            this.selectedSubDistrict = JSON.parse(
+              JSON.stringify(this.systemConfigStore.subDistrictList)
+            ).find(
+              (subDistrict) =>
+                subDistrict.subDistrictCode == this.customerStore.customerProfile.subDistrict
+            )
+          }
+          this.disableBuilding = true
+          this.disableAlley = true
+          this.disableFloor = true
+          this.disableRoad = true
+          this.disableRoomNo = true
+          this.disableProvince = true
+          this.disableVillage = true
+          this.disableDistrict = true
+          this.disableNo = true
+          this.disableSubDistrict = true
+          this.disableMoo = true
+          this.disablePostCode = true
+          this.disableEdit = false
+          this.disableSave = true
+          this.disableUpdate = true
         }
-        if (
-          this.selectedDistrict == null ||
-          this.selectedDistrict == '' ||
-          this.selectedDistrict == undefined
-        ) {
-          this.selectedDistrict = JSON.parse(
-            JSON.stringify(this.systemConfigStore.distrcitList)
-          ).find((district) => district.districtCode == this.customerStore.customerProfile.district)
+        if (sessionStorage.getItem('mode') == 'Update') {
+          if (
+            this.selectedProvince == null ||
+            this.selectedProvince == '' ||
+            this.selectedProvince == undefined
+          ) {
+            this.selectedProvince = JSON.parse(
+              JSON.stringify(this.systemConfigStore.provinceList)
+            ).find(
+              (province) => province.provinceCode == this.customerStore.customerProfile.province
+            )
+          }
+          if (
+            this.selectedDistrict == null ||
+            this.selectedDistrict == '' ||
+            this.selectedDistrict == undefined
+          ) {
+            this.selectedDistrict = JSON.parse(
+              JSON.stringify(this.systemConfigStore.distrcitList)
+            ).find(
+              (district) => district.districtCode == this.customerStore.customerProfile.district
+            )
+            this.subDistrictFiltered = JSON.parse(
+              JSON.stringify(this.systemConfigStore.subDistrictList)
+            ).filter(
+              (subDistrict) =>
+                subDistrict.districtCode == this.customerStore.customerProfile.district
+            )
+          }
+          if (
+            this.selectedSubDistrct == null ||
+            this.selectedSubDistrct == '' ||
+            this.selectedSubDistrct == undefined
+          ) {
+            this.selectedSubDistrct = JSON.parse(
+              JSON.stringify(this.systemConfigStore.subDistrictList)
+            ).find(
+              (subDistrict) =>
+                subDistrict.subDistrictCode == this.customerStore.customerProfile.subDistrict
+            )
+          }
+          this.disableBuilding = false
+          this.disableAlley = false
+          this.disableFloor = false
+          this.disableRoad = false
+          this.disableRoomNo = false
+          this.disableProvince = true
+          this.disableVillage = false
+          this.disableDistrict = false
+          this.disableNo = false
+          this.disableSubDistrict = false
+          this.disableMoo = false
+          this.disablePostCode = false
+          this.disableSave = true
+          this.disableEdit = true
+          this.disableUpdate = false
         }
-        if (
-          this.selectedSubDistrict == null ||
-          this.selectedSubDistrict == '' ||
-          this.selectedSubDistrict == undefined
-        ) {
-          this.selectedSubDistrict = JSON.parse(
-            JSON.stringify(this.systemConfigStore.subDistrictList)
-          ).find(
-            (subDistrict) =>
-              subDistrict.subDistrictCode == this.customerStore.customerProfile.subDistrict
-          )
-        }
-        this.disableBuilding = true
-        this.disableAlley = true
-        this.disableFloor = true
-        this.disableRoad = true
-        this.disableRoomNo = true
-        this.disableProvince = true
-        this.disableVillage = true
-        this.disableDistrict = true
-        this.disableNo = true
-        this.disableSubDistrict = true
-        this.disableMoo = true
-        this.disablePostCode = true
-        this.disableEdit = false
-        this.disableSave = true
-        this.disableUpdate = true
-      }
-      if (sessionStorage.getItem('mode') == 'Update') {
-        if (
-          this.selectedProvince == null ||
-          this.selectedProvince == '' ||
-          this.selectedProvince == undefined
-        ) {
-          this.selectedProvince = JSON.parse(
-            JSON.stringify(this.systemConfigStore.provinceList)
-          ).find((province) => province.provinceCode == this.customerStore.customerProfile.province)
-        }
-        if (
-          this.selectedDistrict == null ||
-          this.selectedDistrict == '' ||
-          this.selectedDistrict == undefined
-        ) {
-          this.selectedDistrict = JSON.parse(
-            JSON.stringify(this.systemConfigStore.distrcitList)
-          ).find((district) => district.districtCode == this.customerStore.customerProfile.district)
-          this.subDistrictFiltered = JSON.parse(
-            JSON.stringify(this.systemConfigStore.subDistrictList)
-          ).filter(
-            (subDistrict) => subDistrict.districtCode == this.customerStore.customerProfile.district
-          )
-        }
-        if (
-          this.selectedSubDistrct == null ||
-          this.selectedSubDistrct == '' ||
-          this.selectedSubDistrct == undefined
-        ) {
-          this.selectedSubDistrct = JSON.parse(
-            JSON.stringify(this.systemConfigStore.subDistrictList)
-          ).find(
-            (subDistrict) =>
-              subDistrict.subDistrictCode == this.customerStore.customerProfile.subDistrict
-          )
-        }
-        this.disableBuilding = false
-        this.disableAlley = false
-        this.disableFloor = false
-        this.disableRoad = false
-        this.disableRoomNo = false
-        this.disableProvince = false
-        this.disableVillage = false
-        this.disableDistrict = false
-        this.disableNo = false
-        this.disableSubDistrict = false
-        this.disableMoo = false
-        this.disablePostCode = false
-        this.disableSave = true
-        this.disableEdit = true
-        this.disableUpdate = false
+        this.rendered = true
       }
     },
     back() {
+      this.rendered = false
       this.$emit(`pageControl`, `customerList`)
     },
     save() {
       this.$emit(`saveCustomer`, `save`)
     },
     edit() {
+      this.rendered = false
       sessionStorage.setItem('mode', 'Update')
       this.updateComponent()
     },
