@@ -432,7 +432,7 @@ export default {
           this.disableFloor = false
           this.disableRoad = false
           this.disableRoomNo = false
-          this.disableProvince = true
+          this.disableProvince = false
           this.disableVillage = false
           this.disableDistrict = false
           this.disableNo = false
