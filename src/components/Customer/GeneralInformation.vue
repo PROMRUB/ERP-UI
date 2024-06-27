@@ -179,61 +179,65 @@ export default {
   },
   methods: {
     async updateComponent() {
-      if (sessionStorage.getItem('mode') == 'Entry') {
-        this.disableCusType = false
-        this.disableCusNameEng = false
-        this.disableTaxId = false
-        this.disableBrnId = false
-        this.disableCusName = false
-        this.disableDisplayName = false
-        this.disableWebsite = false
-        this.disableSave = false
-        this.disableEdit = true
-        this.disableUpdate = true
-        if (!this.rendered) {
-          this.customerStore.customerProfile.cusType = 'Corporate'
-          this.customerStore.customerProfile.cusNameEng = ''
-          this.customerStore.customerProfile.cusCustomId = ''
-          this.customerStore.customerProfile.taxId = ''
-          this.customerStore.customerProfile.brnId = ''
-          this.customerStore.customerProfile.cusName = ''
-          this.customerStore.customerProfile.displayName = ''
-          this.customerStore.customerProfile.website = ''
+      if (!this.rendered) {
+        if (sessionStorage.getItem('mode') == 'Entry') {
+          this.disableCusType = false
+          this.disableCusNameEng = false
+          this.disableTaxId = false
+          this.disableBrnId = false
+          this.disableCusName = false
+          this.disableDisplayName = false
+          this.disableWebsite = false
+          this.disableSave = false
+          this.disableEdit = true
+          this.disableUpdate = true
+          if (!this.rendered) {
+            this.customerStore.customerProfile.cusType = 'Corporate'
+            this.customerStore.customerProfile.cusNameEng = ''
+            this.customerStore.customerProfile.cusCustomId = ''
+            this.customerStore.customerProfile.taxId = ''
+            this.customerStore.customerProfile.brnId = ''
+            this.customerStore.customerProfile.cusName = ''
+            this.customerStore.customerProfile.displayName = ''
+            this.customerStore.customerProfile.website = ''
+          }
+        }
+        if (sessionStorage.getItem('mode') == 'Inquiry') {
+          this.disableCusType = true
+          this.disableCusNameEng = true
+          this.disableTaxId = true
+          this.disableBrnId = true
+          this.disableCusName = true
+          this.disableDisplayName = true
+          this.disableWebsite = true
+          this.disableEdit = false
+          this.disableSave = true
+          this.disableUpdate = true
+        }
+        if (sessionStorage.getItem('mode') == 'Update') {
+          this.disableCusType = false
+          this.disableCusNameEng = false
+          this.disableTaxId = false
+          this.disableBrnId = false
+          this.disableCusName = false
+          this.disableDisplayName = false
+          this.disableWebsite = false
+          this.disableSave = true
+          this.disableEdit = true
+          this.disableUpdate = false
         }
         this.rendered = true
       }
-      if (sessionStorage.getItem('mode') == 'Inquiry') {
-        this.disableCusType = true
-        this.disableCusNameEng = true
-        this.disableTaxId = true
-        this.disableBrnId = true
-        this.disableCusName = true
-        this.disableDisplayName = true
-        this.disableWebsite = true
-        this.disableEdit = false
-        this.disableSave = true
-        this.disableUpdate = true
-      }
-      if (sessionStorage.getItem('mode') == 'Update') {
-        this.disableCusType = false
-        this.disableCusNameEng = false
-        this.disableTaxId = false
-        this.disableBrnId = false
-        this.disableCusName = false
-        this.disableDisplayName = false
-        this.disableWebsite = false
-        this.disableSave = true
-        this.disableEdit = true
-        this.disableUpdate = false
-      }
     },
     back() {
+      this.rendered = false
       this.$emit(`pageControl`, `customerList`)
     },
     save() {
       this.$emit(`saveCustomer`, `save`)
     },
     edit() {
+      this.rendered = false
       sessionStorage.setItem('mode', 'Update')
       this.updateComponent()
     },

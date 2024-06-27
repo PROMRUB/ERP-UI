@@ -4,18 +4,18 @@
       <div class="row">
         <div class="form-group">
           <div class="form-line">
-            <label class="input-box-label form-text" for="taxId">ชื่อผู้เข้าใช้</label>
+            <label class="input-box-label form-text" for="userId">ชื่อผู้เข้าใช้</label>
             <input
               class="input-box form-input"
               type="text"
-              id="taxId"
-              name="customerId"
+              id="userId"
+              name="userId"
               v-model="username"
               require
             />
           </div>
           <div class="form-line">
-            <label class="input-box-label form-text" for="taxId">รหัสผ่าน</label>
+            <label class="input-box-label form-text" for="password">รหัสผ่าน</label>
             <input
               class="input-box form-input"
               type="password"
