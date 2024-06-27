@@ -179,7 +179,7 @@ export default {
   },
   methods: {
     async updateComponent() {
-      if (!this.rendered) {
+      if (sessionStorage.getItem('rendered') == 'false') {
         if (sessionStorage.getItem('mode') == 'Entry') {
           this.disableCusType = false
           this.disableCusNameEng = false
@@ -191,16 +191,26 @@ export default {
           this.disableSave = false
           this.disableEdit = true
           this.disableUpdate = true
-          if (!this.rendered) {
-            this.customerStore.customerProfile.cusType = 'Corporate'
-            this.customerStore.customerProfile.cusNameEng = ''
-            this.customerStore.customerProfile.cusCustomId = ''
-            this.customerStore.customerProfile.taxId = ''
-            this.customerStore.customerProfile.brnId = ''
-            this.customerStore.customerProfile.cusName = ''
-            this.customerStore.customerProfile.displayName = ''
-            this.customerStore.customerProfile.website = ''
-          }
+          this.customerStore.customerProfile.cusType = 'Corporate'
+          this.customerStore.customerProfile.cusNameEng = ''
+          this.customerStore.customerProfile.cusCustomId = ''
+          this.customerStore.customerProfile.taxId = ''
+          this.customerStore.customerProfile.brnId = ''
+          this.customerStore.customerProfile.cusName = ''
+          this.customerStore.customerProfile.displayName = ''
+          this.customerStore.customerProfile.website = ''
+          this.customerStore.customerProfile.building = ''
+          this.customerStore.customerProfile.alley = ''
+          this.customerStore.customerProfile.floor = ''
+          this.customerStore.customerProfile.road = ''
+          this.customerStore.customerProfile.roomNo = ''
+          this.customerStore.customerProfile.village = ''
+          this.customerStore.customerProfile.no = ''
+          this.customerStore.customerProfile.moo = ''
+          this.customerStore.customerProfile.postCode = ''
+          this.customerStore.customerProfile.province = ''
+          this.customerStore.customerProfile.district = ''
+          this.customerStore.customerProfile.subDistrict = ''
         }
         if (sessionStorage.getItem('mode') == 'Inquiry') {
           this.disableCusType = true
@@ -226,18 +236,18 @@ export default {
           this.disableEdit = true
           this.disableUpdate = false
         }
-        this.rendered = true
+        sessionStorage.setItem('rendered', 'true')
       }
     },
     back() {
-      this.rendered = false
+      sessionStorage.setItem('rendered', 'false')
       this.$emit(`pageControl`, `customerList`)
     },
     save() {
       this.$emit(`saveCustomer`, `save`)
     },
     edit() {
-      this.rendered = false
+      sessionStorage.setItem('rendered', 'false')
       sessionStorage.setItem('mode', 'Update')
       this.updateComponent()
     },

@@ -320,20 +320,6 @@ export default {
           this.disableSave = false
           this.disableEdit = true
           this.disableUpdate = true
-          if (!this.rendered) {
-            this.customerStore.customerProfile.building = ''
-            this.customerStore.customerProfile.alley = ''
-            this.customerStore.customerProfile.floor = ''
-            this.customerStore.customerProfile.road = ''
-            this.customerStore.customerProfile.roomNo = ''
-            this.customerStore.customerProfile.village = ''
-            this.customerStore.customerProfile.no = ''
-            this.customerStore.customerProfile.moo = ''
-            this.customerStore.customerProfile.postCode = ''
-            this.customerStore.customerProfile.province = ''
-            this.customerStore.customerProfile.district = ''
-            this.customerStore.customerProfile.subDistrict = ''
-          }
         }
         if (sessionStorage.getItem('mode') == 'Inquiry') {
           if (
