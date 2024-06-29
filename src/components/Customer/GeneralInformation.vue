@@ -244,6 +244,7 @@ export default {
       this.$emit(`pageControl`, `customerList`)
     },
     save() {
+      sessionStorage.setItem('rendered', 'false')
       this.$emit(`saveCustomer`, `save`)
     },
     edit() {

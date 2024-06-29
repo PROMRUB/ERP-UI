@@ -36,6 +36,7 @@ export default {
   },
   methods: {
     async updateComponent() {
+      sessionStorage.setItem('changeBusiness', 'true')
       this.$emit('loading')
       let token = sessionStorage.getItem('token')
       if (token == '' || token == undefined || token == null) {

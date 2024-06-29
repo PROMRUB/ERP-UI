@@ -85,6 +85,7 @@ export default {
         this.$router.push('/signin')
         this.$emit('loaded')
       } else {
+        if(console.log(sessionStorage.getItem('page')) == undefined || console.log(sessionStorage.getItem('page')) == null || console.log(sessionStorage.getItem('page')) == '')
         sessionStorage.setItem('page', 'customerList')
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
@@ -129,6 +130,7 @@ export default {
         this.addressActive = false
         this.customerStore.hvData = true
         sessionStorage.setItem('mode', 'Entry')
+        sessionStorage.setItem('changeBusiness', 'false')
       } else if (pageName == 'customerInquiry') {
         this.customerListActive = false
         this.customerInformationActive = true
@@ -145,17 +147,20 @@ export default {
             this.customerStore.selectedCustomer
           )
         }
+        sessionStorage.setItem('changeBusiness', 'false')
         sessionStorage.setItem('mode', 'Inquiry')
       } else if (pageName == 'general') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
         this.addressActive = false
+        sessionStorage.setItem('changeBusiness', 'false')
       } else if (pageName == 'address') {
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = false
         this.addressActive = true
+        sessionStorage.setItem('changeBusiness', 'false')
       }
       this.$emit('loaded')
     },
