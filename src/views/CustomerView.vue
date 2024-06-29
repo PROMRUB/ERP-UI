@@ -85,8 +85,12 @@ export default {
         this.$router.push('/signin')
         this.$emit('loaded')
       } else {
-        if(console.log(sessionStorage.getItem('page')) == undefined || console.log(sessionStorage.getItem('page')) == null || console.log(sessionStorage.getItem('page')) == '')
-        sessionStorage.setItem('page', 'customerList')
+        if (
+          sessionStorage.getItem('page') == undefined ||
+          sessionStorage.getItem('page') == null ||
+          sessionStorage.getItem('page') == ''
+        )
+          sessionStorage.setItem('page', 'customerList')
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
         if (this.profileStore.businessList.length == 0) {
