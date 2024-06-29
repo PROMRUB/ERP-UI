@@ -33,6 +33,7 @@ export default {
     },
     methods: {
         updateComponent() {
+            sessionStorage.setItem('changeBusiness', 'true')
             let token = sessionStorage.getItem('token');
             if (token == '' || token == undefined || token == null) {
                 this.profileStore.isSignIn = false

@@ -5,7 +5,7 @@ const profileStore = useProfileStore()
 <template>
   <main>
     <div class="topnav">
-      <a>
+      <a @click="home">
         <img class="logo-image" src="@/assets/logo.png" alt="logo" />
       </a>
       <div id="profile-avatar" class="dropdown split">
@@ -42,7 +42,9 @@ export default {
       isSignIn: false,
       profileStore: useProfileStore(),
       businessStore: useBusinessStore(),
-      customerStore: useCustomerStore()
+      customerStore: useCustomerStore(),
+
+      disableBusiness: false
     }
   },
   watch: {
@@ -83,6 +85,9 @@ export default {
         )
       }
       this.$emit('loaded')
+    },
+    home() {
+      this.$router.push('/home')
     },
     signout() {
       sessionStorage.removeItem('token')

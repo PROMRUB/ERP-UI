@@ -38,6 +38,7 @@ export default {
   methods: {
     async updateComponent() {
       this.$emit('loading')
+      sessionStorage.setItem('changeBusiness', 'true')
       let token = sessionStorage.getItem('token')
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
