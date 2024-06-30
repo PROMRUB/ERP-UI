@@ -5,8 +5,8 @@ export const useCustomerStore = defineStore('customerStore', () => {
   let mode = ''
   let hvData = null
   let customerList = []
-  let customerProfile = {
-  }
+  let cusConList = []
+  let customerProfile = {}
 
   let selectedCustomer = {}
 
@@ -127,6 +127,7 @@ export const useCustomerStore = defineStore('customerStore', () => {
     mode,
     hvData,
     customerList,
+    cusConList,
     customerProfile,
     selectedCustomer,
     fetchCustomer,
