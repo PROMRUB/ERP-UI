@@ -1,63 +1,9 @@
-<script setup></script>
-
 <template>
-  <main>
-    <div v-if="!customerStore.hvData">
-      <img class="no-data" src="@/assets/no-data.png" alt="No Data" /><br />
-      <div class="no-data-label">
-        <span
-          >ขณะนี้ยังไม่มีข้อมูลใดๆของคุณอยู่ในระบบ
-          <a @click="pageControl(`customerEntry`)">คลิกที่นี่</a> เพื่อเริ่มต้นสร้างข้อมูล</span
-        >
-      </div>
-    </div>
-    <div v-else>
-      <div v-if="customerListActive">
-        <CustomerTable @pageControl="pageControl" />
-      </div>
-      <div v-if="customerInformationActive">
-        <div class="row">
-          <button
-            class="general-btn"
-            :class="{ active: generalActive }"
-            @click="pageControl(`general`)"
-          >
-            <span><i class="fa fa-file-text-o fa-lg"></i>ข้อมูลทั่วไป</span>
-          </button>
-          <button
-            class="address-btn"
-            :class="{ active: addressActive }"
-            @click="pageControl(`address`)"
-          >
-            <span><i class="fa fa-map-o fa-lg"></i>ที่อยู่</span>
-          </button>
-          <button
-            class="contact-btn"
-            :class="{ active: contactActive }"
-            @click="pageControl(`contact`)"
-          >
-            <span><i class="fa fa-address-card fa-lg" aria-hidden="true"></i>ผู้ติดต่อ</span>
-          </button>
-        </div>
-        <div class="row" v-if="generalActive">
-          <GeneralInformation @pageControl="pageControl" @saveCustomer="saveCustomer" />
-        </div>
-        <div class="row" v-if="addressActive">
-          <AddressInformation @pageControl="pageControl" @saveCustomer="saveCustomer" />
-        </div>
-        <div class="row" v-if="contactActive">
-          <ContactInformation />
-        </div>
-      </div>
-    </div>
-  </main>
+  <ContactTable />
 </template>
 
 <script>
-import CustomerTable from '@/components/Customer/CustomerTable.vue'
-import GeneralInformation from '@/components/Customer/GeneralInformation.vue'
-import AddressInformation from '@/components/Customer/AddressInformation.vue'
-import ContactInformation from '@/components/Customer/ContactInformation.vue'
+import ContactTable from '@/components/Customer/ContactTable.vue'
 
 import { useProfileStore } from '@/stores/ProfileStore'
 import { useSystemConfigStore } from '@/stores/SystemConfigStore'
@@ -65,10 +11,7 @@ import { useCustomerStore } from '@/stores/CustomerStore'
 
 export default {
   components: {
-    CustomerTable,
-    GeneralInformation,
-    AddressInformation,
-    ContactInformation
+    ContactTable
   },
   data() {
     return {
@@ -230,57 +173,14 @@ export default {
 </script>
 
 <style>
-.general-btn {
-  position: absolute;
-  width: 200px;
-  height: 48px;
-  left: 350px;
-  top: 15%;
-  background: #384577;
-  border-radius: 4px;
-  color: white;
-  padding-top: 2px;
-  padding-bottom: 12px;
-  cursor: pointer;
-  text-align: center;
-  border: 1px solid #384577;
+
+.row {
+  display: flex;
 }
 
-.address-btn {
-  position: absolute;
-  width: 200px;
-  height: 48px;
-  left: 550px;
-  top: 15%;
-  background: #384577;
-  border-radius: 4px;
-  color: white;
-  padding-top: 2px;
-  padding-bottom: 12px;
-  cursor: pointer;
-  text-align: center;
-  border: 1px solid #384577;
-}
-
-.contact-btn {
-  position: absolute;
-  width: 200px;
-  height: 48px;
-  left: 750px;
-  top: 15%;
-  background: #384577;
-  border-radius: 4px;
-  color: white;
-  padding-top: 2px;
-  padding-bottom: 12px;
-  cursor: pointer;
-  text-align: center;
-  border: 1px solid #384577;
-}
-
-.active {
-  background: #00275e;
-  border: 1px solid #00275e;
-  color: white;
+.row:after {
+  content: '';
+  display: table;
+  clear: both;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="about card">
+  <div class="customer-address-card">
     <div class="container">
       <div class="row">
         <div class="customer-address-column">
@@ -464,7 +464,7 @@ export default {
 </script>
 
 <style>
-.card {
+.customer-address-card {
   position: absolute;
   width: 1300px;
   height: 648px;
