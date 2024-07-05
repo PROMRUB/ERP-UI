@@ -7,7 +7,7 @@ export const useCustomerStore = defineStore('customerStore', () => {
   let customerList = []
   let cusConList = []
   let customerProfile = {}
-
+  let contactProfile = {}
   let selectedCustomer = {}
 
   // let baseUrl = 'https://localhost:44345'
@@ -55,6 +55,25 @@ export const useCustomerStore = defineStore('customerStore', () => {
     return axiosExport
       .get(
         `${baseUrl}/v1/api/Customer/org/${orgId}/action/GetCustomerInformation/${businessId}/${customerId}`
+      )
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          this.customerProfile = response.data.data
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
+
+  async function fetchCustomerContact(orgId, businessId) {
+    return axiosExport
+      .get(
+        `${baseUrl}/v1/api/Customer/org/${orgId}/action/GetCustomerContactList/${businessId}`
       )
       .then((response) => {
         if (response.data.status.code == 1000) {
@@ -129,9 +148,11 @@ export const useCustomerStore = defineStore('customerStore', () => {
     customerList,
     cusConList,
     customerProfile,
+    contactProfile,
     selectedCustomer,
     fetchCustomer,
     fetchCustomerbyId,
+    fetchCustomerContact,
     createCustomer,
     updateCustomer,
     deleteCustomer

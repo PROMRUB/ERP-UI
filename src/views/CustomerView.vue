@@ -41,6 +41,7 @@
             class="contact-btn"
             :class="{ active: contactActive }"
             @click="pageControl(`contact`)"
+            v-show="showContact"
           >
             <span><i class="fa fa-address-card fa-lg" aria-hidden="true"></i>ผู้ติดต่อ</span>
           </button>
@@ -82,6 +83,7 @@ export default {
     return {
       customerListActive: true,
       customerInformationActive: false,
+      showContact: false,
       generalActive: false,
       addressActive: false,
       contactActive: false,
@@ -156,6 +158,7 @@ export default {
         this.generalActive = false
         this.addressActive = false
         this.contactActive = false
+        this.showContact = false
       } else if (pageName == 'customerEntry') {
         this.customerListActive = false
         this.customerInformationActive = true
@@ -163,6 +166,7 @@ export default {
         this.addressActive = false
         this.contactActive = false
         this.customerStore.hvData = true
+        this.showContact = false
         sessionStorage.setItem('mode', 'Entry')
         sessionStorage.setItem('changeBusiness', 'false')
       } else if (pageName == 'customerInquiry') {
@@ -171,6 +175,7 @@ export default {
         this.generalActive = true
         this.addressActive = false
         this.contactActive = false
+        this.showContact = true
         let selectedCustomer = this.customerStore.selectedCustomer
         this.customerStore.selectedCustomer = this.customerStore.customerList.find(
           (item) => item.cusCustomId === selectedCustomer
@@ -184,6 +189,7 @@ export default {
         }
         sessionStorage.setItem('changeBusiness', 'false')
         sessionStorage.setItem('mode', 'Inquiry')
+        this.showContact = true
       } else if (pageName == 'general') {
         this.customerListActive = false
         this.customerInformationActive = true
