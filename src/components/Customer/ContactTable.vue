@@ -127,9 +127,14 @@ export default {
     this.updateComponent()
   },
   methods: {
-    async updateComponent() {},
+    async updateComponent() {
+      const contact = await this.customerStore.fetchCustomerContact(
+        this.profileStore.profile.orgCustomId,
+        this.profileStore.businesskey
+      )
+    },
     add() {
-      this.$emit(`pageControl`, `customerEntry`)
+      this.$emit(`openModal`)
     },
     remove() {
       let request = []

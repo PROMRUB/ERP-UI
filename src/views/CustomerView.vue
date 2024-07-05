@@ -1,6 +1,12 @@
 <script setup></script>
 
 <template>
+  <Teleport to="body">
+    <div id="modal" v-show="openContactModal" class="contact-modal">
+      <ContactModal @onClickSave="saveContact" @closeModal="closedModal" />
+    </div>
+  </Teleport>
+
   <main>
     <div v-if="!customerStore.hvData">
       <img class="no-data" src="@/assets/no-data.png" alt="No Data" /><br />
@@ -35,6 +41,7 @@
             class="contact-btn"
             :class="{ active: contactActive }"
             @click="pageControl(`contact`)"
+            v-show="showContact"
           >
             <span><i class="fa fa-address-card fa-lg" aria-hidden="true"></i>ผู้ติดต่อ</span>
           </button>
@@ -46,7 +53,7 @@
           <AddressInformation @pageControl="pageControl" @saveCustomer="saveCustomer" />
         </div>
         <div class="row" v-if="contactActive">
-          <ContactInformation />
+          <ContactInformation @openModal="addContact" />
         </div>
       </div>
     </div>
@@ -58,6 +65,7 @@ import CustomerTable from '@/components/Customer/CustomerTable.vue'
 import GeneralInformation from '@/components/Customer/GeneralInformation.vue'
 import AddressInformation from '@/components/Customer/AddressInformation.vue'
 import ContactInformation from '@/components/Customer/ContactInformation.vue'
+import ContactModal from '@/components/Customer/ContactModal.vue'
 
 import { useProfileStore } from '@/stores/ProfileStore'
 import { useSystemConfigStore } from '@/stores/SystemConfigStore'
@@ -66,6 +74,7 @@ import { useCustomerStore } from '@/stores/CustomerStore'
 export default {
   components: {
     CustomerTable,
+    ContactModal,
     GeneralInformation,
     AddressInformation,
     ContactInformation
@@ -74,9 +83,11 @@ export default {
     return {
       customerListActive: true,
       customerInformationActive: false,
+      showContact: false,
       generalActive: false,
       addressActive: false,
       contactActive: false,
+      openContactModal: false,
 
       profileStore: useProfileStore(),
       systemConfigStore: useSystemConfigStore(),
@@ -86,7 +97,8 @@ export default {
   watch: {
     generalActive(newValue, oldValue) {},
     addressActive(newValue, oldValue) {},
-    contactActive(newValue, oldValue) {}
+    contactActive(newValue, oldValue) {},
+    openContactModal(newValue, oldValue) {}
   },
   mounted() {
     this.updateComponent()
@@ -146,6 +158,7 @@ export default {
         this.generalActive = false
         this.addressActive = false
         this.contactActive = false
+        this.showContact = false
       } else if (pageName == 'customerEntry') {
         this.customerListActive = false
         this.customerInformationActive = true
@@ -153,6 +166,7 @@ export default {
         this.addressActive = false
         this.contactActive = false
         this.customerStore.hvData = true
+        this.showContact = false
         sessionStorage.setItem('mode', 'Entry')
         sessionStorage.setItem('changeBusiness', 'false')
       } else if (pageName == 'customerInquiry') {
@@ -161,6 +175,7 @@ export default {
         this.generalActive = true
         this.addressActive = false
         this.contactActive = false
+        this.showContact = true
         let selectedCustomer = this.customerStore.selectedCustomer
         this.customerStore.selectedCustomer = this.customerStore.customerList.find(
           (item) => item.cusCustomId === selectedCustomer
@@ -174,6 +189,7 @@ export default {
         }
         sessionStorage.setItem('changeBusiness', 'false')
         sessionStorage.setItem('mode', 'Inquiry')
+        this.showContact = true
       } else if (pageName == 'general') {
         this.customerListActive = false
         this.customerInformationActive = true
@@ -224,12 +240,45 @@ export default {
         }
         this.pageControl('customerList')
       }
+    },
+    addContact() {
+      this.openContactModal = true
+    },
+    saveContact() {},
+    closedModal() {
+      console.log('test')
+      this.openContactModal = false
     }
   }
 }
 </script>
 
 <style>
+.contact-modal {
+  position: absolute;
+  width: 800px;
+  height: 375px;
+  top: 40%;
+  left: calc(40% - 163.5px);
+  background: #ffffff;
+  border-radius: 15px;
+
+  font-family: 'Kanit', sans-serif;
+
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.contact-close-modal-icon {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 2%;
+  left: 93%;
+}
+
 .general-btn {
   position: absolute;
   width: 200px;
