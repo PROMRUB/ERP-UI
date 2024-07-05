@@ -129,7 +129,7 @@ export default {
   methods: {
     async updateComponent() {},
     add() {
-      this.$emit(`pageControl`, `customerEntry`)
+      this.$emit(`openModal`)
     },
     remove() {
       let request = []
