@@ -89,6 +89,24 @@ export const useCustomerStore = defineStore('customerStore', () => {
       })
   }
 
+  async function fetchCustomerContactProfile(orgId, businessId, customerId, cusConId) {
+    return axiosExport
+      .get(
+        `${baseUrl}/v1/api/Customer/org/${orgId}/action/GetCustomerContactInformation/${businessId}/${customerId}/${cusConId}`
+      )
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          this.contactProfile = response.data.data
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
   async function createCustomer(orgId, payload) {
     return axiosExport
       .post(`${baseUrl}/v1/api/Customer/org/${orgId}/action/CreateCustomer`, payload)
@@ -204,6 +222,7 @@ export const useCustomerStore = defineStore('customerStore', () => {
     fetchCustomer,
     fetchCustomerbyId,
     fetchCustomerContact,
+    fetchCustomerContactProfile,
     createCustomer,
     updateCustomer,
     deleteCustomer,

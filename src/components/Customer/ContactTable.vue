@@ -53,7 +53,7 @@ const columns = [
     data: 'cusConName',
     orderable: false,
     render: function (data, type, row) {
-      return `<a onClick="handleContactClick(\`` + data + `\`)">` + data + `</a>`
+      return `<a onClick="handleContactClick(\`` + data.split(".")[0] + `\`)">` + data.split(".")[1] + `</a>`
     },
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')

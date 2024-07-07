@@ -252,23 +252,22 @@ export default {
       }
     },
     addContact(data) {
-      sessionStorage.setItem('modalMode', data)
+      if (data == 'Update') sessionStorage.setItem('modalMode', 'Update')
+      else sessionStorage.setItem('modalMode', 'Entry')
       this.openContactModal = true
     },
-    saveContact(value) {
-      console.log('value')
+    async saveContact(value) {
       this.customerStore.customerProfile.businessId = this.profileStore.businesskey
       if (value == 'Save') {
-        this.customerStore.createContact(
+        var response = this.customerStore.createContact(
           this.profileStore.profile.orgCustomId,
           this.customerStore.customerProfile.businessId,
           this.customerStore.customerProfile.cusId,
           this.customerStore.contactProfile
         )
       }
-      if (value == 'Spdate') {
-        console.log(this.customerStore.customerProfile)
-        this.customerStore.UpdateContact(
+      if (value == 'Update') {
+        var response = await this.customerStore.updateContact(
           this.profileStore.profile.orgCustomId,
           this.customerStore.customerProfile.businessId,
           this.customerStore.customerProfile.cusId,
@@ -276,6 +275,8 @@ export default {
           this.customerStore.contactProfile
         )
       }
+      this.generalActive = true
+      this.contactActive = false
       this.openContactModal = false
     },
     closedModal() {
