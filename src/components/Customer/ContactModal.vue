@@ -109,7 +109,7 @@
           class="customer-contact-modal-button customer-contact-modal-cancel-button"
           @click="onClickCloseModal"
         >
-          <i class="fa fa-times fa-lg" aria-hidden="true" />ยกเลิก
+          <i class="fa fa-times fa-lg" aria-hidden="true" />ปิด
         </button>
       </div>
     </div>
@@ -135,6 +135,9 @@ export default {
       customerStore: useCustomerStore()
     }
   },
+  watch: {
+    rendered(newValue, oldValue) {}
+  },
   mounted() {
     this.updateComponent()
   },
@@ -149,12 +152,16 @@ export default {
         this.disableTelNo = true
         this.disableMobileNo = true
         this.disableEmail = true
+        this.disableSave = true
+        this.disableEdit = true
+        this.disableUpdate = true
       }
       if (sessionStorage.getItem('mode') == 'Update') {
         this.disableCusconFirstname = false
         this.disableCusConLastname = false
         this.disableTelNo = false
         this.disableMobileNo = false
+        this.disableEmail = false
         if (sessionStorage.getItem('modalMode') == `Entry`) {
           this.disableSave = false
           this.disableEdit = true
@@ -171,6 +178,7 @@ export default {
       }
     },
     onClickCloseModal() {
+      this.rendered = !this.rendered
       this.customerStore.contactProfile = {}
       this.$emit('closeModal')
     },

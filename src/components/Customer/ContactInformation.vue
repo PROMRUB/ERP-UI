@@ -83,11 +83,18 @@ export default {
         this.rendered = true
       }
     },
-    openModal(data) {
-      this.$emit(`openModal`, data)
+    async openModal(data) {
+      if (!(data == null || data == undefined || data == ''))
+        var response = await this.customerStore.fetchCustomerContactProfile(
+          this.profileStore.profile.orgCustomId,
+          this.customerStore.customerProfile.businessId,
+          this.customerStore.customerProfile.cusId,
+          data
+        )
+      this.$emit(`openModal`, 'Update')
     },
     add() {
-      this.$emit(`openModal`, `Entry`)
+      this.$emit(`openModal`, 'Entry')
     },
     remove() {
       let request = []
