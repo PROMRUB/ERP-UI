@@ -3,7 +3,7 @@
 <template>
   <Teleport to="body">
     <div id="modal" v-show="openContactModal" class="contact-modal">
-      <ContactModal @onClickSave="saveContact" @closeModal="closedModal" />
+      <ContactModal @saveModal="saveContact" @closeModal="closedModal" />
     </div>
   </Teleport>
 
@@ -53,7 +53,11 @@
           <AddressInformation @pageControl="pageControl" @saveCustomer="saveCustomer" />
         </div>
         <div class="row" v-if="contactActive">
-          <ContactInformation @openModal="addContact" />
+          <ContactInformation
+            @pageControl="pageControl"
+            @saveCustomer="saveCustomer"
+            @openModal="addContact"
+          />
         </div>
       </div>
     </div>
@@ -88,13 +92,14 @@ export default {
       addressActive: false,
       contactActive: false,
       openContactModal: false,
-
+      refresh: true,
       profileStore: useProfileStore(),
       systemConfigStore: useSystemConfigStore(),
       customerStore: useCustomerStore()
     }
   },
   watch: {
+    refresh() {},
     generalActive(newValue, oldValue) {},
     addressActive(newValue, oldValue) {},
     contactActive(newValue, oldValue) {},
@@ -108,6 +113,10 @@ export default {
   },
   methods: {
     async updateComponent() {
+      if (this.refresh) {
+        sessionStorage.setItem('page', 'customerList')
+        this.refresh = true
+      }
       let token = sessionStorage.getItem('token')
       sessionStorage.removeItem(`selectedItems`)
       if (token == '' || token == undefined || token == null) {
@@ -160,6 +169,7 @@ export default {
         this.contactActive = false
         this.showContact = false
       } else if (pageName == 'customerEntry') {
+        sessionStorage.setItem('rendered', 'false')
         this.customerListActive = false
         this.customerInformationActive = true
         this.generalActive = true
@@ -241,12 +251,34 @@ export default {
         this.pageControl('customerList')
       }
     },
-    addContact() {
+    addContact(data) {
+      sessionStorage.setItem('modalMode', data)
       this.openContactModal = true
     },
-    saveContact() {},
+    saveContact(value) {
+      console.log('value')
+      this.customerStore.customerProfile.businessId = this.profileStore.businesskey
+      if (value == 'Save') {
+        this.customerStore.createContact(
+          this.profileStore.profile.orgCustomId,
+          this.customerStore.customerProfile.businessId,
+          this.customerStore.customerProfile.cusId,
+          this.customerStore.contactProfile
+        )
+      }
+      if (value == 'Spdate') {
+        console.log(this.customerStore.customerProfile)
+        this.customerStore.UpdateContact(
+          this.profileStore.profile.orgCustomId,
+          this.customerStore.customerProfile.businessId,
+          this.customerStore.customerProfile.cusId,
+          this.customerStore.contactProfile.cusConId,
+          this.customerStore.contactProfile
+        )
+      }
+      this.openContactModal = false
+    },
     closedModal() {
-      console.log('test')
       this.openContactModal = false
     }
   }

@@ -10,8 +10,8 @@ export const useCustomerStore = defineStore('customerStore', () => {
   let contactProfile = {}
   let selectedCustomer = {}
 
-  // let baseUrl = 'https://localhost:44345'
-  let baseUrl = 'https://sales-api-dev.prom.co.th'
+  let baseUrl = 'https://localhost:44345'
+  // let baseUrl = 'https://sales-api-dev.prom.co.th'
 
   let axiosExport = axios.create({
     baseUrl
@@ -77,7 +77,7 @@ export const useCustomerStore = defineStore('customerStore', () => {
       )
       .then((response) => {
         if (response.data.status.code == 1000) {
-          this.customerProfile = response.data.data
+          this.cusConList = response.data.data
           return response.data.data
         } else {
           throw new Error(`${response.data.status.message}`)
@@ -142,6 +142,57 @@ export const useCustomerStore = defineStore('customerStore', () => {
       })
   }
 
+  async function createContact(orgId, businessId, customerId, payload) {
+    return axiosExport
+      .post(`${baseUrl}/v1/api/Customer/org/${orgId}/action/AddCustomerContact/${businessId}/${customerId}`, payload)
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
+
+  async function updateContact(orgId, businessId, customerId, cusConId, payload) {
+    return axiosExport
+      .post(
+        `${baseUrl}/v1/api/Customer/org/${orgId}/action/UpdateCustomerContact/${businessId}/${customerId}/${cusConId}`,
+        payload
+      )
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
+
+  async function deleteContact(orgId, payload) {
+    return axiosExport
+      .post(`${baseUrl}/v1/api/Customer/org/${orgId}/action/DeleteCustomer`, payload)
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
+
   return {
     mode,
     hvData,
@@ -155,6 +206,9 @@ export const useCustomerStore = defineStore('customerStore', () => {
     fetchCustomerContact,
     createCustomer,
     updateCustomer,
-    deleteCustomer
+    deleteCustomer,
+    createContact,
+    updateContact,
+    deleteContact
   }
 })
