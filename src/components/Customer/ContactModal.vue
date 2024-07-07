@@ -12,48 +12,68 @@
       <div class="customer-contact-modal-column" style="margin-top: 20px">
         <div class="form-group">
           <div class="form-line">
-            <label class="customer-contact-modal-input-box-label form-text" for="customerNo"
-              >รหัสลูกค้า:</label
+            <label class="customer-contact-modal-input-box-label form-text" for="cusConFirstname"
+              >ชื่อ:</label
             >
             <input
               class="customer-contact-modal-input-box"
               type="text"
-              id="customerNo"
-              name="customerId"
+              id="cusConFirstname"
+              name="cusConFirstname"
+              v-model="customerStore.contactProfile.cusConFirstname"
+              :disabled="disableCusconFirstname"
             />
           </div>
           <div class="form-line">
-            <label class="customer-contact-modal-input-box-label form-text" for="taxId"
-              >เลขประจำตัวผู้เสียภาษี:</label
-            >
-            <input class="customer-contact-modal-input-box" type="text" id="taxId" name="taxId" />
-          </div>
-          <div class="form-line">
-            <label class="customer-contact-modal-input-box-label form-text" for="brnId"
-              >สาขา:</label
-            >
-            <input class="customer-contact-modal-input-box" type="text" id="brnId" name="brnId" />
-          </div>
-          <div class="form-line">
-            <label class="customer-contact-modal-input-box-label form-text" for="cusName"
-              >ชื่อผู้ประกอบการ:</label
+            <label class="customer-contact-modal-input-box-label form-text" for="cusConLastname"
+              >นามสกุล:</label
             >
             <input
               class="customer-contact-modal-input-box"
               type="text"
-              id="cusName"
-              name="cusName"
+              id="cusConLastname"
+              name="cusConLastname"
+              v-model="customerStore.contactProfile.cusConLastname"
+              :disabled="disableCusConLastname"
             />
           </div>
           <div class="form-line">
-            <label class="customer-contact-modal-input-box-label form-text" for="displayName"
-              >ชื่อสถานประกอบการ:</label
+            <label class="customer-contact-modal-input-box-label form-text" for="telNo"
+              >เบอร์โทรศัพท์:</label
             >
             <input
               class="customer-contact-modal-input-box"
               type="text"
-              id="displayName"
-              name="displayName"
+              id="telNo"
+              name="telNo"
+              v-model="customerStore.contactProfile.telNo"
+              :disabled="disableTelNo"
+            />
+          </div>
+          <div class="form-line">
+            <label class="customer-contact-modal-input-box-label form-text" for="mobileNo"
+              >มือถือ:</label
+            >
+            <input
+              class="customer-contact-modal-input-box"
+              type="text"
+              id="mobileNo"
+              name="mobileNo"
+              v-model="customerStore.contactProfile.mobileNo"
+              :disabled="disableMobileNo"
+            />
+          </div>
+          <div class="form-line">
+            <label class="customer-contact-modal-input-box-label form-text" for="email"
+              >E-Mail:</label
+            >
+            <input
+              class="customer-contact-modal-input-box"
+              type="text"
+              id="email"
+              name="email"
+              v-model="customerStore.contactProfile.email"
+              :disabled="disableEmail"
             />
           </div>
         </div>
@@ -61,46 +81,105 @@
     </div>
     <div class="row">
       <div v-if="!disableSave" class="customer-contact-modal-column">
-        <button class="customer-contact-modal-button customer-contact-modal-save-button" @click="onClickSave">
+        <button
+          class="customer-contact-modal-button customer-contact-modal-save-button"
+          @click="onClickSave"
+        >
           <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
         </button>
       </div>
       <div v-if="!disableEdit" class="customer-contact-modal-column">
-        <button class="customer-contact-modal-button customer-contact-modal-save-button" @click="onClickEdit">
+        <button
+          class="customer-contact-modal-button customer-contact-modal-save-button"
+          @click="onClickEdit"
+        >
           <i class="fa fa-pencil fa-lg" aria-hidden="true" />แก้ไข
         </button>
       </div>
       <div v-if="!disableUpdate" class="customer-contact-modal-column">
-        <button class="customer-contact-modal-button customer-contact-modal-save-button" @click="onClickUpdate">
+        <button
+          class="customer-contact-modal-button customer-contact-modal-save-button"
+          @click="onClickUpdate"
+        >
           <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
         </button>
       </div>
       <div class="customer-contact-modal-column">
-        <button class="customer-contact-modal-button customer-contact-modal-cancel-button" @click="onClickCloseModal">
+        <button
+          class="customer-contact-modal-button customer-contact-modal-cancel-button"
+          @click="onClickCloseModal"
+        >
           <i class="fa fa-times fa-lg" aria-hidden="true" />ยกเลิก
         </button>
-      </div>    
+      </div>
     </div>
   </main>
 </template>
 
 <script>
+import { useCustomerStore } from '@/stores/CustomerStore'
+
 export default {
   components: {},
   data() {
-    return {}
+    return {
+      rendered: false,
+      disableCusconFirstname: false,
+      disableCusConLastname: false,
+      disableTelNo: false,
+      disableMobileNo: false,
+      disableEmail: false,
+      disableSave: false,
+      disableEdit: false,
+      disableUpdate: false,
+      customerStore: useCustomerStore()
+    }
+  },
+  mounted() {
+    this.updateComponent()
+  },
+  updated() {
+    this.updateComponent()
   },
   methods: {
+    async updateComponent() {
+      if (sessionStorage.getItem('mode') == 'Inquiry') {
+        this.disableCusconFirstname = true
+        this.disableCusConLastname = true
+        this.disableTelNo = true
+        this.disableMobileNo = true
+        this.disableEmail = true
+      }
+      if (sessionStorage.getItem('mode') == 'Update') {
+        this.disableCusconFirstname = false
+        this.disableCusConLastname = false
+        this.disableTelNo = false
+        this.disableMobileNo = false
+        if (sessionStorage.getItem('modalMode') == `Entry`) {
+          this.disableSave = false
+          this.disableEdit = true
+          this.disableUpdate = true
+        } else if (sessionStorage.getItem('modalMode') == `Inquiry`) {
+          this.disableSave = true
+          this.disableEdit = false
+          this.disableUpdate = true
+        } else if (sessionStorage.getItem('modalMode') == `Update`) {
+          this.disableSave = true
+          this.disableEdit = true
+          this.disableUpdate = false
+        }
+      }
+    },
     onClickCloseModal() {
+      this.customerStore.contactProfile = {}
       this.$emit('closeModal')
     },
     onClickSave() {
-      this.$emit('saveModal')
+      this.$emit('saveModal', 'Save')
     },
-    onClickEdit(){
-    },
-    onClickUpdate(){
-        this.$emit('updateModal')
+    onClickEdit() {},
+    onClickUpdate() {
+      this.$emit('saveModal', 'Update')
     }
   }
 }

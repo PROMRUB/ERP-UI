@@ -171,6 +171,9 @@ export default {
     }
   },
   emits: ['pageControl'],
+  watch: {
+    rendered(newValue, oldValue) {}
+  },
   mounted() {
     this.updateComponent()
   },
@@ -179,18 +182,18 @@ export default {
   },
   methods: {
     async updateComponent() {
-      if (sessionStorage.getItem('rendered') == 'false') {
-        if (sessionStorage.getItem('mode') == 'Entry') {
-          this.disableCusType = false
-          this.disableCusNameEng = false
-          this.disableTaxId = false
-          this.disableBrnId = false
-          this.disableCusName = false
-          this.disableDisplayName = false
-          this.disableWebsite = false
-          this.disableSave = false
-          this.disableEdit = true
-          this.disableUpdate = true
+      if (sessionStorage.getItem('mode') == 'Entry') {
+        this.disableCusType = false
+        this.disableCusNameEng = false
+        this.disableTaxId = false
+        this.disableBrnId = false
+        this.disableCusName = false
+        this.disableDisplayName = false
+        this.disableWebsite = false
+        this.disableSave = false
+        this.disableEdit = true
+        this.disableUpdate = true
+        if (sessionStorage.getItem('rendered') == 'false') {
           this.customerStore.customerProfile.cusType = 'Corporate'
           this.customerStore.customerProfile.cusNameEng = ''
           this.customerStore.customerProfile.cusCustomId = ''
@@ -211,32 +214,30 @@ export default {
           this.customerStore.customerProfile.province = ''
           this.customerStore.customerProfile.district = ''
           this.customerStore.customerProfile.subDistrict = ''
+          sessionStorage.setItem('rendered', 'true')
         }
-        if (sessionStorage.getItem('mode') == 'Inquiry') {
-          this.disableCusType = true
-          this.disableCusNameEng = true
-          this.disableTaxId = true
-          this.disableBrnId = true
-          this.disableCusName = true
-          this.disableDisplayName = true
-          this.disableWebsite = true
-          this.disableEdit = false
-          this.disableSave = true
-          this.disableUpdate = true
-        }
-        if (sessionStorage.getItem('mode') == 'Update') {
-          this.disableCusType = false
-          this.disableCusNameEng = false
-          this.disableTaxId = false
-          this.disableBrnId = false
-          this.disableCusName = false
-          this.disableDisplayName = false
-          this.disableWebsite = false
-          this.disableSave = true
-          this.disableEdit = true
-          this.disableUpdate = false
-        }
-        sessionStorage.setItem('rendered', 'true')
+      } else if (sessionStorage.getItem('mode') == 'Inquiry') {
+        this.disableCusType = true
+        this.disableCusNameEng = true
+        this.disableTaxId = true
+        this.disableBrnId = true
+        this.disableCusName = true
+        this.disableDisplayName = true
+        this.disableWebsite = true
+        this.disableEdit = false
+        this.disableSave = true
+        this.disableUpdate = true
+      } else if (sessionStorage.getItem('mode') == 'Update') {
+        this.disableCusType = false
+        this.disableCusNameEng = false
+        this.disableTaxId = false
+        this.disableBrnId = false
+        this.disableCusName = false
+        this.disableDisplayName = false
+        this.disableWebsite = false
+        this.disableSave = true
+        this.disableEdit = true
+        this.disableUpdate = false
       }
     },
     back() {

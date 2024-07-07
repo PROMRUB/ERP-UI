@@ -1,5 +1,33 @@
 <template>
-  <ContactTable />
+  <button v-if="!disableAdd" class="add-customer-contact-button" @click="add">Add</button>
+  <button v-if="!disableDelete" class="remove-customer-contact-button" @click="remove">
+    Delete
+  </button>
+  <ContactTable @openModal="openModal" />
+  <div v-if="!disableEdit" class="customer-address-column">
+    <button
+      class="customer-customer-contact-bottom-button customer-customer-contact-save-bottom-button"
+      @click="edit"
+    >
+      <i class="fa fa-pencil fa-lg" aria-hidden="true" />แก้ไข
+    </button>
+  </div>
+  <div v-if="!disableUpdate" class="customer-address-column">
+    <button
+      class="customer-customer-contact-bottom-button customer-customer-contact-save-bottom-button"
+      @click="update"
+    >
+      <i class="fa fa-floppy-o fa-lg" aria-hidden="true" />บันทึก
+    </button>
+  </div>
+  <div class="customer-address-column">
+    <button
+      class="customer-customer-contact-bottom-button customer-customer-contact-cancel-bottom-button"
+      @click="back"
+    >
+      <i class="fa fa-times fa-lg" aria-hidden="true" />ยกเลิก
+    </button>
+  </div>
 </template>
 
 <script>
@@ -15,22 +43,18 @@ export default {
   },
   data() {
     return {
-      customerListActive: true,
-      customerInformationActive: false,
-      generalActive: false,
-      addressActive: false,
-      contactActive: false,
+      rendered: false,
+      disableAdd: true,
+      disableDelete: true,
+      disableEdit: false,
+      disableUpdate: true,
 
       profileStore: useProfileStore(),
       systemConfigStore: useSystemConfigStore(),
       customerStore: useCustomerStore()
     }
   },
-  watch: {
-    generalActive(newValue, oldValue) {},
-    addressActive(newValue, oldValue) {},
-    contactActive(newValue, oldValue) {}
-  },
+  watch: {},
   mounted() {
     this.updateComponent()
   },
@@ -39,141 +63,69 @@ export default {
   },
   methods: {
     async updateComponent() {
-      let token = sessionStorage.getItem('token')
-      sessionStorage.removeItem(`selectedItems`)
-      if (token == '' || token == undefined || token == null) {
-        this.profileStore.isSignIn = false
-        this.$router.push('/signin')
-        this.$emit('loaded')
-      } else {
-        if (
-          sessionStorage.getItem('page') == undefined ||
-          sessionStorage.getItem('page') == null ||
-          sessionStorage.getItem('page') == ''
-        )
-          sessionStorage.setItem('page', 'customerList')
-        this.profileStore.isSignIn = true
-        const profileData = await this.profileStore.fetchProfile()
-        if (this.profileStore.businessList.length == 0) {
-          const businessData = await this.profileStore.fetchBusiness()
-        }
-        const provinceData = await this.systemConfigStore.fetchProvince(
-          this.profileStore.profile.orgCustomId
-        )
-        const districtData = await this.systemConfigStore.fetchDistrict(
-          this.profileStore.profile.orgCustomId
-        )
-        const subDistrctData = await this.systemConfigStore.fetchSubDistrict(
-          this.profileStore.profile.orgCustomId
-        )
-        const customers = await this.customerStore.fetchCustomer(
+      if (!this.rendered) {
+        const contact = await this.customerStore.fetchCustomerContact(
           this.profileStore.profile.orgCustomId,
-          this.profileStore.businesskey
+          this.customerStore.customerProfile.cusId
         )
-        if (sessionStorage.getItem('page') == 'customerList') {
-          if (customers.length > 0) {
-            this.customerStore.hvData = true
-          } else {
-            this.customerStore.hvData = false
-          }
+        if (sessionStorage.getItem('mode') == 'Entry') {
         }
-        this.$emit('loaded')
+        if (sessionStorage.getItem('mode') == 'Inquiry') {
+          this.disableEdit = false
+          this.disableUpdate = true
+        }
+        if (sessionStorage.getItem('mode') == 'Update') {
+          this.disableAdd = false
+          this.disableDelete = false
+          this.disableEdit = true
+          this.disableUpdate = false
+        }
+        this.rendered = true
       }
     },
-    pageControl(pageName) {
-      sessionStorage.setItem('page', pageName)
-      this.$emit('loading')
-      if (pageName == 'customerList') {
-        this.customerListActive = true
-        this.customerInformationActive = false
-        this.generalActive = false
-        this.addressActive = false
-        this.contactActive = false
-      } else if (pageName == 'customerEntry') {
-        this.customerListActive = false
-        this.customerInformationActive = true
-        this.generalActive = true
-        this.addressActive = false
-        this.contactActive = false
-        this.customerStore.hvData = true
-        sessionStorage.setItem('mode', 'Entry')
-        sessionStorage.setItem('changeBusiness', 'false')
-      } else if (pageName == 'customerInquiry') {
-        this.customerListActive = false
-        this.customerInformationActive = true
-        this.generalActive = true
-        this.addressActive = false
-        this.contactActive = false
-        let selectedCustomer = this.customerStore.selectedCustomer
-        this.customerStore.selectedCustomer = this.customerStore.customerList.find(
-          (item) => item.cusCustomId === selectedCustomer
-        )?.cusId
-        if (this.customerStore.selectedCustomer) {
-          this.customerStore.fetchCustomerbyId(
-            this.profileStore.profile.orgCustomId,
-            this.profileStore.businesskey,
-            this.customerStore.selectedCustomer
-          )
-        }
-        sessionStorage.setItem('changeBusiness', 'false')
-        sessionStorage.setItem('mode', 'Inquiry')
-      } else if (pageName == 'general') {
-        this.customerListActive = false
-        this.customerInformationActive = true
-        this.generalActive = true
-        this.addressActive = false
-        this.contactActive = false
-        sessionStorage.setItem('changeBusiness', 'false')
-      } else if (pageName == 'address') {
-        this.customerListActive = false
-        this.customerInformationActive = true
-        this.generalActive = false
-        this.addressActive = true
-        this.contactActive = false
-        sessionStorage.setItem('changeBusiness', 'false')
-      } else if (pageName == 'contact') {
-        this.customerListActive = false
-        this.customerInformationActive = true
-        this.generalActive = false
-        this.addressActive = false
-        this.contactActive = true
-        sessionStorage.setItem('changeBusiness', 'false')
-      }
-      this.$emit('loaded')
+    openModal(data) {
+      this.$emit(`openModal`, data)
     },
-    saveCustomer(value) {
-      if (
-        this.customerStore.customerProfile.cusNameEng == null ||
-        this.customerStore.customerProfile.cusNameEng == '' ||
-        this.customerStore.customerProfile.cusNameEng == undefined
-      ) {
-        alert('กรุณากรอกชื่อบริษัทภาษาอังกฤษ')
-      } else {
-        this.customerStore.customerProfile.businessId = this.profileStore.businesskey
-        if (value == 'save') {
-          this.customerStore.createCustomer(
-            this.profileStore.profile.orgCustomId,
-            this.customerStore.customerProfile
-          )
-        }
-        if (value == 'update') {
-          console.log(this.customerStore.customerProfile)
-          this.customerStore.updateCustomer(
-            this.profileStore.profile.orgCustomId,
-            this.customerStore.customerProfile.businessId,
-            this.customerStore.customerProfile.cusId,
-            this.customerStore.customerProfile
-          )
-        }
-        this.pageControl('customerList')
+    add() {
+      this.$emit(`openModal`, `Entry`)
+    },
+    remove() {
+      let request = []
+      let selectedItems = JSON.parse(sessionStorage.getItem('selectedItems')) || []
+      if (selectedItems.length > 0) {
+        selectedItems.forEach((selectedItem) => {
+          let foundItem = this.customerStore.cusConList.find((item) => item.cusId == selectedItem)
+          request.push(foundItem)
+        })
+        this.customerStore.deleteCustomer(this.profileStore.profile.orgCustomId, request)
       }
+      selectedItems.forEach((selectedItem) => {
+        let index = this.customerStore.cusConList.findIndex((item) => item.cusId == selectedItem)
+        if (index !== -1) {
+          let foundItem = this.customerStore.cusConList.splice(index, 1)[0] // Remove item and get the removed item
+          request.push(foundItem)
+        } else {
+          console.warn(`Item with cusId ${selectedItem} not found in customerList`)
+        }
+      })
+    },
+    back() {
+      this.rendered = false
+      this.$emit(`pageControl`, `customerList`)
+    },
+    edit() {
+      this.rendered = false
+      sessionStorage.setItem('mode', 'Update')
+      this.updateComponent()
+    },
+    update() {
+      this.$emit(`saveCustomer`, `update`)
     }
   }
 }
 </script>
 
 <style>
-
 .row {
   display: flex;
 }
@@ -182,5 +134,75 @@ export default {
   content: '';
   display: table;
   clear: both;
+}
+
+.add-customer-contact-button {
+  background-color: #fff;
+  position: absolute;
+  display: inline-block;
+  border: 1px solid #00275f;
+  border-radius: 3px;
+  width: 80px;
+  height: 30px;
+  left: 60%;
+  top: 24%;
+  z-index: 9998;
+}
+
+.add-customer-contact-button:hover {
+  background-color: #00275f;
+  color: #fff;
+  border-color: #00275f;
+}
+
+.remove-customer-contact-button {
+  background-color: #fff;
+  position: absolute;
+  display: inline-block;
+  border: 1px solid #ff0000;
+  border-radius: 3px;
+  width: 80px;
+  height: 30px;
+  left: 65%;
+  top: 24%;
+  z-index: 9998;
+}
+
+.remove-customer-contact-button:hover {
+  background-color: #ff0000;
+  color: #fff;
+  border-color: #ff0000;
+}
+
+.customer-customer-contact-bottom-button {
+  position: absolute;
+  width: 125px;
+  height: 35px;
+  top: 84%;
+  border-radius: 3px;
+}
+
+.customer-customer-contact-save-bottom-button {
+  background-color: #ffffff;
+  color: #00275e;
+  border: 1px solid #00275e;
+  left: 71%;
+}
+
+.customer-customer-contact-save-bottom-button:hover {
+  color: #ffffff;
+  background-color: #00275e;
+}
+
+.customer-customer-contact-cancel-bottom-button {
+  background-color: #ffffff;
+  color: #ff0000;
+  border: 1px solid #ff0000;
+  left: 78%;
+}
+
+.customer-customer-contact-cancel-bottom-button:hover {
+  color: #ffffff;
+  background-color: #ff0000;
 }
 </style>
