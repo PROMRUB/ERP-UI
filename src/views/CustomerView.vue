@@ -198,7 +198,7 @@ export default {
           )
         }
         sessionStorage.setItem('changeBusiness', 'false')
-        sessionStorage.setItem('mode', 'Inquiry')
+        sessionStorage.setItem('mode', 'Update')
         this.showContact = true
       } else if (pageName == 'general') {
         this.customerListActive = false
