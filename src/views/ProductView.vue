@@ -16,6 +16,7 @@
 
 <script>
 import { useProfileStore } from '@/stores/ProfileStore'
+import { useProductStore } from '@/stores/ProductStore'
 
 import ProductTable from '@/components/Product/ProductTable.vue'
 
@@ -26,7 +27,8 @@ export default {
   data() {
     return {
       hvData: true,
-      profileStore: useProfileStore()
+      profileStore: useProfileStore(),
+      productStore: useProductStore()
     }
   },
   mounted() {
@@ -48,6 +50,17 @@ export default {
         const profileData = await this.profileStore.fetchProfile()
         if (this.profileStore.businessList.length == 0) {
           const businessData = await this.profileStore.fetchBusiness()
+        }
+        const customers = await this.productStore.fetchProductList(
+          this.profileStore.profile.orgCustomId,
+          this.profileStore.businesskey
+        )
+        if (sessionStorage.getItem('page') == 'productList') {
+          if (customers.length > 0) {
+            this.customerStore.hvData = true
+          } else {
+            this.customerStore.hvData = false
+          }
         }
         this.$emit('loaded')
       }
