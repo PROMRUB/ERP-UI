@@ -10,9 +10,9 @@ export const useCustomerStore = defineStore('customerStore', () => {
   let contactProfile = {}
   let selectedCustomer = {}
 
-  // let baseUrl = 'https://localhost:44345'
-  let baseUrl = 'https://sales-api-dev.prom.co.th'
-
+  let baseUrl = 'https://localhost:44345'
+  // let baseUrl = 'https://sales-api-dev.prom.co.th'
+  
   let axiosExport = axios.create({
     baseUrl
   })

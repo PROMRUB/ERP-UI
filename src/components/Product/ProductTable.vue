@@ -8,8 +8,40 @@ const columns = [
   {
     title: '',
     className: 'header-center',
-    data: 'index',
+    data: 'productId',
     orderable: false,
+    width: 5,
+    render: function (data, type, row) {
+      return (
+        `<input type="checkbox" class="select-checkbox" onClick="{
+          let selectedItems = JSON.parse(sessionStorage.getItem('selectedItems')) || [];
+          let index = selectedItems.indexOf(\`` +
+        data +
+        `\`);
+          if (index !== -1) {
+            selectedItems.splice(index, 1);
+          } else {
+            selectedItems.push(\`` +
+        data +
+        `\`);
+          }
+          sessionStorage.setItem('selectedItems', JSON.stringify(selectedItems))
+        }"/>`
+      )
+    },
+    createdCell: function (td, cellData, rowData, row, col) {
+      td.classList.add('content-index')
+    }
+  },
+  {
+    title: '',
+    className: 'header-center',
+    data: null,
+    orderable: false,
+    width: 5,
+    render: function (data, type, row, meta) {
+      return meta.row + 1
+    },
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-index')
     }
@@ -17,8 +49,12 @@ const columns = [
   {
     title: 'รหัสสินค้า',
     className: 'header-center',
-    data: 'productCode',
+    data: 'productCustomId',
     orderable: false,
+    width: 200,
+    render: function (data, type, row) {
+      return `<a onClick="handleCustomerClick(\`` + data + `\`)">` + data + `</a>`
+    },
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
@@ -28,6 +64,7 @@ const columns = [
     className: 'header-center',
     data: 'productName',
     orderable: false,
+    width: 600,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
@@ -35,7 +72,7 @@ const columns = [
   {
     title: 'กลุ่มสินค้า',
     className: 'header-center',
-    data: 'productType',
+    data: 'productCategory',
     orderable: false,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
@@ -44,21 +81,11 @@ const columns = [
   {
     title: 'สถานะ',
     className: 'header-center',
-    data: 'recordStatus',
+    data: 'productStatus',
     orderable: false,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
-  }
-]
-
-const data = [
-  {
-    index: '1',
-    productCode: 'PL701',
-    productName: 'L430, LONG LATCH',
-    productType: 'InVue - Access Control',
-    recordStatus: 'ปกติ'
   }
 ]
 </script>
@@ -67,13 +94,67 @@ const data = [
   <div class="product-card">
     <DataTable
       :columns="columns"
-      :data="data"
+      :data="productStore.productList"
       class="display"
       :options="{ select: true, order: [[0, 'asc']] }"
     >
     </DataTable>
   </div>
 </template>
+
+<script>
+import { useProfileStore } from '@/stores/ProfileStore'
+import { useCustomerStore } from '@/stores/CustomerStore'
+import { useProductStore } from '@/stores/ProductStore'
+
+export default {
+  components: {},
+  data() {
+    return {
+      profileStore: useProfileStore(),
+      customerStore: useCustomerStore(),
+      productStore: useProductStore()
+    }
+  },
+  emits: ['pageControl'],
+  mounted() {
+    window.handleCustomerClick = (data) => {
+      this.productStore.selectedProduct = data
+      this.$emit(`pageControl`, `productInquiry`)
+    }
+    this.updateComponent()
+  },
+  updated() {
+    this.updateComponent()
+  },
+  methods: {
+    async updateComponent() {},
+    add() {
+      this.$emit(`pageControl`, `productEntry`)
+    },
+    remove() {
+      let request = []
+      let selectedItems = JSON.parse(sessionStorage.getItem('selectedItems')) || []
+      if (selectedItems.length > 0) {
+        selectedItems.forEach((selectedItem) => {
+          let foundItem = this.productStore.productList.find((item) => item.cusId == selectedItem)
+          request.push(foundItem)
+        })
+        this.productStore.deleteProduct(this.profileStore.profile.orgCustomId, request)
+      }
+      selectedItems.forEach((selectedItem) => {
+        let index = this.productStore.productList.findIndex((item) => item.cusId == selectedItem)
+        if (index !== -1) {
+          let foundItem = this.productStore.productList.splice(index, 1)[0] // Remove item and get the removed item
+          request.push(foundItem)
+        } else {
+          console.warn(`Item with product_id ${selectedItem} not found in productList`)
+        }
+      })
+    }
+  }
+}
+</script>
 
 <style>
 @import 'datatables.net-dt';
