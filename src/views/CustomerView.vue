@@ -93,6 +93,7 @@ export default {
       contactActive: false,
       openContactModal: false,
       refresh: true,
+      
       profileStore: useProfileStore(),
       systemConfigStore: useSystemConfigStore(),
       customerStore: useCustomerStore()

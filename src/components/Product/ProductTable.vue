@@ -38,6 +38,7 @@ const columns = [
     className: 'header-center',
     data: null,
     orderable: false,
+    searchable: false,
     width: 5,
     render: function (data, type, row, meta) {
       return meta.row + 1
@@ -53,7 +54,7 @@ const columns = [
     orderable: false,
     width: 200,
     render: function (data, type, row) {
-      return `<a onClick="handleCustomerClick(\`` + data + `\`)">` + data + `</a>`
+      return `<a onClick="handleProductClick(\`` + data + `\`)">` + data + `</a>`
     },
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
@@ -64,16 +65,28 @@ const columns = [
     className: 'header-center',
     data: 'productName',
     orderable: false,
-    width: 600,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
   },
   {
-    title: 'กลุ่มสินค้า',
+    title: 'ราคา/หน่วย',
     className: 'header-center',
-    data: 'productCategory',
+    data: 'msrp',
     orderable: false,
+    searchable: false,
+    width: 200,
+    createdCell: function (td, cellData, rowData, row, col) {
+      td.classList.add('content-string')
+    }
+  },
+  {
+    title: 'ราคาต่ำสุด/หน่วย',
+    className: 'header-center',
+    data: 'lwPrice',
+    orderable: false,
+    searchable: false,
+    width: 200,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
@@ -83,6 +96,8 @@ const columns = [
     className: 'header-center',
     data: 'productStatus',
     orderable: false,
+    searchable: false,
+    width: 100,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
@@ -118,7 +133,7 @@ export default {
   },
   emits: ['pageControl'],
   mounted() {
-    window.handleCustomerClick = (data) => {
+    window.handleProductClick = (data) => {
       this.productStore.selectedProduct = data
       this.$emit(`pageControl`, `productInquiry`)
     }

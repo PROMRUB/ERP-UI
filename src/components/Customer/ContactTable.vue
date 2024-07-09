@@ -48,7 +48,7 @@ const columns = [
     }
   },
   {
-    title: 'ชื่อ-สกุลลูกค้า',
+    title: 'ชื่อผู้ติดต่อ',
     className: 'header-center',
     data: 'cusConName',
     orderable: false,
@@ -60,18 +60,18 @@ const columns = [
     }
   },
   {
-    title: 'โทรศัพท์',
+    title: 'โทรศัพท์มือถือ',
     className: 'header-center',
-    data: 'telNo',
+    data: 'mobileNo',
     orderable: false,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
   },
   {
-    title: 'มือถือ',
+    title: 'E-Mail',
     className: 'header-center',
-    data: 'mobileNo',
+    data: 'email',
     orderable: false,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
