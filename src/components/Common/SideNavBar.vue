@@ -2,6 +2,7 @@
   <div class="sidenav">
     <a @click="selectMenu('home')"><i class="fa fa-home fa-lg"></i> หน้าแรก</a>
     <a @click="selectMenu('quotation')"><i class="fa fa-file-text fa-lg"></i> ใบเสนอราคา</a>
+    <a @click="selectMenu('project')"><i class="fa fa-briefcase fa-lg"></i>โครงการ</a>
     <a @click="selectMenu('customer')"><i class="fa fa-users fa-lg"></i>ลูกค้า</a>
     <a @click="selectMenu('product')"><i class="fa fa-archive fa-lg"></i>สินค้า</a>
     <a @click="selectMenu('payment')"
