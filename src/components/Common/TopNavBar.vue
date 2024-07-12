@@ -69,24 +69,14 @@ export default {
       }
     },
     async onBusinessChange(selectedBusiness) {
-      if (selectedBusiness.orgCustomId != undefined) {
-        this.profileStore.businessKey = selectedBusiness.orgId
-        this.profileStore.businessId = selectedBusiness.orgCustomId
-      }else{
-        
-      }
+      this.profileStore.businessKey = selectedBusiness.orgId
+      this.profileStore.businessId = selectedBusiness.orgCustomId
       this.$emit('loading')
       this.$router.push('/home')
       let business = await this.businessStore.fetchBusiness(
         this.profileStore.profile.orgCustomId,
         this.profileStore.businessId
       )
-      if (selectedBusiness.orgId != undefined) {
-        const customers = await this.customerStore.fetchCustomer(
-          this.profileStore.profile.orgCustomId,
-          selectedBusiness.orgId
-        )
-      }
       this.$emit('loaded')
     },
     home() {

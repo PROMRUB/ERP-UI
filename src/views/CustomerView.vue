@@ -93,7 +93,7 @@ export default {
       contactActive: false,
       openContactModal: false,
       refresh: true,
-      
+
       profileStore: useProfileStore(),
       systemConfigStore: useSystemConfigStore(),
       customerStore: useCustomerStore()
@@ -133,6 +133,7 @@ export default {
         )
           sessionStorage.setItem('page', 'customerList')
         this.profileStore.isSignIn = true
+        alert(this.profileStore.businessKey)
         const profileData = await this.profileStore.fetchProfile()
         if (this.profileStore.businessList.length == 0) {
           const businessData = await this.profileStore.fetchBusiness()
@@ -148,7 +149,7 @@ export default {
         )
         const customers = await this.customerStore.fetchCustomer(
           this.profileStore.profile.orgCustomId,
-          this.profileStore.businesskey
+          this.profileStore.businessKey
         )
         if (sessionStorage.getItem('page') == 'customerList') {
           if (customers.length > 0) {
@@ -195,7 +196,7 @@ export default {
         if (this.customerStore.selectedCustomer) {
           this.customerStore.fetchCustomerbyId(
             this.profileStore.profile.orgCustomId,
-            this.profileStore.businesskey,
+            this.profileStore.businessKey,
             this.customerStore.selectedCustomer
           )
         }
@@ -234,7 +235,7 @@ export default {
       ) {
         alert('กรุณากรอกชื่อบริษัทภาษาอังกฤษ')
       } else {
-        this.customerStore.customerProfile.businessId = this.profileStore.businesskey
+        this.customerStore.customerProfile.businessId = this.profileStore.businessKey
         if (value == 'save') {
           this.customerStore.createCustomer(
             this.profileStore.profile.orgCustomId,
@@ -259,7 +260,7 @@ export default {
       this.openContactModal = true
     },
     async saveContact(value) {
-      this.customerStore.customerProfile.businessId = this.profileStore.businesskey
+      this.customerStore.customerProfile.businessId = this.profileStore.businessKey
       if (value == 'Save') {
         var response = this.customerStore.createContact(
           this.profileStore.profile.orgCustomId,
