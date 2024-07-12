@@ -128,7 +128,8 @@ export default {
         if (
           sessionStorage.getItem('page') == undefined ||
           sessionStorage.getItem('page') == null ||
-          sessionStorage.getItem('page') == ''
+          sessionStorage.getItem('page') == '' ||
+          sessionStorage.getItem('page').includes('List')
         )
           sessionStorage.setItem('page', 'customerList')
         this.profileStore.isSignIn = true
