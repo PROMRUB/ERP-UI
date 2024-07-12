@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     async updateComponent() {
-      if (this.refresh) {
+      if (!this.refresh) {
         sessionStorage.setItem('page', 'customerList')
         this.refresh = true
       }
