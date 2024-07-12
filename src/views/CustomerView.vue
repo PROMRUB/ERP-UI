@@ -133,7 +133,6 @@ export default {
         )
           sessionStorage.setItem('page', 'customerList')
         this.profileStore.isSignIn = true
-        alert(this.profileStore.businessKey)
         const profileData = await this.profileStore.fetchProfile()
         if (this.profileStore.businessList.length == 0) {
           const businessData = await this.profileStore.fetchBusiness()
