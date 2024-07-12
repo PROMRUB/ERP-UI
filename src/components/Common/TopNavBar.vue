@@ -76,6 +76,7 @@ export default {
         
       }
       this.$emit('loading')
+      this.$router.push('/home')
       let business = await this.businessStore.fetchBusiness(
         this.profileStore.profile.orgCustomId,
         this.profileStore.businessId
