@@ -86,7 +86,7 @@ export default {
         }
         const products = await this.productStore.fetchProductList(
           this.profileStore.profile.orgCustomId,
-          this.profileStore.businesskey
+          this.profileStore.businessKey
         )
         if (sessionStorage.getItem('page') == 'productList') {
           if (products.length > 0) {
@@ -115,7 +115,7 @@ export default {
       } else if (pageName == 'productInquiry') {
         const catData = await this.productStore.fetchCatList(
           this.profileStore.profile.orgCustomId,
-          this.profileStore.businesskey
+          this.profileStore.businessKey
         )
         this.productListActive = false
         this.productInformationActive = true
@@ -127,7 +127,7 @@ export default {
         if (this.productStore.selectedProduct) {
           this.productStore.fetchProductbyId(
             this.profileStore.profile.orgCustomId,
-            this.profileStore.businesskey,
+            this.profileStore.businessKey,
             this.productStore.selectedProduct
           )
         }

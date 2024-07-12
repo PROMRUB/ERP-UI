@@ -14,7 +14,7 @@ export const useProfileStore = defineStore('profileStore', () => {
   }
 
   let business = ''
-  let businesskey = ''
+  let businessKey = ''
   let businessId = ''
 
   let businessList = []
@@ -26,9 +26,9 @@ export const useProfileStore = defineStore('profileStore', () => {
     alley: '00'
   }
 
-  // let baseUrl = 'https://localhost:44345'
-  let baseUrl = 'https://sales-api-dev.prom.co.th'
-  
+  let baseUrl = 'https://localhost:44345'
+  // let baseUrl = 'https://sales-api-dev.prom.co.th'
+
   let axiosExport = axios.create({
     baseUrl
   })
@@ -90,8 +90,10 @@ export const useProfileStore = defineStore('profileStore', () => {
       .then((response) => {
         if (response.data.status.code == 1000) {
           this.business = response.data.data[0].orgName
-          this.businesskey = response.data.data[0].orgId
-          this.businessId = response.data.data[0].orgCustomId
+          if (this.businessKey == null || this.businessKey == undefined || this.businessKey == '') {
+            this.businessKey = response.data.data[0].orgId
+            this.businessId = response.data.data[0].orgCustomId
+          }
           this.businessList = response.data.data
           return response.data.data
         } else {
@@ -106,7 +108,7 @@ export const useProfileStore = defineStore('profileStore', () => {
   return {
     token,
     business,
-    businesskey,
+    businessKey,
     businessId,
     isSignIn,
     profile,
