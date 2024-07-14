@@ -134,6 +134,13 @@ export default {
           sessionStorage.setItem('page', 'customerList')
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
+        if (
+          this.profileStore.businessKey == undefined ||
+          this.profileStore.businessKey == '' ||
+          this.profileStore.businessKey == null
+        ) {
+          const businessData = await this.profileStore.fetchBusiness()
+        }
         if (this.profileStore.businessList.length == 0) {
           const businessData = await this.profileStore.fetchBusiness()
         }
@@ -242,7 +249,6 @@ export default {
           )
         }
         if (value == 'update') {
-          console.log(this.customerStore.customerProfile)
           this.customerStore.updateCustomer(
             this.profileStore.profile.orgCustomId,
             this.customerStore.customerProfile.businessId,

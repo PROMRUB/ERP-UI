@@ -13,20 +13,20 @@
     </div>
     <div v-else>
       <div v-if="projectListActive">
-        <ProductTable @pageControl="pageControl" />
+        <ProjectTable @pageControl="pageControl" />
       </div>
       <div v-if="projectInformationActive">
         <div class="row">
           <button
             class="project-btn"
-            :class="{ active: productActive }"
+            :class="{ active: projectActive }"
             @click="pageControl(`project`)"
           >
             <span><i class="fa fa-file-text-o fa-lg"></i>โครงการ</span>
           </button>
         </div>
-        <div class="row" v-if="productActive">
-          <ProductInformation @pageControl="pageControl" @saveproduct="saveproduct" />
+        <div class="row" v-if="projectActive">
+          <ProjectInformation @pageControl="pageControl" @saveProject="saveProject" />
         </div>
       </div>
     </div>
@@ -34,31 +34,31 @@
 </template>
 
 <script>
-import ProductInformation from '@/components/Product/ProductInformation.vue'
+import ProjectInformation from '@/components/Project/ProjectInformation.vue'
 
 import { useProfileStore } from '@/stores/ProfileStore'
-import { useProductStore } from '@/stores/ProductStore'
+import { useProjectStore } from '@/stores/ProjectStore'
 
-import ProductTable from '@/components/Product/ProductTable.vue'
+import ProjectTable from '@/components/Project/ProjectTable.vue'
 
 export default {
   components: {
-    ProductTable,
-    ProductInformation
+    ProjectTable,
+    ProjectInformation
   },
   data() {
     return {
-      productListActive: true,
-      productInformationActive: false,
-      productActive: false,
+      projectListActive: true,
+      projectInformationActive: false,
+      projectActive: false,
       refresh: true,
       profileStore: useProfileStore(),
-      productStore: useProductStore()
+      projectStore: useProjectStore()
     }
   },
   watch: {
     refresh() {},
-    productActive(newValue, oldValue) {}
+    projectActive(newValue, oldValue) {}
   },
   mounted() {
     this.updateComponent()
@@ -70,7 +70,7 @@ export default {
     async updateComponent() {
       this.$emit('loading')
       if (this.refresh) {
-        sessionStorage.setItem('page', 'productList')
+        sessionStorage.setItem('page', 'projectList')
         this.refresh = true
       }
       sessionStorage.setItem('changeBusiness', 'true')
@@ -81,18 +81,25 @@ export default {
       } else {
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
+        if (
+          this.profileStore.businessKey == undefined ||
+          this.profileStore.businessKey == '' ||
+          this.profileStore.businessKey == null
+        ) {
+          const businessData = await this.profileStore.fetchBusiness()
+        }
         if (this.profileStore.businessList.length == 0) {
           const businessData = await this.profileStore.fetchBusiness()
         }
-        const products = await this.productStore.fetchProductList(
+        const projects = await this.projectStore.fetchProjectList(
           this.profileStore.profile.orgCustomId,
           this.profileStore.businessKey
         )
-        if (sessionStorage.getItem('page') == 'productList') {
-          if (products.length > 0) {
-            this.productStore.hvData = true
+        if (sessionStorage.getItem('page') == 'projectList') {
+          if (projects.length > 0) {
+            this.projectStore.hvData = true
           } else {
-            this.productStore.hvData = false
+            this.projectStore.hvData = false
           }
         }
         this.$emit('loaded')
@@ -101,53 +108,68 @@ export default {
     async pageControl(pageName) {
       sessionStorage.setItem('page', pageName)
       this.$emit('loading')
-      if (pageName == 'productList') {
-        this.productListActive = true
-        this.productInformationActive = false
-        this.productActive = false
+      if (pageName == 'projectList') {
+        this.projectListActive = true
+        this.projectInformationActive = false
+        this.projectActive = false
       } else if (pageName == 'projectEntry') {
         sessionStorage.setItem('rendered', 'false')
-        this.productListActive = false
-        this.productInformationActive = true
-        this.productActive = true
+        this.projectListActive = false
+        this.projectInformationActive = true
+        this.projectActive = true
+        this.projectStore.hvData = true
         sessionStorage.setItem('mode', 'Entry')
         sessionStorage.setItem('changeBusiness', 'false')
-      } else if (pageName == 'productInquiry') {
-        const catData = await this.productStore.fetchCatList(
-          this.profileStore.profile.orgCustomId,
-          this.profileStore.businessKey
-        )
-        this.productListActive = false
-        this.productInformationActive = true
-        this.productActive = true
-        let selectedProduct = this.productStore.selectedProduct
-        this.productStore.selectedProduct = this.productStore.productList.find(
-          (item) => item.productCustomId === selectedProduct
-        )?.productId
-        if (this.productStore.selectedProduct) {
-          this.productStore.fetchProductbyId(
+      } else if (pageName == 'projectInquiry') {
+        this.projectListActive = false
+        this.projectInformationActive = true
+        this.projectActive = true
+        let selectedProject = this.projectStore.selectedProject
+        this.projectStore.selectedProject = this.projectStore.projectList.find(
+          (item) => item.projectCustomId === selectedProject
+        )?.projectId
+        if (this.projectStore.selectedProject) {
+          this.projectStore.fetchProjectbyId(
             this.profileStore.profile.orgCustomId,
             this.profileStore.businessKey,
-            this.productStore.selectedProduct
+            this.projectStore.selectedProject
           )
         }
         sessionStorage.setItem('changeBusiness', 'false')
-        sessionStorage.setItem('mode', 'Inquiry')
+        sessionStorage.setItem('mode', 'Update')
         this.showContact = true
-      } else if (pageName == 'product') {
-        this.productListActive = false
-        this.productInformationActive = true
-        this.productActive = true
+      } else if (pageName == 'project') {
+        this.projectListActive = false
+        this.projectInformationActive = true
+        this.projectActive = true
         sessionStorage.setItem('changeBusiness', 'false')
       }
       this.$emit('loaded')
+    },
+    saveProject(value) {
+      this.projectStore.projectProfile.businessId = this.profileStore.businessKey
+      if (value == 'save') {
+        this.projectStore.createProject(
+          this.profileStore.profile.orgCustomId,
+          this.projectStore.projectProfile
+        )
+      }
+      if (value == 'update') {
+        this.projectStore.updateProject(
+          this.profileStore.profile.orgCustomId,
+          this.projectStore.projectProfile.businessId,
+          this.projectStore.projectProfile.projectId,
+          this.projectStore.projectProfile
+        )
+      }
+      this.pageControl('projectList')
     }
   }
 }
 </script>
 
 <style>
-.product-btn {
+.project-btn {
   position: absolute;
   width: 200px;
   height: 48px;

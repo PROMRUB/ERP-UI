@@ -8,7 +8,7 @@ const columns = [
   {
     title: '',
     className: 'header-center',
-    data: 'productId',
+    data: 'projectId',
     orderable: false,
     width: 5,
     render: function (data, type, row) {
@@ -48,13 +48,13 @@ const columns = [
     }
   },
   {
-    title: 'รหัสสินค้า',
+    title: 'รหัสโครงการ',
     className: 'header-center',
-    data: 'productCustomId',
+    data: 'projectCustomId',
     orderable: false,
     width: 200,
     render: function (data, type, row) {
-      return `<a onClick="handleProductClick(\`` + data + `\`)">` + data + `</a>`
+      return `<a onClick="handleProjectClick(\`` + data + `\`)">` + data + `</a>`
     },
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
@@ -63,30 +63,8 @@ const columns = [
   {
     title: 'ชื่อสินค้า',
     className: 'header-center',
-    data: 'productName',
+    data: 'projectName',
     orderable: false,
-    createdCell: function (td, cellData, rowData, row, col) {
-      td.classList.add('content-string')
-    }
-  },
-  {
-    title: 'ราคา/หน่วย',
-    className: 'header-center',
-    data: 'msrp',
-    orderable: false,
-    searchable: false,
-    width: 200,
-    createdCell: function (td, cellData, rowData, row, col) {
-      td.classList.add('content-string')
-    }
-  },
-  {
-    title: 'ราคาต่ำสุด/หน่วย',
-    className: 'header-center',
-    data: 'lwPrice',
-    orderable: false,
-    searchable: false,
-    width: 200,
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
@@ -94,7 +72,7 @@ const columns = [
   {
     title: 'สถานะ',
     className: 'header-center',
-    data: 'productStatus',
+    data: 'projectStatus',
     orderable: false,
     searchable: false,
     width: 100,
@@ -106,10 +84,12 @@ const columns = [
 </script>
 
 <template>
-  <div class="product-card">
+  <button class="add-project-button" @click="add">Add</button>
+  <button class="remove-project-button" @click="remove">Delete</button>
+  <div class="project-card">
     <DataTable
       :columns="columns"
-      :data="productStore.productList"
+      :data="projectStore.projectList"
       class="display"
       :options="{ select: true, order: [[0, 'asc']] }"
     >
@@ -120,7 +100,7 @@ const columns = [
 <script>
 import { useProfileStore } from '@/stores/ProfileStore'
 import { useCustomerStore } from '@/stores/CustomerStore'
-import { useProductStore } from '@/stores/ProductStore'
+import { useProjectStore } from '@/stores/ProjectStore'
 
 export default {
   components: {},
@@ -128,14 +108,14 @@ export default {
     return {
       profileStore: useProfileStore(),
       customerStore: useCustomerStore(),
-      productStore: useProductStore()
+      projectStore: useProjectStore()
     }
   },
   emits: ['pageControl'],
   mounted() {
-    window.handleProductClick = (data) => {
-      this.productStore.selectedProduct = data
-      this.$emit(`pageControl`, `productInquiry`)
+    window.handleProjectClick = (data) => {
+      this.projectStore.selectedProject = data
+      this.$emit(`pageControl`, `projectInquiry`)
     }
     this.updateComponent()
   },
@@ -143,27 +123,28 @@ export default {
     this.updateComponent()
   },
   methods: {
-    async updateComponent() {},
+    async updateComponent() {
+    },
     add() {
-      this.$emit(`pageControl`, `productEntry`)
+      this.$emit(`pageControl`, `projectEntry`)
     },
     remove() {
       let request = []
       let selectedItems = JSON.parse(sessionStorage.getItem('selectedItems')) || []
       if (selectedItems.length > 0) {
         selectedItems.forEach((selectedItem) => {
-          let foundItem = this.productStore.productList.find((item) => item.cusId == selectedItem)
+          let foundItem = this.projectStore.projectList.find((item) => item.cusId == selectedItem)
           request.push(foundItem)
         })
-        this.productStore.deleteProduct(this.profileStore.profile.orgCustomId, request)
+        this.projectStore.deleteProject(this.profileStore.profile.orgCustomId, request)
       }
       selectedItems.forEach((selectedItem) => {
-        let index = this.productStore.productList.findIndex((item) => item.cusId == selectedItem)
+        let index = this.projectStore.projectList.findIndex((item) => item.cusId == selectedItem)
         if (index !== -1) {
-          let foundItem = this.productStore.productList.splice(index, 1)[0] // Remove item and get the removed item
+          let foundItem = this.projectStore.projectList.splice(index, 1)[0] // Remove item and get the removed item
           request.push(foundItem)
         } else {
-          console.warn(`Item with product_id ${selectedItem} not found in productList`)
+          console.warn(`Item with project_id ${selectedItem} not found in projectList`)
         }
       })
     }
@@ -173,4 +154,40 @@ export default {
 
 <style>
 @import 'datatables.net-dt';
+
+.add-project-button {
+  background-color: #fff;
+  position: absolute;
+  display: inline-block;
+  border: 1px solid #00275f;
+  border-radius: 3px;
+  width: 80px;
+  height: 30px;
+  left: 80%;
+  top: 10%;
+}
+
+.add-project-button:hover {
+  background-color: #00275f;
+  color: #fff;
+  border-color: #00275f;
+}
+
+.remove-project-button {
+  background-color: #fff;
+  position: absolute;
+  display: inline-block;
+  border: 1px solid #ff0000;
+  border-radius: 3px;
+  width: 80px;
+  height: 30px;
+  left: 85%;
+  top: 10%;
+}
+
+.remove-project-button:hover {
+  background-color: #ff0000;
+  color: #fff;
+  border-color: #ff0000;
+}
 </style>
