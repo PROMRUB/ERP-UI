@@ -66,7 +66,7 @@ export default {
   methods: {
     async updateComponent() {
       this.$emit('loading')
-      if (this.refresh) {
+      if (!this.refresh) {
         sessionStorage.setItem('page', 'productList')
         this.refresh = true
       }
