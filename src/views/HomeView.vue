@@ -41,12 +41,25 @@ export default {
       } else {
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
+        if (
+          this.profileStore.businessKey == undefined ||
+          this.profileStore.businessKey == '' ||
+          this.profileStore.businessKey == null
+        ) {
+          const businessData = await this.profileStore.fetchBusiness()
+        }
         if (this.profileStore.businessList.length == 0) {
           const businessData = await this.profileStore.fetchBusiness()
         }
-        const provinceData = await this.systemConfigStore.fetchProvince(this.profileStore.profile.orgCustomId)
-        const districtData = await this.systemConfigStore.fetchDistrict(this.profileStore.profile.orgCustomId)
-        const subDistrctData = await this.systemConfigStore.fetchSubDistrict(this.profileStore.profile.orgCustomId)
+        const provinceData = await this.systemConfigStore.fetchProvince(
+          this.profileStore.profile.orgCustomId
+        )
+        const districtData = await this.systemConfigStore.fetchDistrict(
+          this.profileStore.profile.orgCustomId
+        )
+        const subDistrctData = await this.systemConfigStore.fetchSubDistrict(
+          this.profileStore.profile.orgCustomId
+        )
         this.$emit('loaded')
       }
     }

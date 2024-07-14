@@ -40,7 +40,8 @@ table.dataTable > thead > tr > td {
 .customer-card,
 .product-card,
 .payment-card,
-.paymentaccount-card {
+.paymentaccount-card,
+.project-card {
   position: absolute;
   width: 1400px;
   left: 325px;

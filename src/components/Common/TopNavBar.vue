@@ -59,7 +59,7 @@ export default {
     this.updateComponent()
   },
   methods: {
-    updateComponent() {
+    async updateComponent() {
       let token = sessionStorage.getItem('token')
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false

@@ -86,6 +86,13 @@ export default {
         this.profileStore.isSignIn = true
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
+        if (
+          this.profileStore.businessKey == undefined ||
+          this.profileStore.businessKey == '' ||
+          this.profileStore.businessKey == null
+        ) {
+          const businessData = await this.profileStore.fetchBusiness()
+        }
         if (this.profileStore.businessList.length == 0) {
           const businessData = await this.profileStore.fetchBusiness()
         }

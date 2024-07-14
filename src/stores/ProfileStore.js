@@ -25,10 +25,10 @@ export const useProfileStore = defineStore('profileStore', () => {
     no: '00',
     alley: '00'
   }
-
-  let baseUrl = 'https://localhost:44345'
-  // let baseUrl = 'https://sales-api-dev.prom.co.th'
-
+  
+  // let baseUrl = 'https://localhost:44345'
+  let baseUrl = 'https://sales-api-dev.prom.co.th'
+  
   let axiosExport = axios.create({
     baseUrl
   })
@@ -85,6 +85,7 @@ export const useProfileStore = defineStore('profileStore', () => {
   }
 
   async function fetchBusiness() {
+    console.log(this.profile)
     return axiosExport
       .get(`${baseUrl}/v1/api/Organization/org/${this.profile.orgCustomId}/action/GetBusiness`)
       .then((response) => {
@@ -105,6 +106,7 @@ export const useProfileStore = defineStore('profileStore', () => {
         throw new Error('some error')
       })
   }
+
   return {
     token,
     business,
