@@ -3,10 +3,7 @@
 <template>
   <main>
     <div v-if="!hvData">
-      <img class="no-data" src="@/assets/no-data.png" alt="No Data" /><br />
-      <div class="no-data-label">
-        <span>ขณะนี้ยังไม่มีข้อมูลใดๆของคุณอยู่ในระบบ</span>
-      </div>
+      <img class="no-data"  style="width: 1600px;height: 900px;"src="@/assets/dashboard.png" alt="No Data" /><br />
     </div>
   </main>
 </template>
