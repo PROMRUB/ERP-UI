@@ -61,10 +61,11 @@ const columns = [
     }
   },
   {
-    title: 'ชื่อสินค้า',
+    title: 'ชื่อโครงการ',
     className: 'header-center',
     data: 'projectName',
     orderable: false,
+    type: 'string',
     createdCell: function (td, cellData, rowData, row, col) {
       td.classList.add('content-string')
     }
@@ -77,7 +78,7 @@ const columns = [
     searchable: false,
     width: 100,
     createdCell: function (td, cellData, rowData, row, col) {
-      td.classList.add('content-string')
+      td.classList.add('content-center')
     }
   }
 ]
@@ -123,8 +124,7 @@ export default {
     this.updateComponent()
   },
   methods: {
-    async updateComponent() {
-    },
+    async updateComponent() {},
     add() {
       this.$emit(`pageControl`, `projectEntry`)
     },

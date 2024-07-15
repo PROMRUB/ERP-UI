@@ -92,7 +92,7 @@ export default {
       addressActive: false,
       contactActive: false,
       openContactModal: false,
-      refresh: true,
+      refresh: false,
 
       profileStore: useProfileStore(),
       systemConfigStore: useSystemConfigStore(),
