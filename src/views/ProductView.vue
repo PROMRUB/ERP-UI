@@ -48,7 +48,7 @@ export default {
       productListActive: true,
       productInformationActive: false,
       productActive: false,
-      refresh: true,
+      refresh: false,
       profileStore: useProfileStore(),
       productStore: useProductStore()
     }

@@ -83,7 +83,7 @@ const columns = [
     data: 'cusStatus',
     orderable: false,
     createdCell: function (td, cellData, rowData, row, col) {
-      td.classList.add('content-string')
+      td.classList.add('content-center')
     }
   }
 ]

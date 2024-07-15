@@ -51,7 +51,7 @@ export default {
       projectListActive: true,
       projectInformationActive: false,
       projectActive: false,
-      refresh: true,
+      refresh: false,
       profileStore: useProfileStore(),
       projectStore: useProjectStore()
     }

@@ -77,7 +77,7 @@ const columns = [
     searchable: false,
     width: 200,
     createdCell: function (td, cellData, rowData, row, col) {
-      td.classList.add('content-string')
+      td.classList.add('content-numeric')
     }
   },
   {
@@ -88,7 +88,7 @@ const columns = [
     searchable: false,
     width: 200,
     createdCell: function (td, cellData, rowData, row, col) {
-      td.classList.add('content-string')
+      td.classList.add('content-numeric')
     }
   },
   {
@@ -99,7 +99,7 @@ const columns = [
     searchable: false,
     width: 100,
     createdCell: function (td, cellData, rowData, row, col) {
-      td.classList.add('content-string')
+      td.classList.add('content-center')
     }
   }
 ]
