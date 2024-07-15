@@ -72,7 +72,7 @@ const columns = [
   {
     title: 'ราคา/หน่วย',
     className: 'header-center',
-    data: 'msrp',
+    data: 'msrpFormatted',
     orderable: false,
     searchable: false,
     width: 200,
@@ -83,7 +83,7 @@ const columns = [
   {
     title: 'ราคาต่ำสุด/หน่วย',
     className: 'header-center',
-    data: 'lwPrice',
+    data: 'lwPriceFormatted',
     orderable: false,
     searchable: false,
     width: 200,

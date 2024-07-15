@@ -6,7 +6,7 @@
           <div class="form-line">
             <label class="input-box-label form-text" for="userId">ชื่อผู้เข้าใช้</label>
             <input
-              class="input-box form-input"
+              class="input-box form-input-sign-in"
               type="text"
               id="userId"
               name="userId"
@@ -17,7 +17,7 @@
           <div class="form-line">
             <label class="input-box-label form-text" for="password">รหัสผ่าน</label>
             <input
-              class="input-box form-input"
+              class="input-box form-input-sign-in"
               type="password"
               id="taxId"
               name="taxId"
@@ -178,7 +178,7 @@ export default {
   color: #231f20;
 }
 
-.form-input {
+.form-input-sign-in {
   margin: 3% 0px 0px 5%;
   border: none;
   border-bottom: 1px solid #00275e;

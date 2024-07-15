@@ -87,8 +87,9 @@
                 type="text"
                 id="msrp"
                 name="msrp"
-                v-model="productStore.productProfile.msrp"
+                v-model="formattedMSRP"
                 :disabled="disableMSRP"
+                @input="updateMSRP($event.target.value)"
               />
             </div>
             <div class="form-line">
@@ -100,8 +101,9 @@
                 type="text"
                 id="lwPrice"
                 name="lwPrice"
-                v-model="productStore.productProfile.lwPrice"
+                v-model="formattedLwPrice"
                 :disabled="disableLwPrice"
+                @input="updateLwPrice($event.target.value)"
               />
             </div>
           </div>
@@ -185,6 +187,30 @@ export default {
   updated() {
     this.updateComponent()
   },
+  computed: {
+    formattedLwPrice: {
+      get() {
+        return this.productStore.productProfile.lwPrice.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })
+      },
+      set(value) {
+        this.productStore.productProfile.lwPrice = parseFloat(value.replace(/,/g, ''))
+      }
+    },
+    formattedMSRP: {
+      get() {
+        return this.productStore.productProfile.msrp.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })
+      },
+      set(value) {
+        this.productStore.productProfile.msrp = parseFloat(value.replace(/,/g, ''))
+      }
+    }
+  },
   methods: {
     async updateComponent() {
       if (sessionStorage.getItem('mode') == 'Entry') {
@@ -221,23 +247,19 @@ export default {
           sessionStorage.setItem('rendered', 'true')
         }
       } else if (sessionStorage.getItem('mode') == 'Inquiry') {
-        if (
-          this.selectedCat == null ||
-          this.selectedCat == '' ||
-          this.selectedCat == undefined
-        ) {
-          this.selectedCat = JSON.parse(
-            JSON.stringify(this.productStore.catList)
-          ).find((catList) => catList.productCatId == this.productStore.productProfile.productCatId)
+        if (this.selectedCat == null || this.selectedCat == '' || this.selectedCat == undefined) {
+          this.selectedCat = JSON.parse(JSON.stringify(this.productStore.catList)).find(
+            (catList) => catList.productCatId == this.productStore.productProfile.productCatId
+          )
         }
         if (
           this.selectedSubCat == null ||
           this.selectedSubCat == '' ||
           this.selectedSubCat == undefined
         ) {
-          this.selectedSubCat = JSON.parse(
-            JSON.stringify(this.productStore.catList)
-          ).find((catList) => catList.productCatId == this.productStore.productProfile.productSubCatId)
+          this.selectedSubCat = JSON.parse(JSON.stringify(this.productStore.catList)).find(
+            (catList) => catList.productCatId == this.productStore.productProfile.productSubCatId
+          )
         }
         this.disableCat = true
         this.disableSubCat = true
@@ -280,7 +302,15 @@ export default {
       this.subCatFiltered = JSON.parse(JSON.stringify(this.productStore.catList)).filter(
         (catList) => catList.productCatId == value.productCatId
       )
-    }
+    },
+    updateMSRP(value) {
+      alert('Test')
+      this.formattedMSRP = value;
+    },
+    updateLwPrice(value) {
+      alert('Test')
+      this.formattedLwPrice = value;
+    },
   }
 }
 </script>
