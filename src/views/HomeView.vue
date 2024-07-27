@@ -3,7 +3,7 @@
 <template>
   <main>
     <div v-if="!hvData">
-      <img class="no-data"  style="width: 1600px;height: 900px;"src="@/assets/dashboard.png" alt="No Data" /><br />
+      <img class="no-data"  style="width: 16  00px;height: 900px;"src="@/assets/dashboard.png" alt="No Data" /><br />
     </div>
   </main>
 </template>
@@ -48,6 +48,7 @@ export default {
         if (this.profileStore.businessList.length == 0) {
           const businessData = await this.profileStore.fetchBusiness()
         }
+        const roleData = await this.profileStore.fetchRole()
         const provinceData = await this.systemConfigStore.fetchProvince(
           this.profileStore.profile.orgCustomId
         )

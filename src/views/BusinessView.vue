@@ -52,6 +52,7 @@ export default {
         ) {
           const businessData = await this.profileStore.fetchBusiness()
         }
+        const roleData = await this.profileStore.fetchRole()
         if (this.profileStore.businessList.length == 0) {
           const businessData = await this.profileStore.fetchBusiness()
         }

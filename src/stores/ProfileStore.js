@@ -84,8 +84,24 @@ export const useProfileStore = defineStore('profileStore', () => {
       })
   }
 
+  async function fetchRole() {
+    return axiosExport
+      .get(`${baseUrl}/v1/api/Authorization/org/${this.profile.orgCustomId}/action/GetUserRole/${this.businessKey}`)
+      .then((response) => {
+        if (response.data.status.code == 1000) {
+          this.profile = response.data.data
+          return response.data.data
+        } else {
+          throw new Error(`${response.data.status.message}`)
+        }
+      })
+      .catch((error) => {
+        console.log('Promise Rejected: ' + error)
+        throw new Error('some error')
+      })
+  }
+
   async function fetchBusiness() {
-    console.log(this.profile)
     return axiosExport
       .get(`${baseUrl}/v1/api/Organization/org/${this.profile.orgCustomId}/action/GetBusiness`)
       .then((response) => {
@@ -117,6 +133,7 @@ export const useProfileStore = defineStore('profileStore', () => {
     businessList,
     signIn,
     fetchProfile,
+    fetchRole,
     fetchBusiness
   }
 })
