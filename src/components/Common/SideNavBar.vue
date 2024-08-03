@@ -47,7 +47,13 @@ export default {
       }
     },
     selectMenu(key) {
-      this.$router.push('/' + key)
+      if(key == 'quotation')
+      {
+        window.open('https://sales-dev1.prom.co.th/erp/quotation')
+      }
+      else{
+        this.$router.push('/' + key)
+    }
     },
     download() {
       window.open('https://drive.google.com/file/d/1XyNw0J1lyUV_ubEJ6WGcb8NYJgu-pnRs/view')
