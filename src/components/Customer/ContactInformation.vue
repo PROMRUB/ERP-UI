@@ -66,6 +66,7 @@ export default {
       if (!this.rendered) {
         const contact = await this.customerStore.fetchCustomerContact(
           this.profileStore.profile.orgCustomId,
+          this.profileStore.businessKey,
           this.customerStore.customerProfile.cusId
         )
         if (sessionStorage.getItem('mode') == 'Entry') {
@@ -185,7 +186,7 @@ export default {
   position: absolute;
   width: 125px;
   height: 35px;
-  top: 84%;
+  top: 78.6%;
   border-radius: 3px;
 }
 
@@ -193,7 +194,7 @@ export default {
   background-color: #ffffff;
   color: #00275e;
   border: 1px solid #00275e;
-  left: 71%;
+  left: 68%;
 }
 
 .customer-customer-contact-save-bottom-button:hover {
@@ -205,7 +206,7 @@ export default {
   background-color: #ffffff;
   color: #ff0000;
   border: 1px solid #ff0000;
-  left: 78%;
+  left: 76%;
 }
 
 .customer-customer-contact-cancel-bottom-button:hover {

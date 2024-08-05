@@ -70,10 +70,10 @@ export const useCustomerStore = defineStore('customerStore', () => {
       })
   }
 
-  async function fetchCustomerContact(orgId, businessId) {
+  async function fetchCustomerContact(orgId, businessId, customerId) {
     return axiosExport
       .get(
-        `${baseUrl}/v1/api/Customer/org/${orgId}/action/GetCustomerContactList/${businessId}`
+        `${baseUrl}/v1/api/Customer/org/${orgId}/action/GetCustomerContactList/${businessId}/${customerId}`
       )
       .then((response) => {
         if (response.data.status.code == 1000) {
