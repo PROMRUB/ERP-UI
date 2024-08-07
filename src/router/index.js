@@ -19,11 +19,6 @@ const router = createRouter({
       component: () => import('@/views/QuotationView.vue')
     },
     {
-      path: '/createquotation',
-      name: 'createquotation',
-      component: () => import('@/views/CreateQuotation.vue')
-    },
-    {
       path: '/project',
       name: 'project',
       component: () => import('@/views/ProjectView.vue')
