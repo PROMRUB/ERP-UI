@@ -1,7 +1,7 @@
 <template>
-  <button v-if="!disableAdd" class="add-customer-contact-button" @click="add">Add</button>
+  <button v-if="!disableAdd" class="add-customer-contact-button" @click="add">เพิ่ม</button>
   <button v-if="!disableDelete" class="remove-customer-contact-button" @click="remove">
-    Delete
+    ลบ
   </button>
   <ContactTable @openModal="openModal" />
   <div v-if="!disableEdit" class="customer-address-column">
