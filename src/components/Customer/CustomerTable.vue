@@ -90,8 +90,8 @@ const columns = [
 </script>
 
 <template>
-  <button class="add-customer-button" @click="add">Add</button>
-  <button class="remove-customer-button" @click="remove">Delete</button>
+  <button class="add-customer-button" @click="add">เพิ่ม</button>
+  <button class="remove-customer-button" @click="remove">ลบ</button>
   <div class="customer-card">
     <DataTable
       :columns="columns"
