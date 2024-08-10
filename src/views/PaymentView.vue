@@ -3,12 +3,13 @@
 <template>
   <main>
     <div v-if="!hvData">
-      <img
-        class="no-data"
-        style="width: 1600px; height: 900px"
-        src="@/assets/dashboard.png"
-        alt="No Data"
-      /><br />
+      <img class="no-data" src="@/assets/no-data.png" alt="No Data" /><br />
+      <div class="no-data-label">
+        <span>ขณะนี้ยังไม่มีข้อมูลใดๆของคุณอยู่ในระบบ</span>
+      </div>
+    </div>
+    <div v-else>
+      <PaymentTable />
     </div>
   </main>
 </template>
@@ -16,14 +17,20 @@
 <script>
 import { useProfileStore } from '@/stores/ProfileStore'
 import { useSystemConfigStore } from '@/stores/SystemConfigStore'
+import { useConditionStore } from '@/stores/ConditionStore'
+
+import PaymentTable from '@/components/Payment/PaymentTable.vue'
 
 export default {
-  components: {},
+  components: {
+    PaymentTable
+  },
   data() {
     return {
-      hvData: false,
+      hvData: true,
       profileStore: useProfileStore(),
-      systemConfigStore: useSystemConfigStore()
+      systemConfigStore: useSystemConfigStore(),
+      conditionStore: useConditionStore()
     }
   },
   mounted() {
@@ -34,12 +41,12 @@ export default {
   },
   methods: {
     async updateComponent() {
+      this.$emit('loading')
       sessionStorage.setItem('changeBusiness', 'true')
       let token = sessionStorage.getItem('token')
       if (token == '' || token == undefined || token == null) {
         this.profileStore.isSignIn = false
         this.$router.push('/signin')
-        this.$emit('loaded')
       } else {
         this.profileStore.isSignIn = true
         const profileData = await this.profileStore.fetchProfile()
@@ -53,21 +60,10 @@ export default {
         if (this.profileStore.businessList.length == 0) {
           const businessData = await this.profileStore.fetchBusiness()
         }
-        if (
-          this.profileStore.businessKey == undefined ||
-          this.profileStore.businessKey == '' ||
-          this.profileStore.businessKey == null
-        ) {
-          const roleData = await this.profileStore.fetchRole()
-        }
-        const provinceData = await this.systemConfigStore.fetchProvince(
-          this.profileStore.profile.orgCustomId
-        )
-        const districtData = await this.systemConfigStore.fetchDistrict(
-          this.profileStore.profile.orgCustomId
-        )
-        const subDistrctData = await this.systemConfigStore.fetchSubDistrict(
-          this.profileStore.profile.orgCustomId
+        const roleData = await this.profileStore.fetchRole()
+        const conditions = await this.conditionStore.fetchConditionList(
+          this.profileStore.profile.orgCustomId,
+          this.profileStore.businessKey
         )
         this.$emit('loaded')
       }
@@ -75,3 +71,7 @@ export default {
   }
 }
 </script>
+
+<style>
+@import 'datatables.net-dt';
+</style>

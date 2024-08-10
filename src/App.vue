@@ -1,19 +1,63 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import pkg from '../package.json'
+
+import TopNavBar from '@/components/Common/TopNavBar.vue'
+import SideNavBar from '@/components/Common/SideNavBar.vue'
+
+const profileStore = useProfileStore()
 </script>
 
 <template>
-  <!-- <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header> -->
-
-  <RouterView />
+  <header>
+    <TopNavBar v-if="profileStore.isSignIn" @loading="loadingModal" @loaded="loadCancel" />
+    <SideNavBar v-if="profileStore.isSignIn" @loading="loadingModal" @loaded="loadCancel" />
+  </header>
+  <loading
+    v-model:active="isLoading"
+    :can-cancel="true"
+    :on-cancel="loadCancel"
+    :is-full-page="fullPage"
+  />
+  <RouterView @reactive="onReactive" @loading="loadingModal" @loaded="loadCancel" />
 </template>
+
+<script>
+import Loading from 'vue-loading-overlay'
+import { useProfileStore } from '@/stores/ProfileStore'
+import 'vue-loading-overlay/dist/css/index.css'
+
+export default {
+  components: {
+    Loading
+  },
+  data() {
+    return {
+      isLoading: false,
+      fullPage: true,
+      profileStore: useProfileStore()
+    }
+  },
+  mounted() {
+    this.updateComponent()
+  },
+  updated() {
+    this.updateComponent()
+  },
+  methods: {
+    updateComponent() {},
+    loadingModal() {
+      this.isLoading = true
+    },
+    loadCancel() {
+      this.isLoading = false
+    },
+    onReactive(){
+
+    }
+  }
+}
+</script>
 
 <style scoped>
 header {

@@ -1,23 +1,62 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/signin',
+      name: 'signin',
+      component: () => import('@/views/SignInView.vue')
+    },
+    {
+      path: '/home',
       name: 'home',
-      component: HomeView
+      component: () => import('@/views/HomeView.vue')
     },
     {
-      path: '/customerinfomation',
-      name: 'customerinfomation',
-      component: () => import('../views/CustomerInformationView.vue')
+      path: '/quotation',
+      name: 'quotation',
+      component: () => import('@/views/QuotationView.vue')
     },
     {
-      path: '/customeraddress',
-      name: 'customeraddress',
-      component: () => import('../views/CustomerAddressView.vue')
+      path: '/project',
+      name: 'project',
+      component: () => import('@/views/ProjectView.vue')
+    },
+    {
+      path: '/customer',
+      name: 'customer',
+      component: () => import('@/views/CustomerView.vue')
+    },
+    {
+      path: '/product',
+      name: 'product',
+      component: () => import('@/views/ProductView.vue')
+    },
+    {
+      path: '/payment',
+      name: 'payment',
+      component: () => import('@/views/PaymentView.vue')
+    },
+    {
+      path: '/paymentaccount',
+      name: 'paymentaccount',
+      component: () => import('@/views/PaymentAccountView.vue')
+    },
+    {
+      path: '/business',
+      name: 'business',
+      component: () => import('@/views/BusinessView.vue')
+    },
+    {
+      path: '/overview',
+      name: 'overview',
+      component: () => import('@/views/OverviewView.vue')
+    },
+    {
+      path: '/manual',
+      name: 'manual',
+      component: () => import('@/views/ManualView.vue')
     }
   ]
 })

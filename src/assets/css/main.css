@@ -1,0 +1,104 @@
+@import './base.css';
+
+#app {
+  font-family: 'Kanit', sans-serif;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+table.dataTable thead > tr > th.dt-orderable-asc,
+table.dataTable thead > tr > th.dt-orderable-desc,
+table.dataTable thead > tr > th.dt-ordering-asc,
+table.dataTable thead > tr > th.dt-ordering-desc,
+table.dataTable thead > tr > td.dt-orderable-asc,
+table.dataTable thead > tr > td.dt-orderable-desc,
+table.dataTable thead > tr > td.dt-ordering-asc,
+table.dataTable thead > tr > td.dt-ordering-desc,
+table.dataTable > thead > tr > th,
+table.dataTable > thead > tr > td {
+  text-align: center;
+}
+
+.content-string {
+  text-align: left;
+}
+
+.content-numeric {
+  text-align: right;
+}
+
+.content-index {
+  text-align: right;
+}
+
+.content-center {
+  text-align: center;
+}
+
+.customer-card,
+.product-card,
+.payment-card,
+.paymentaccount-card,
+.project-card {
+  position: absolute;
+  width: 1400px;
+  left: 325px;
+  top: 140px;
+  background: #fff;
+  color: #00275e;
+  font-size: 16px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  padding: 1em;
+  text-align: center;
+  z-index: 4;
+}
+
+div.dt-container .dt-input {
+  background: #fff;
+  margin: 1em;
+}
+
+div.dt-container .dt-paging .dt-paging-button.disabled,
+div.dt-container .dt-paging .dt-paging-button.disabled:hover,
+div.dt-container .dt-paging .dt-paging-button.disabled:active {
+  color: #fff;
+}
+
+thead {
+  text-align: center;
+  background-color: #00275e;
+  color: #fff;
+}
+
+table.dataTable {
+  border-radius: 10px;
+}
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+  }
+
+  #app {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  }
+}
