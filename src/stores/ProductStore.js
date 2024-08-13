@@ -6,9 +6,13 @@ export const useProductStore = defineStore('productStore', () => {
   let productList = []
   let selectedProduct = ''
   let productProfile ={}
-
-  // let baseUrl = 'https://localhost:44345'
-  let baseUrl = 'https://sales-api-dev.prom.co.th'
+  let baseUrl = import.meta.env.VITE_API_URL
+  
+  if(window.location.hostname === "sales-dev.prom.co.th"){
+    baseUrl = 'https://sales-api-dev.prom.co.th'
+  }else if (window.location.hostname === "sales.prom.co.th"){
+    baseUrl = 'https://sales-api.prom.co.th'
+  } 
   
   let axiosExport = axios.create({
     baseUrl
