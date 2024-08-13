@@ -55,7 +55,7 @@ export default {
         } else if (window.location.hostname === 'sales.prom.co.th') {
           baseUrl = 'sales1.prom.co.th/erp/quotation'
         }
-        window.open(import.meta.env.VITE_REACT_URL)
+        window.open(baseUrl)
       } else {
         this.$router.push('/' + key)
       }
