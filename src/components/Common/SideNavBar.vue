@@ -47,13 +47,18 @@ export default {
       }
     },
     selectMenu(key) {
-      if(key == 'quotation')
-      {
+      if (key == 'quotation') {
+        let baseUrl = import.meta.env.VITE_API_URL
+
+        if (window.location.hostname === 'sales-dev.prom.co.th') {
+          baseUrl = 'sales-dev1.prom.co.th/erp/quotation'
+        } else if (window.location.hostname === 'sales.prom.co.th') {
+          baseUrl = 'sales1.prom.co.th/erp/quotation'
+        }
         window.open(import.meta.env.VITE_REACT_URL)
-      }
-      else{
+      } else {
         this.$router.push('/' + key)
-    }
+      }
     },
     download() {
       window.open('https://drive.google.com/file/d/1XyNw0J1lyUV_ubEJ6WGcb8NYJgu-pnRs/view')
