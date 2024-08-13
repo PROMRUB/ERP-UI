@@ -25,8 +25,13 @@ export const useProfileStore = defineStore('profileStore', () => {
     no: '00',
     alley: '00'
   }
-  
   let baseUrl = import.meta.env.VITE_API_URL
+  
+  if(window.location.hostname === "sales-dev.prom.co.th"){
+    baseUrl = 'https://sales-api-dev.prom.co.th'
+  }else if (window.location.hostname === "sales.prom.co.th"){
+    baseUrl = 'https://sales-api.prom.co.th'
+  } 
   
   let axiosExport = axios.create({
     baseUrl
