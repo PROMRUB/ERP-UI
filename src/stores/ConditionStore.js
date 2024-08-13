@@ -6,8 +6,7 @@ export const useConditionStore = defineStore('conditionStore', () => {
   let conditionList = []
   let selectedCondition = ''
   
-  // let baseUrl = 'https://localhost:44345'
-  let baseUrl = 'https://sales-api.prom.co.th'
+  let baseUrl = import.meta.env.VITE_API_URL
   
   let axiosExport = axios.create({
     baseUrl
