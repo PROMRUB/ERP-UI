@@ -49,7 +49,7 @@ export default {
     selectMenu(key) {
       if(key == 'quotation')
       {
-        window.open('https://sales-dev1.prom.co.th/erp/quotation')
+        window.open('https://sales.prom.co.th/erp/quotation')
       }
       else{
         this.$router.push('/' + key)
