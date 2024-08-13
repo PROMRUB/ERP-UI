@@ -49,11 +49,11 @@ export default {
     selectMenu(key) {
       if (key == 'quotation') {
         let baseUrl = import.meta.env.VITE_API_URL
-
+        console.log(window.location.hostname)
         if (window.location.hostname === 'sales-dev.prom.co.th') {
-          baseUrl = 'sales-dev1.prom.co.th/erp/quotation'
+          baseUrl = 'https://sales-dev1.prom.co.th/erp/quotation'
         } else if (window.location.hostname === 'sales.prom.co.th') {
-          baseUrl = 'sales1.prom.co.th/erp/quotation'
+          baseUrl = 'https://sales1.prom.co.th/erp/quotation'
         }
         window.open(baseUrl)
       } else {
