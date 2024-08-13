@@ -6,9 +6,8 @@ export const usePaymentAccountStore = defineStore('paymentAccountStore', () => {
   let paymentAccountList = []
   let selectedPaymentAccount = ''
   
-  // let baseUrl = 'https://localhost:44345'
-  let baseUrl = 'https://sales-api.prom.co.th'
-  
+  let baseUrl = import.meta.env.VITE_API_URL
+
   let axiosExport = axios.create({
     baseUrl
   })

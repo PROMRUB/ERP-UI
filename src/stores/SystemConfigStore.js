@@ -6,8 +6,7 @@ export const useSystemConfigStore = defineStore('systemConfigStore', () => {
   let distrcitList = []
   let subDistrictList = []
 
-  // let baseUrl = 'https://localhost:44345'
-  let baseUrl = 'https://sales-api.prom.co.th'
+  let baseUrl = import.meta.env.VITE_API_URL
   
   let axiosExport = axios.create({
     baseUrl
