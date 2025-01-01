@@ -1,30 +1,30 @@
-# Install dependencies only when needed
-FROM node:lts-alpine AS deps
 
-WORKDIR /opt/app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+FROM node:19.5.0-alpine as builder
 
-# Rebuild the source code only when needed
-# This is where because may be the case that you would try
-# to build the app based on some `X_TAG` in my case (Git commit hash)
-# but the code hasn't changed.
-FROM node:lts-alpine AS builder
 
-ENV NODE_ENV=production
-WORKDIR /opt/app
+WORKDIR /usr/src/app
+
+# Installing dependencies
+COPY package*.json ./
+# COPY yarn.lock ./
+# COPY ./node_modules ./node_modules
+RUN npm install --force
+
 COPY . .
-COPY --from=deps /opt/app/node_modules ./node_modules
-RUN yarn build
 
-# Production image, copy all the files and run next
-FROM node:lts-alpine AS runner
+# Building app
+RUN ["npm","run","build"]
 
-ARG X_TAG
-WORKDIR /opt/app
-ENV NODE_ENV=production
-COPY --from=builder /opt/app/next.config.js ./
-COPY --from=builder /opt/app/public ./public
-COPY --from=builder /opt/app/.next ./.next
-COPY --from=builder /opt/app/node_modules ./node_modules
-CMD ["node_modules/.bin/next", "start"]
+EXPOSE 3000
+CMD ["npm", "start"]
+
+#RUN yarn export
+
+# FROM nginx:alpine
+# WORKDIR /usr/share/nginx/html
+# COPY --from=0 /usr/src/app/out /usr/share/nginx/html
+# RUN rm /etc/nginx/conf.d/default.conf
+# COPY nginx/nginx.conf /etc/nginx/conf.d
+
+
+# CMD ["nginx", "-g", "daemon off;"]
